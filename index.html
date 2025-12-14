@@ -9,74 +9,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* === ПОЛНЫЙ CSS СТИЛЬ (SLAY / DARK / RED) === */
+        /* === CATLAY 2025 STYLES === */
         * { box-sizing: border-box; }
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
-        
         body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
 
-        /* ФОН */
+        /* ANIMATED BACKGROUND */
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: var(--red); border-radius: 50%; animation: rise 5s infinite; opacity: 0; }
         @keyframes rise { 0% {transform:translateY(100vh) scale(0); opacity:0;} 50% {opacity:1;} 100% {transform:translateY(-10vh) scale(1.5); opacity:0;} }
 
+        /* GLOW OVERLAY FOR MODALS */
+        .page-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9998;
+            box-shadow: inset 0 0 100px var(--red); opacity: 0; transition: opacity 0.5s;
+        }
+        .page-glow.active { opacity: 0.6; }
+
         /* HEADER */
         header { text-align: center; padding: 40px 20px 80px; position: relative; }
         h1 { font-family: var(--font-head); font-size: 4.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 10px; text-shadow: 0 0 30px var(--red); }
-        .intro { max-width: 600px; margin: 0 auto; color: #888; margin-top: 10px; font-weight: bold; text-transform: uppercase; }
+        .intro { max-width: 600px; margin: 0 auto; color: #888; margin-top: 10px; font-weight: 700; text-transform: uppercase; }
 
         .header-btn {
             position: absolute; top: 30px; background: transparent; border: 2px solid var(--red);
             color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer;
-            font-family: var(--font-body); font-weight: 900; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+            font-family: var(--font-body); font-weight: 900; transition: 0.3s; text-transform: uppercase;
         }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
         .btn-rules { left: 30px; } .btn-profile { right: 30px; }
 
-        /* FAB (Floating Buttons) */
-        .fab {
-            position: fixed; bottom: 30px; width: 60px; height: 60px;
-            background: rgba(0,0,0,0.9); border: 2px solid var(--red); color: var(--red);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 24px; cursor: pointer; z-index: 999;
-            opacity: 0; transform: translateY(50px); transition: 0.4s; pointer-events: none;
-        }
-        .fab.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
-        .fab:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
-        .fab-rules { left: 30px; } .fab-profile { right: 30px; }
-
-        /* --- 1. MAIN NOMINATIONS (CAROUSEL) --- */
+        /* MAIN SLIDER */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-
         .main-slide {
-            position: absolute; width: 320px; height: 450px;
-            display: flex; flex-direction: column; align-items: center;
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-            background: #000; border: 1px solid #333;
+            position: absolute; width: 320px; height: 450px; display: flex; flex-direction: column; align-items: center;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: #000; border: 1px solid #333;
             cursor: pointer; overflow: hidden; border-radius: 12px;
         }
-        .main-slide img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1;
-            filter: brightness(0.6) grayscale(0.8);
-        }
+        .main-slide img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: brightness(0.6); }
         .main-slide h3 { 
-            font-family: var(--font-head); color: #fff; margin: 0; 
-            position: absolute; bottom: 0; width: 100%; padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); 
-            z-index: 2; text-transform: uppercase; font-size: 1.4em; text-align: center; 
-            text-shadow: 0 0 10px #000; border-top: 1px solid rgba(255,0,51,0.3);
+            font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 100%; padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index: 2; 
+            text-transform: uppercase; font-size: 1.4em; text-align: center; text-shadow: 0 0 10px #000;
         }
-
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; border-color: #555; }
         .main-slide.prev { transform: translateX(-380px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
         .main-slide.next { transform: translateX(380px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
-
         .main-slide.active:hover { border-color: var(--red); box-shadow: 0 0 50px rgba(255, 0, 51, 0.5); }
-        .main-slide.active:hover img { filter: brightness(1) grayscale(0); transform: scale(1.05); }
+        .main-slide.active:hover img { filter: brightness(1); transform: scale(1.05); }
         .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); }
 
         .arrow {
@@ -85,13 +68,11 @@
         }
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
 
-        /* SEPARATOR */
         .section-separator { width: 80%; height: 2px; background: var(--red); margin: 80px auto; box-shadow: 0 0 20px var(--red); border-radius: 50%; }
 
-        /* --- 2. LOCKED SLAY SECTION --- */
+        /* ADDITIONAL NOMINATIONS (3D SHIELDS) */
         .slay-section { margin-top: 50px; position: relative; }
         h2 { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2.5em; text-transform: uppercase; margin-bottom: 60px; text-shadow: 0 0 10px var(--red); }
-
         .slay-wrapper { position: relative; height: 450px; perspective: 1000px; overflow: hidden; display: flex; justify-content: center; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
         .slay-item {
@@ -99,7 +80,6 @@
             transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s, filter 0.6s;
             display: flex; flex-direction: column; align-items: center;
         }
-
         .shield-card {
             width: 100%; height: 280px; background: linear-gradient(135deg, #1a0000 0%, #000 100%);
             border: 2px solid #333; clip-path: polygon(50% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%, 0% 15%);
@@ -110,68 +90,65 @@
             background: rgba(0,0,0,0.7); z-index: 5; display: flex; align-items: center; justify-content: center; flex-direction: column;
         }
         .locked-icon { font-size: 3em; color: #555; text-shadow: 0 0 10px #000; }
-        
-        .slay-title { 
-            margin-top: 20px; font-family: var(--font-head); font-size: 1.4em; color: #fff; 
-            text-transform: uppercase; text-align: center; transition: 0.3s; opacity: 0; 
-            text-shadow: 0 0 5px #000; line-height: 1.2;
-        }
+        .slay-title { margin-top: 20px; font-family: var(--font-head); font-size: 1.4em; color: #fff; text-transform: uppercase; text-align: center; transition: 0.3s; opacity: 0; text-shadow: 0 0 5px #000; line-height: 1.2; }
         .slay-item.active .slay-title { opacity: 1; color: #555; }
         .slay-item.active .shield-card { border-color: #555; }
-
         .slay-nav { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 50; }
         .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; }
         .slay-cnt { font-family: var(--font-head); font-size: 1.5em; color: var(--red); }
         .locked-notice { text-align: center; color: #555; font-family: var(--font-head); margin-top: 20px; text-transform: uppercase; border: 1px solid #333; display: inline-block; padding: 10px 20px; border-radius: 20px; }
-        .locked-container { text-align: center; margin-bottom: 20px; }
 
-        /* --- 3. SUGGESTIONS --- */
+        /* SUGGESTIONS */
         .suggest-section { max-width: 600px; margin: 80px auto; padding: 30px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .suggest-form input, .suggest-form textarea {
-            width: 100%; background: #151515; border: 1px solid #333; color: #fff; padding: 15px; margin-bottom: 15px; font-family: var(--font-body); border-radius: 5px; font-weight: bold;
-        }
+        .suggest-header { text-align: center; color: var(--red); font-family: var(--font-head); margin-bottom: 5px; }
+        .suggest-desc { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 20px; }
+        
+        /* 5 Slots Animation */
+        .slots-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .slot { width: 15px; height: 15px; border: 2px solid #333; border-radius: 50%; transition: 0.3s; }
+        .slot.filled { background: var(--red); border-color: var(--red); box-shadow: 0 0 10px var(--red); }
+        .slot.empty { background: transparent; }
+
+        .suggest-form input, .suggest-form textarea { width: 100%; background: #151515; border: 1px solid #333; color: #fff; padding: 15px; margin-bottom: 15px; font-family: var(--font-body); border-radius: 5px; font-weight: bold; }
         .suggest-btn { width: 100%; padding: 15px; background: #333; color: #fff; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; border-radius: 5px; }
         .suggest-btn:hover { background: var(--red); box-shadow: 0 0 15px var(--red); }
 
         /* MODALS */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; }
-        .modal.active { display: flex; animation: glowFade 0.4s forwards; }
-        @keyframes glowFade { from {opacity:0;} to {opacity:1;} }
+        .modal.active { display: flex; animation: fadeUp 0.3s forwards; }
+        @keyframes fadeUp { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
         .modal-content { width: 90%; max-width: 600px; padding: 40px; border: 2px solid #333; background: #0a0a0a; position: relative; max-height: 90vh; overflow-y: auto; border-radius: 10px; }
-        .modal.active .modal-content { box-shadow: 0 0 50px rgba(255, 0, 51, 0.2); border-color: var(--red); }
-        .close { position: absolute; top: 20px; right: 20px; font-size: 30px; cursor: pointer; color: #555; }
-        .close:hover { color: var(--red); transform: rotate(90deg); transition: 0.3s; }
+        .modal.active .modal-content { border-color: var(--red); box-shadow: 0 0 30px rgba(255,0,51,0.1); }
+        
+        .close { position: absolute; top: 15px; right: 20px; font-size: 40px; cursor: pointer; color: #555; transition: 0.3s; line-height: 1; }
+        .close:hover { color: var(--red); transform: rotate(90deg); }
 
-        /* GRID */
+        /* OTHER UI */
         .cand-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .cand-card { background: #111; border: 1px solid #333; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; border-radius: 5px; font-size: 1.1em; }
+        .cand-card { background: #111; border: 1px solid #333; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; border-radius: 5px; font-size: 1.1em; font-weight: bold; }
         .cand-card:hover { border-color: var(--red); transform: translateY(-5px); }
         .cand-card.selected { border-color: var(--red); background: #1a0000; box-shadow: 0 0 15px rgba(255,0,51,0.2); }
+        
         .vote-btn { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; font-weight: bold; font-size: 1.2em; text-transform: uppercase; margin-top: 20px; cursor: pointer; transition: 0.3s; }
         .vote-btn:hover { background: #fff; color: var(--red); box-shadow: 0 0 20px var(--red); }
 
-        /* PROFILE */
         .token-box { border: 2px dashed #333; padding: 10px; margin: 20px 0; font-family: var(--font-head); font-size: 2.5em; letter-spacing: 5px; color: var(--red); }
         .refresh-btn { background: var(--red); color: #fff; border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 15px; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .refresh-btn:hover { background: #ff3355; transform: translateY(-2px); }
-        .stats-row { display: flex; justify-content: space-around; margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; }
-
-        .toast { position: fixed; top: 20px; right: 20px; background: #000; border: 1px solid var(--red); border-left: 5px solid var(--red); padding: 15px 30px; color: #fff; z-index: 10000; transform: translateX(200%); transition: 0.3s; }
+        
+        .toast { position: fixed; top: 20px; right: 20px; background: #000; border: 1px solid var(--red); border-left: 5px solid var(--red); padding: 15px 30px; color: #fff; z-index: 10000; transform: translateX(200%); transition: 0.3s; font-weight: bold; }
         .toast.show { transform: translateX(0); }
-
         footer { margin-top: 80px; padding: 40px; border-top: 1px solid #222; text-align: center; color: #444; font-family: var(--font-head); letter-spacing: 2px; }
         
         @media (max-width: 768px) {
-            h1 { font-size: 3em; }
-            .main-slide { width: 220px; height: 350px; }
-            .slay-item { width: 160px; height: 300px; }
-            .arrow { width: 40px; height: 40px; font-size: 1.5em; }
+            h1 { font-size: 3em; } .main-slide { width: 220px; height: 350px; } .slay-item { width: 160px; height: 300px; }
         }
     </style>
 </head>
 <body>
     <div class="ambient-bg"></div>
     <div class="particles" id="particles"></div>
+    <div class="page-glow" id="pageGlow"></div>
     <div id="toast" class="toast">Info</div>
 
     <div class="fab fab-rules" onclick="openModal('rulesModal')"><i class="fas fa-gavel"></i></div>
@@ -182,7 +159,7 @@
         <button class="header-btn btn-profile" onclick="openProfile()"><i class="fas fa-user"></i> ПРОФИЛЬ</button>
         <h1>CATLAY</h1>
         <div style="font-family: var(--font-head); color: #666; letter-spacing: 5px; margin-top: 10px;">2025 AWARDS</div>
-        <p class="intro">Твой голос решает судьбу сервера.</p>
+        <p class="intro">Твой голос решает судьбу сервера</p>
     </header>
 
     <section class="main-section">
@@ -195,12 +172,8 @@
 
     <section class="slay-section">
         <h2>ДОПОЛНИТЕЛЬНЫЕ НОМИНАЦИИ</h2>
-        <div class="locked-container">
-            <div class="locked-notice"><i class="fas fa-lock"></i> Голосование откроется позже</div>
-        </div>
-        <div class="slay-wrapper">
-            <div class="slay-track" id="slayTrack"></div>
-        </div>
+        <div class="locked-notice"><i class="fas fa-lock"></i> Голосование откроется позже</div>
+        <div class="slay-wrapper"><div class="slay-track" id="slayTrack"></div></div>
         <div class="slay-nav">
             <button class="slay-btn" onclick="moveSlay(-1)"><i class="fas fa-caret-left"></i></button>
             <div class="slay-cnt" id="slayCount">1/9</div>
@@ -209,13 +182,19 @@
     </section>
 
     <section class="suggest-section">
-        <h3 style="font-family: var(--font-head); color: var(--red); text-align: center;">ПРЕДЛОЖИТЬ НОМИНАЦИЮ</h3>
-        <p style="text-align: center; color: #888; font-size: 0.9em;">Топ 3 попадут в доп. номинации (Лимит: 5 на человека)</p>
-        <div class="suggest-form">
-            <input type="text" id="sugName" placeholder="Название номинации (например: Лучший хелпер)">
-            <textarea id="sugDesc" placeholder="Краткое описание (за что дается)" rows="3"></textarea>
-            <button class="suggest-btn" onclick="sendSuggestion()">ОТПРАВИТЬ ПРЕДЛОЖЕНИЕ</button>
+        <h3 class="suggest-header">ПРЕДЛОЖИТЬ НОМИНАЦИЮ</h3>
+        <p class="suggest-desc">Учитывайте: моменты с CatField начиная с 2025 года. Топ-3 попадут в премию.</p>
+        
+        <div class="slots-container" id="slotsCont">
+            <div class="slot empty"></div><div class="slot empty"></div><div class="slot empty"></div><div class="slot empty"></div><div class="slot empty"></div>
         </div>
+
+        <div class="suggest-form" id="sugForm">
+            <input type="text" id="sugName" placeholder="Название номинации">
+            <textarea id="sugDesc" placeholder="Краткое описание" rows="3"></textarea>
+            <button class="suggest-btn" onclick="sendSuggestion()">ОТПРАВИТЬ</button>
+        </div>
+        <div id="sugLimitMsg" style="display:none; text-align:center; color:var(--red); font-weight:bold;">Лимит исчерпан! Спасибо за идеи.</div>
     </section>
 
     <div id="voteModal" class="modal">
@@ -231,18 +210,22 @@
         <div class="modal-content" style="text-align: center;">
             <span class="close" onclick="closeModal('profileModal')">&times;</span>
             <h2 style="font-family: var(--font-head); color: var(--red); margin-top: 0;">ПРОФИЛЬ</h2>
+            
             <div id="loading">Загрузка...</div>
+            
             <div id="profileContent" style="display:none;">
                 <div id="statusText" style="font-weight:900; color: #555; margin-bottom: 20px; font-size: 1.5em; font-family: var(--font-head);">НЕ ЗАРЕГ.</div>
+                
                 <div id="authSection">
                     <p>Код для <a href="https://t.me/CatLay_bot" target="_blank" style="color:var(--red);">@CatLay_bot</a></p>
                     <div class="token-box" id="tokenDisplay">---</div>
                     <div id="timer" style="color:#666; font-family:monospace; font-size:1.2em;">--:--</div>
                     <button class="refresh-btn" onclick="refreshToken()">ОБНОВИТЬ КОД</button>
                 </div>
-                <div class="stats-row">
-                    <div class="stat-item"><h3 id="statVoted" style="color: var(--red);">0</h3><p>Голосов</p></div>
-                    <div class="stat-item"><h3 id="statLeft">15</h3><p>Осталось</p></div>
+
+                <div style="display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
+                    <div><h3 id="statVoted" style="color: var(--red); margin:0; font-size:2em; font-family:var(--font-head);">0</h3><p style="margin:0; color:#888;">Голосов</p></div>
+                    <div><h3 id="statLeft" style="margin:0; font-size:2em; font-family:var(--font-head);">15</h3><p style="margin:0; color:#888;">Осталось</p></div>
                 </div>
             </div>
         </div>
@@ -252,17 +235,26 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('rulesModal')">&times;</span>
             <h2 style="font-family: var(--font-head);">ПРАВИЛА</h2>
-            <p style="color:#ccc;">1. Голосуй честно.<br>2. Подтверди аккаунт.<br>3. Без накрутки.</p>
+            <div style="color:#ccc; line-height:1.6; font-size:0.9em;">
+                <p>1. Голосуйте за тех номинантов, которых считаете наиболее подходящими под описание номинации.</p>
+                <p>2. Запрещено голосовать с нескольких аккаунтов.</p>
+                <p>3. Запрещено предлагать номинантов которые никак не относятся к теме номинации.</p>
+                <p>4. Запрещено предлагать абсолютно бредовые номинации.</p>
+                <p>5. Запрещено абузить баги сайта, если таковы были найдены - сообщите организаторам CLAY.</p>
+                <p>6. При выборе/предложении номинанта учитывайте, что голосование происходит ТОЛЬКО о моментах с Кетфилда и связанных с ним местах, ТОЛЬКО начиная с прошлого CatLay.</p>
+                <p>7. Если одного и того же номинанта в конкретной номинации предложили несколько раз - он попадает в официальный пул номинантов соответствующей номинации.</p>
+                <p>8. Количество голосов за каждого номинанта будут опубликованы после проведения премии.</p>
+            </div>
         </div>
     </div>
 
     <footer><hr style="border-color: #222; margin-bottom: 30px;">2025 CatField - CLAY</footer>
 
     <script>
-        // --- ⚙️ НАСТРОЙКА СВЯЗИ С СЕРВЕРОМ ⚙️ ---
+        // --- ⚙️ КОНФИГУРАЦИЯ ---
         const API_URL = "https://sstamin.pythonanywhere.com"; 
 
-        // --- ДАННЫЕ (ФИНАЛЬНЫЕ) ---
+        // --- ДАННЫЕ ---
         const mainNoms = [
             {title: "Король CLAY", cands: ["Foltt1k", "Machinae", "fifa20120022", "SStamin", "Yanantess", "Homiki0"]},
             {title: "Королева CLAY", cands: ["BaBdjoN", "k4agune", "l0lpiks", "Marusan19", "Poroxhaha"]},
@@ -272,23 +264,19 @@
             {title: "Завоз года", cands: ["Война пранков кф5", "Правила сс кф4-кф5", "42х42 блока", "Взрыв запретной зоны"]},
             {title: "Клан/Команда", cands: ["SSquadra", "ВОСХОД", "КПZZ", "ТЦК", "AUGUST"]}
         ];
-        
         const subNoms = [
-            {title: "Лучший строитель", icon: "tools", cands: []},
-            {title: "Лучший ПВП", icon: "skull", cands: []},
-            {title: "Скин года", icon: "tshirt", cands: []},
-            {title: "Пара/Шип года", icon: "heart", cands: []},
-            {title: "Пиздабол года", icon: "comment-slash", cands: []}
+            {title: "Лучший строитель", icon: "tools"}, {title: "Лучший ПВП", icon: "skull"},
+            {title: "Скин года", icon: "tshirt"}, {title: "Пара/Шип года", icon: "heart"},
+            {title: "Пиздабол года", icon: "comment-slash"}
         ];
-        const totalNoms = mainNoms.length; 
+        const totalNoms = mainNoms.length;
 
-        // --- 1. MAIN SLIDER (CREATE ONCE) ---
+        // --- INIT MAIN SLIDER ---
         let mainIdx = 0;
         function initMain() {
             const cont = document.getElementById('mainContainer'); cont.innerHTML = '';
             mainNoms.forEach((n, i) => {
                 let d = document.createElement('div'); d.className = 'main-slide hidden'; d.id = `ms-${i}`;
-                // Изображения грузятся с сервера PythonAnywhere
                 d.innerHTML = `<img src="${API_URL}/static/main_${i}.jpg" onerror="this.src='https://placehold.co/300x450/000/333?text=${n.title.charAt(0)}'"><h3 style="">${n.title}</h3>`;
                 d.onclick = () => { if(i===mainIdx) openVote(i); else { mainIdx=i; updateMain(); }};
                 cont.appendChild(d);
@@ -306,7 +294,7 @@
         }
         function moveMain(d) { mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
 
-        // --- 2. SLAY SLIDER (LOCKED) ---
+        // --- INIT SLAY SLIDER ---
         let slayIdx = 0;
         function initSlay() {
             const tr = document.getElementById('slayTrack'); tr.innerHTML = '';
@@ -337,14 +325,19 @@
 
         initMain(); initSlay();
 
-        // --- LOGIC ---
-        function openModal(id){document.getElementById(id).classList.add('active');}
-        function closeModal(id){document.getElementById(id).classList.remove('active');}
+        // --- UI LOGIC ---
+        function openModal(id){
+            document.getElementById(id).classList.add('active');
+            document.getElementById('pageGlow').classList.add('active');
+        }
+        function closeModal(id){
+            document.getElementById(id).classList.remove('active');
+            document.getElementById('pageGlow').classList.remove('active');
+        }
         
         let currIdx;
         function openVote(idx) {
-            currIdx = idx;
-            document.getElementById('voteTitle').innerText = mainNoms[idx].title;
+            currIdx = idx; document.getElementById('voteTitle').innerText = mainNoms[idx].title;
             const g = document.getElementById('candGrid'); g.innerHTML='';
             mainNoms[idx].cands.forEach(c => {
                 let d = document.createElement('div'); d.className='cand-card';
@@ -355,6 +348,7 @@
             openModal('voteModal');
         }
 
+        // --- BACKEND ---
         let myToken = localStorage.getItem('tk');
         let tmr;
 
@@ -367,62 +361,85 @@
         }
 
         async function refreshToken() {
-            let res = await fetch(API_URL + '/api/get_token');
-            let d = await res.json();
-            myToken = d.token; localStorage.setItem('tk', myToken);
-            check();
+            try {
+                let res = await fetch(API_URL + '/api/get_token');
+                let d = await res.json();
+                myToken = d.token; localStorage.setItem('tk', myToken);
+                check();
+            } catch(e) { toast("Ошибка сети"); document.getElementById('loading').innerText = "Ошибка подключения"; }
         }
 
         async function check() {
-            let res = await fetch(API_URL + '/api/check_status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
-            let d = await res.json();
-            document.getElementById('loading').style.display='none';
-            document.getElementById('profileContent').style.display='block';
-            document.getElementById('tokenDisplay').innerText = myToken;
-            document.getElementById('statVoted').innerText = d.vote_count || 0;
-            document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
-            const st = document.getElementById('statusText');
-            const auth = document.getElementById('authSection');
-            if(d.status==='approved') {
-                st.innerText = "ЗАРЕГ."; st.style.color = "#0f0"; auth.style.display = 'none'; clearInterval(tmr);
-            } else {
-                st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГ.";
-                st.style.color = d.status==='review'?"#fa0":"#555";
-                auth.style.display = 'block'; startTimer(d.time_left);
-            }
+            try {
+                let res = await fetch(API_URL + '/api/check_status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
+                let d = await res.json();
+                document.getElementById('loading').style.display='none';
+                document.getElementById('profileContent').style.display='block';
+                document.getElementById('tokenDisplay').innerText = myToken;
+                document.getElementById('statVoted').innerText = d.vote_count || 0;
+                document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
+                
+                const st = document.getElementById('statusText');
+                const auth = document.getElementById('authSection');
+                
+                if(d.status==='approved') {
+                    st.innerText = "ЗАРЕГ."; st.style.color = "#0f0"; auth.style.display = 'none'; clearInterval(tmr);
+                } else {
+                    st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГ.";
+                    st.style.color = d.status==='review'?"#fa0":"#555";
+                    auth.style.display = 'block'; startTimer(d.time_left);
+                }
+                updateSlots(d.sug_count || 0);
+            } catch(e) { console.error(e); }
         }
 
         function startTimer(s) {
             clearInterval(tmr); let l=Math.floor(s);
             const display = document.getElementById('timer');
-            
-            if(l <= 0) { display.innerText = "00:00"; return; }
-
             tmr = setInterval(() => {
                 if(l<=0) { clearInterval(tmr); refreshToken(); return; }
-                l--; 
-                let m = Math.floor(l/60); let sec = l%60;
-                display.innerText = `${m}:${sec<10?'0'+sec:sec}`;
+                l--; display.innerText = `${Math.floor(l/60)}:${(l%60)<10?'0'+(l%60):l%60}`;
             }, 1000);
         }
 
         async function submitVote() {
             const sel = document.querySelector('.cand-card.selected');
             if(!sel) { toast("Выбери кандидата!"); return; }
-            let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:mainNoms[currIdx].title, candidate:sel.dataset.val})});
-            let d = await res.json();
-            if(d.success) { toast("ПРИНЯТО!"); closeModal('voteModal'); check(); }
-            else toast(d.message);
+            try {
+                let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:mainNoms[currIdx].title, candidate:sel.dataset.val})});
+                let d = await res.json();
+                if(d.success) { toast("ПРИНЯТО!"); closeModal('voteModal'); check(); }
+                else toast(d.message);
+            } catch(e) { toast("Ошибка!"); }
         }
 
         async function sendSuggestion() {
             let nom = document.getElementById('sugName').value;
             let desc = document.getElementById('sugDesc').value;
             if(!nom || !desc) { toast("Заполни все поля!"); return; }
-            let res = await fetch(API_URL + '/api/suggest', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nom, description:desc})});
-            let d = await res.json();
-            toast(d.message);
-            if(d.success) { document.getElementById('sugName').value=''; document.getElementById('sugDesc').value=''; }
+            try {
+                let res = await fetch(API_URL + '/api/suggest', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nom, description:desc})});
+                let d = await res.json();
+                toast(d.message);
+                if(d.success) { 
+                    document.getElementById('sugName').value=''; 
+                    document.getElementById('sugDesc').value='';
+                    updateSlots(d.new_count);
+                }
+            } catch(e) { toast("Ошибка!"); }
+        }
+
+        function updateSlots(cnt) {
+            const cont = document.getElementById('slotsCont'); cont.innerHTML='';
+            if(cnt >= 5) {
+                document.getElementById('sugForm').style.display = 'none';
+                document.getElementById('sugLimitMsg').style.display = 'block';
+            }
+            for(let i=0; i<5; i++) {
+                let div = document.createElement('div');
+                div.className = i < cnt ? 'slot filled' : 'slot empty';
+                cont.appendChild(div);
+            }
         }
 
         function toast(msg) {
@@ -430,7 +447,7 @@
             setTimeout(()=>t.classList.remove('show'),3000);
         }
         
-        // Particles
+        // Particles & Scroll
         const pc = document.getElementById('particles');
         for(let i=0;i<40;i++) {
             let p=document.createElement('div'); p.className='particle';
@@ -438,10 +455,8 @@
             p.style.animationDuration=(Math.random()*5+5)+'s'; p.style.animationDelay=Math.random()*5+'s';
             pc.appendChild(p);
         }
-        
         window.addEventListener('scroll', ()=>{
-            const h = document.getElementById('mainHeader').getBoundingClientRect();
-            const show = h.bottom < 0;
+            const show = document.getElementById('mainHeader').getBoundingClientRect().bottom < 0;
             document.querySelector('.fab-rules').classList.toggle('visible', show);
             document.querySelector('.fab-profile').classList.toggle('visible', show);
         });
