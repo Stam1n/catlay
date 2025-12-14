@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATLAY 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* === ПОЛНЫЙ CSS СТИЛЬ (SLAY / DARK / RED) === */
+        * { box-sizing: border-box; }
+        :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
+        
+        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
+
+        /* ФОН */
+        .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .particle { position: absolute; background: var(--red); border-radius: 50%; animation: rise 5s infinite; opacity: 0; }
+        @keyframes rise { 0% {transform:translateY(100vh) scale(0); opacity:0;} 50% {opacity:1;} 100% {transform:translateY(-10vh) scale(1.5); opacity:0;} }
+
+        /* HEADER */
+        header { text-align: center; padding: 40px 20px 80px; position: relative; }
+        h1 { font-family: var(--font-head); font-size: 4.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 10px; text-shadow: 0 0 30px var(--red); }
+        .intro { max-width: 600px; margin: 0 auto; color: #888; margin-top: 10px; font-weight: bold; text-transform: uppercase; }
+
+        .header-btn {
+            position: absolute; top: 30px; background: transparent; border: 2px solid var(--red);
+            color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer;
+            font-family: var(--font-body); font-weight: 900; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
+        .btn-rules { left: 30px; } .btn-profile { right: 30px; }
+
+        /* FAB (Floating Buttons) */
+        .fab {
+            position: fixed; bottom: 30px; width: 60px; height: 60px;
+            background: rgba(0,0,0,0.9); border: 2px solid var(--red); color: var(--red);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; cursor: pointer; z-index: 999;
+            opacity: 0; transform: translateY(50px); transition: 0.4s; pointer-events: none;
+        }
+        .fab.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .fab:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
+        .fab-rules { left: 30px; } .fab-profile { right: 30px; }
+
+        /* --- 1. MAIN NOMINATIONS (CAROUSEL) --- */
+        .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; }
+        .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+
+        .main-slide {
+            position: absolute; width: 320px; height: 450px;
+            display: flex; flex-direction: column; align-items: center;
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: #000; border: 1px solid #333;
+            cursor: pointer; overflow: hidden; border-radius: 12px;
+        }
+        .main-slide img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1;
+            filter: brightness(0.6) grayscale(0.8);
+        }
+        .main-slide h3 { 
+            font-family: var(--font-head); color: #fff; margin: 0; 
+            position: absolute; bottom: 0; width: 100%; padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); 
+            z-index: 2; text-transform: uppercase; font-size: 1.4em; text-align: center; 
+            text-shadow: 0 0 10px #000; border-top: 1px solid rgba(255,0,51,0.3);
+        }
+
+        .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; border-color: #555; }
+        .main-slide.prev { transform: translateX(-380px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
+        .main-slide.next { transform: translateX(380px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
+        .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
+
+        .main-slide.active:hover { border-color: var(--red); box-shadow: 0 0 50px rgba(255, 0, 51, 0.5); }
+        .main-slide.active:hover img { filter: brightness(1) grayscale(0); transform: scale(1.05); }
+        .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); }
+
+        .arrow {
+            position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20;
+            background: rgba(0,0,0,0.5); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
+
+        /* SEPARATOR */
+        .section-separator { width: 80%; height: 2px; background: var(--red); margin: 80px auto; box-shadow: 0 0 20px var(--red); border-radius: 50%; }
+
+        /* --- 2. LOCKED SLAY SECTION --- */
+        .slay-section { margin-top: 50px; position: relative; }
+        h2 { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2.5em; text-transform: uppercase; margin-bottom: 60px; text-shadow: 0 0 10px var(--red); }
+
+        .slay-wrapper { position: relative; height: 450px; perspective: 1000px; overflow: hidden; display: flex; justify-content: center; }
+        .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
+        .slay-item {
+            position: absolute; width: 220px; height: 400px; 
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s, filter 0.6s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .shield-card {
+            width: 100%; height: 280px; background: linear-gradient(135deg, #1a0000 0%, #000 100%);
+            border: 2px solid #333; clip-path: polygon(50% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%, 0% 15%);
+            display: flex; align-items: center; justify-content: center; transition: 0.3s; position: relative;
+        }
+        .locked-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 5; display: flex; align-items: center; justify-content: center; flex-direction: column;
+        }
+        .locked-icon { font-size: 3em; color: #555; text-shadow: 0 0 10px #000; }
+        
+        .slay-title { 
+            margin-top: 20px; font-family: var(--font-head); font-size: 1.4em; color: #fff; 
+            text-transform: uppercase; text-align: center; transition: 0.3s; opacity: 0; 
+            text-shadow: 0 0 5px #000; line-height: 1.2;
+        }
+        .slay-item.active .slay-title { opacity: 1; color: #555; }
+        .slay-item.active .shield-card { border-color: #555; }
+
+        .slay-nav { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 50; }
+        .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; }
+        .slay-cnt { font-family: var(--font-head); font-size: 1.5em; color: var(--red); }
+        .locked-notice { text-align: center; color: #555; font-family: var(--font-head); margin-top: 20px; text-transform: uppercase; border: 1px solid #333; display: inline-block; padding: 10px 20px; border-radius: 20px; }
+        .locked-container { text-align: center; margin-bottom: 20px; }
+
+        /* --- 3. SUGGESTIONS --- */
+        .suggest-section { max-width: 600px; margin: 80px auto; padding: 30px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .suggest-form input, .suggest-form textarea {
+            width: 100%; background: #151515; border: 1px solid #333; color: #fff; padding: 15px; margin-bottom: 15px; font-family: var(--font-body); border-radius: 5px; font-weight: bold;
+        }
+        .suggest-btn { width: 100%; padding: 15px; background: #333; color: #fff; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; border-radius: 5px; }
+        .suggest-btn:hover { background: var(--red); box-shadow: 0 0 15px var(--red); }
+
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; }
+        .modal.active { display: flex; animation: glowFade 0.4s forwards; }
+        @keyframes glowFade { from {opacity:0;} to {opacity:1;} }
+        .modal-content { width: 90%; max-width: 600px; padding: 40px; border: 2px solid #333; background: #0a0a0a; position: relative; max-height: 90vh; overflow-y: auto; border-radius: 10px; }
+        .modal.active .modal-content { box-shadow: 0 0 50px rgba(255, 0, 51, 0.2); border-color: var(--red); }
+        .close { position: absolute; top: 20px; right: 20px; font-size: 30px; cursor: pointer; color: #555; }
+        .close:hover { color: var(--red); transform: rotate(90deg); transition: 0.3s; }
+
+        /* GRID */
+        .cand-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .cand-card { background: #111; border: 1px solid #333; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; border-radius: 5px; font-size: 1.1em; }
+        .cand-card:hover { border-color: var(--red); transform: translateY(-5px); }
+        .cand-card.selected { border-color: var(--red); background: #1a0000; box-shadow: 0 0 15px rgba(255,0,51,0.2); }
+        .vote-btn { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; font-weight: bold; font-size: 1.2em; text-transform: uppercase; margin-top: 20px; cursor: pointer; transition: 0.3s; }
+        .vote-btn:hover { background: #fff; color: var(--red); box-shadow: 0 0 20px var(--red); }
+
+        /* PROFILE */
+        .token-box { border: 2px dashed #333; padding: 10px; margin: 20px 0; font-family: var(--font-head); font-size: 2.5em; letter-spacing: 5px; color: var(--red); }
+        .refresh-btn { background: var(--red); color: #fff; border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 15px; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .refresh-btn:hover { background: #ff3355; transform: translateY(-2px); }
+        .stats-row { display: flex; justify-content: space-around; margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; }
+
+        .toast { position: fixed; top: 20px; right: 20px; background: #000; border: 1px solid var(--red); border-left: 5px solid var(--red); padding: 15px 30px; color: #fff; z-index: 10000; transform: translateX(200%); transition: 0.3s; }
+        .toast.show { transform: translateX(0); }
+
+        footer { margin-top: 80px; padding: 40px; border-top: 1px solid #222; text-align: center; color: #444; font-family: var(--font-head); letter-spacing: 2px; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 3em; }
+            .main-slide { width: 220px; height: 350px; }
+            .slay-item { width: 160px; height: 300px; }
+            .arrow { width: 40px; height: 40px; font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"></div>
+    <div class="particles" id="particles"></div>
+    <div id="toast" class="toast">Info</div>
+
+    <div class="fab fab-rules" onclick="openModal('rulesModal')"><i class="fas fa-gavel"></i></div>
+    <div class="fab fab-profile" onclick="openProfile()"><i class="fas fa-user"></i></div>
+
+    <header id="mainHeader">
+        <button class="header-btn btn-rules" onclick="openModal('rulesModal')"><i class="fas fa-gavel"></i> ПРАВИЛА</button>
+        <button class="header-btn btn-profile" onclick="openProfile()"><i class="fas fa-user"></i> ПРОФИЛЬ</button>
+        <h1>CATLAY</h1>
+        <div style="font-family: var(--font-head); color: #666; letter-spacing: 5px; margin-top: 10px;">2025 AWARDS</div>
+        <p class="intro">Твой голос решает судьбу сервера.</p>
+    </header>
+
+    <section class="main-section">
+        <div class="arrow" style="left: 5%;" onclick="moveMain(-1)"><i class="fas fa-chevron-left"></i></div>
+        <div class="arrow" style="right: 5%;" onclick="moveMain(1)"><i class="fas fa-chevron-right"></i></div>
+        <div id="mainContainer" class="main-container"></div>
+    </section>
+
+    <div class="section-separator"></div>
+
+    <section class="slay-section">
+        <h2>ДОПОЛНИТЕЛЬНЫЕ НОМИНАЦИИ</h2>
+        <div class="locked-container">
+            <div class="locked-notice"><i class="fas fa-lock"></i> Голосование откроется позже</div>
+        </div>
+        <div class="slay-wrapper">
+            <div class="slay-track" id="slayTrack"></div>
+        </div>
+        <div class="slay-nav">
+            <button class="slay-btn" onclick="moveSlay(-1)"><i class="fas fa-caret-left"></i></button>
+            <div class="slay-cnt" id="slayCount">1/9</div>
+            <button class="slay-btn" onclick="moveSlay(1)"><i class="fas fa-caret-right"></i></button>
+        </div>
+    </section>
+
+    <section class="suggest-section">
+        <h3 style="font-family: var(--font-head); color: var(--red); text-align: center;">ПРЕДЛОЖИТЬ НОМИНАЦИЮ</h3>
+        <p style="text-align: center; color: #888; font-size: 0.9em;">Топ 3 попадут в доп. номинации (Лимит: 5 на человека)</p>
+        <div class="suggest-form">
+            <input type="text" id="sugName" placeholder="Название номинации (например: Лучший хелпер)">
+            <textarea id="sugDesc" placeholder="Краткое описание (за что дается)" rows="3"></textarea>
+            <button class="suggest-btn" onclick="sendSuggestion()">ОТПРАВИТЬ ПРЕДЛОЖЕНИЕ</button>
+        </div>
+    </section>
+
+    <div id="voteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('voteModal')">&times;</span>
+            <h2 id="voteTitle" style="font-family: var(--font-head); color: #fff; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 15px;"></h2>
+            <div class="cand-grid" id="candGrid"></div>
+            <button class="vote-btn" onclick="submitVote()">ГОЛОСОВАТЬ</button>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <span class="close" onclick="closeModal('profileModal')">&times;</span>
+            <h2 style="font-family: var(--font-head); color: var(--red); margin-top: 0;">ПРОФИЛЬ</h2>
+            <div id="loading">Загрузка...</div>
+            <div id="profileContent" style="display:none;">
+                <div id="statusText" style="font-weight:900; color: #555; margin-bottom: 20px; font-size: 1.5em; font-family: var(--font-head);">НЕ ЗАРЕГ.</div>
+                <div id="authSection">
+                    <p>Код для <a href="https://t.me/CatLay_bot" target="_blank" style="color:var(--red);">@CatLay_bot</a></p>
+                    <div class="token-box" id="tokenDisplay">---</div>
+                    <div id="timer" style="color:#666; font-family:monospace; font-size:1.2em;">--:--</div>
+                    <button class="refresh-btn" onclick="refreshToken()">ОБНОВИТЬ КОД</button>
+                </div>
+                <div class="stats-row">
+                    <div class="stat-item"><h3 id="statVoted" style="color: var(--red);">0</h3><p>Голосов</p></div>
+                    <div class="stat-item"><h3 id="statLeft">15</h3><p>Осталось</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="rulesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('rulesModal')">&times;</span>
+            <h2 style="font-family: var(--font-head);">ПРАВИЛА</h2>
+            <p style="color:#ccc;">1. Голосуй честно.<br>2. Подтверди аккаунт.<br>3. Без накрутки.</p>
+        </div>
+    </div>
+
+    <footer><hr style="border-color: #222; margin-bottom: 30px;">2025 CatField - CLAY</footer>
+
+    <script>
+        // --- ⚙️ НАСТРОЙКА СВЯЗИ С СЕРВЕРОМ ⚙️ ---
+        const API_URL = "https://sstamin.pythonanywhere.com"; 
+
+        // --- ДАННЫЕ (ФИНАЛЬНЫЕ) ---
+        const mainNoms = [
+            {title: "Король CLAY", cands: ["Foltt1k", "Machinae", "fifa20120022", "SStamin", "Yanantess", "Homiki0"]},
+            {title: "Королева CLAY", cands: ["BaBdjoN", "k4agune", "l0lpiks", "Marusan19", "Poroxhaha"]},
+            {title: "Лучшая постройка", cands: ["База хранителей кф4", "Остров сс кф4", "Остров BaBdjoN кф5", "Спавн кф4", "Спавн кф5"]},
+            {title: "Фейл года", cands: ["Кража яйца у сс кф4", "Приваты 42х42", "Межсезонье", "Уход стамина", "Клей 2024", "Sdas_garula x-ray"]},
+            {title: "Человек мем", cands: ["Homiki0", "Timoxa118", "SStamin", "Chumachecha", "vital3000", "Foltt1k", "kkkkkeeeefff"]},
+            {title: "Завоз года", cands: ["Война пранков кф5", "Правила сс кф4-кф5", "42х42 блока", "Взрыв запретной зоны"]},
+            {title: "Клан/Команда", cands: ["SSquadra", "ВОСХОД", "КПZZ", "ТЦК", "AUGUST"]}
+        ];
+        
+        const subNoms = [
+            {title: "Лучший строитель", icon: "tools", cands: []},
+            {title: "Лучший ПВП", icon: "skull", cands: []},
+            {title: "Скин года", icon: "tshirt", cands: []},
+            {title: "Пара/Шип года", icon: "heart", cands: []},
+            {title: "Пиздабол года", icon: "comment-slash", cands: []}
+        ];
+        const totalNoms = mainNoms.length; 
+
+        // --- 1. MAIN SLIDER (CREATE ONCE) ---
+        let mainIdx = 0;
+        function initMain() {
+            const cont = document.getElementById('mainContainer'); cont.innerHTML = '';
+            mainNoms.forEach((n, i) => {
+                let d = document.createElement('div'); d.className = 'main-slide hidden'; d.id = `ms-${i}`;
+                // Изображения грузятся с сервера PythonAnywhere
+                d.innerHTML = `<img src="${API_URL}/static/main_${i}.jpg" onerror="this.src='https://placehold.co/300x450/000/333?text=${n.title.charAt(0)}'"><h3 style="">${n.title}</h3>`;
+                d.onclick = () => { if(i===mainIdx) openVote(i); else { mainIdx=i; updateMain(); }};
+                cont.appendChild(d);
+            });
+            updateMain();
+        }
+        function updateMain() {
+            for(let i=0; i<mainNoms.length; i++) {
+                let el = document.getElementById(`ms-${i}`);
+                el.className = 'main-slide hidden';
+                if(i===mainIdx) el.className='main-slide active';
+                else if(i===(mainIdx-1+mainNoms.length)%mainNoms.length) el.className='main-slide prev';
+                else if(i===(mainIdx+1)%mainNoms.length) el.className='main-slide next';
+            }
+        }
+        function moveMain(d) { mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
+
+        // --- 2. SLAY SLIDER (LOCKED) ---
+        let slayIdx = 0;
+        function initSlay() {
+            const tr = document.getElementById('slayTrack'); tr.innerHTML = '';
+            subNoms.forEach((n, i) => {
+                let d = document.createElement('div'); d.className = 'slay-item'; d.id = `sl-${i}`;
+                d.innerHTML = `<div class="locked-overlay"><i class="fas fa-lock locked-icon"></i></div>
+                               <div class="shield-card"><i class="fas fa-${n.icon} fa-5x" style="color:#333;"></i></div>
+                               <div class="slay-title">${n.title}</div>`;
+                tr.appendChild(d);
+            });
+            updateSlay();
+        }
+        function updateSlay() {
+            for(let i=0; i<subNoms.length; i++) {
+                let el = document.getElementById(`sl-${i}`);
+                let diff = i - slayIdx;
+                let tf = '', z = 10, op = 1;
+                if(diff===0) { tf='translateX(0) scale(1.1) translateZ(50px)'; z=100; el.classList.add('active'); }
+                else { 
+                    tf=`translateX(${diff*220}px) scale(${1-Math.abs(diff)*0.2}) rotateY(${-Math.sign(diff)*15}deg) translateZ(${-Math.abs(diff)*50}px)`; 
+                    op=Math.abs(diff)>2?0:1-Math.abs(diff)*0.3; z=50-Math.abs(diff); el.classList.remove('active');
+                }
+                el.style.transform=tf; el.style.zIndex=z; el.style.opacity=op;
+            }
+            document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNoms.length}`;
+        }
+        function moveSlay(d) { slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNoms.length) slayIdx=subNoms.length-1; updateSlay(); }
+
+        initMain(); initSlay();
+
+        // --- LOGIC ---
+        function openModal(id){document.getElementById(id).classList.add('active');}
+        function closeModal(id){document.getElementById(id).classList.remove('active');}
+        
+        let currIdx;
+        function openVote(idx) {
+            currIdx = idx;
+            document.getElementById('voteTitle').innerText = mainNoms[idx].title;
+            const g = document.getElementById('candGrid'); g.innerHTML='';
+            mainNoms[idx].cands.forEach(c => {
+                let d = document.createElement('div'); d.className='cand-card';
+                d.innerHTML = `<div>${c}</div>`;
+                d.onclick=()=>{ document.querySelectorAll('.cand-card').forEach(x=>x.classList.remove('selected')); d.classList.add('selected'); d.dataset.val=c; };
+                g.appendChild(d);
+            });
+            openModal('voteModal');
+        }
+
+        let myToken = localStorage.getItem('tk');
+        let tmr;
+
+        async function openProfile() {
+            openModal('profileModal');
+            document.getElementById('loading').style.display='block';
+            document.getElementById('profileContent').style.display='none';
+            if(!myToken) await refreshToken();
+            check();
+        }
+
+        async function refreshToken() {
+            let res = await fetch(API_URL + '/api/get_token');
+            let d = await res.json();
+            myToken = d.token; localStorage.setItem('tk', myToken);
+            check();
+        }
+
+        async function check() {
+            let res = await fetch(API_URL + '/api/check_status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
+            let d = await res.json();
+            document.getElementById('loading').style.display='none';
+            document.getElementById('profileContent').style.display='block';
+            document.getElementById('tokenDisplay').innerText = myToken;
+            document.getElementById('statVoted').innerText = d.vote_count || 0;
+            document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
+            const st = document.getElementById('statusText');
+            const auth = document.getElementById('authSection');
+            if(d.status==='approved') {
+                st.innerText = "ЗАРЕГ."; st.style.color = "#0f0"; auth.style.display = 'none'; clearInterval(tmr);
+            } else {
+                st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГ.";
+                st.style.color = d.status==='review'?"#fa0":"#555";
+                auth.style.display = 'block'; startTimer(d.time_left);
+            }
+        }
+
+        function startTimer(s) {
+            clearInterval(tmr); let l=Math.floor(s);
+            const display = document.getElementById('timer');
+            
+            if(l <= 0) { display.innerText = "00:00"; return; }
+
+            tmr = setInterval(() => {
+                if(l<=0) { clearInterval(tmr); refreshToken(); return; }
+                l--; 
+                let m = Math.floor(l/60); let sec = l%60;
+                display.innerText = `${m}:${sec<10?'0'+sec:sec}`;
+            }, 1000);
+        }
+
+        async function submitVote() {
+            const sel = document.querySelector('.cand-card.selected');
+            if(!sel) { toast("Выбери кандидата!"); return; }
+            let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:mainNoms[currIdx].title, candidate:sel.dataset.val})});
+            let d = await res.json();
+            if(d.success) { toast("ПРИНЯТО!"); closeModal('voteModal'); check(); }
+            else toast(d.message);
+        }
+
+        async function sendSuggestion() {
+            let nom = document.getElementById('sugName').value;
+            let desc = document.getElementById('sugDesc').value;
+            if(!nom || !desc) { toast("Заполни все поля!"); return; }
+            let res = await fetch(API_URL + '/api/suggest', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nom, description:desc})});
+            let d = await res.json();
+            toast(d.message);
+            if(d.success) { document.getElementById('sugName').value=''; document.getElementById('sugDesc').value=''; }
+        }
+
+        function toast(msg) {
+            let t = document.getElementById('toast'); t.innerText=msg; t.classList.add('show');
+            setTimeout(()=>t.classList.remove('show'),3000);
+        }
+        
+        // Particles
+        const pc = document.getElementById('particles');
+        for(let i=0;i<40;i++) {
+            let p=document.createElement('div'); p.className='particle';
+            p.style.left=Math.random()*100+'%'; p.style.width=p.style.height=(Math.random()*5+2)+'px';
+            p.style.animationDuration=(Math.random()*5+5)+'s'; p.style.animationDelay=Math.random()*5+'s';
+            pc.appendChild(p);
+        }
+        
+        window.addEventListener('scroll', ()=>{
+            const h = document.getElementById('mainHeader').getBoundingClientRect();
+            const show = h.bottom < 0;
+            document.querySelector('.fab-rules').classList.toggle('visible', show);
+            document.querySelector('.fab-profile').classList.toggle('visible', show);
+        });
+    </script>
+</body>
+</html>
