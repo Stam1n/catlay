@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* === CATLAY 2025 STYLE (DARK/RED) === */
+        /* === CATLAY 2025 STYLE === */
         * { box-sizing: border-box; }
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
         body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
 
-        /* ФОН */
+        /* FON & PARTICLES */
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: var(--red); border-radius: 50%; animation: rise 5s infinite; opacity: 0; }
@@ -23,18 +23,17 @@
         /* HEADER */
         header { text-align: center; padding: 40px 20px 80px; position: relative; }
         h1 { font-family: var(--font-head); font-size: 4.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 10px; text-shadow: 0 0 30px var(--red); }
-        .intro { max-width: 600px; margin: 0 auto; color: #888; margin-top: 10px; font-weight: 700; text-transform: uppercase; }
+        .intro { max-width: 600px; margin: 0 auto; color: #888; margin-top: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
         .header-btn {
             position: absolute; top: 30px; background: #000; border: 2px solid var(--red);
             color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer;
-            font-family: var(--font-body); font-weight: 900; transition: 0.3s; text-transform: uppercase;
-            z-index: 10;
+            font-family: var(--font-body); font-weight: 900; transition: 0.3s; text-transform: uppercase; z-index: 10;
         }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
         .btn-rules { left: 30px; } .btn-profile { right: 30px; }
 
-        /* ПЛАВАЮЩИЕ КНОПКИ (ИСПРАВЛЕНО) */
+        /* FAB */
         .fab {
             position: fixed; bottom: 30px; width: 60px; height: 60px;
             background: #000; border: 2px solid var(--red); color: var(--red);
@@ -47,16 +46,18 @@
         .fab:hover { background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); }
         .fab-rules { left: 30px; } .fab-profile { right: 30px; }
 
-        /* --- 1. MAIN NOMINATIONS --- */
+        /* --- 1. MAIN SLIDER --- */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        
         .main-slide {
-            position: absolute; width: 320px; height: 450px; display: flex; flex-direction: column; align-items: center;
+            position: absolute; width: 320px; height: 450px; display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: #000; border: 1px solid #333;
-            cursor: pointer; overflow: hidden; border-radius: 12px;
+            cursor: pointer; overflow: hidden; border-radius: 5px;
         }
         .main-slide img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: brightness(0.6); }
+        .person-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a0000 0%, #000 100%); position: absolute; top:0; left:0; z-index: 1; }
+        .person-icon { font-size: 10em; background: linear-gradient(to bottom, var(--red), #330000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px var(--red)); }
+        .text-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #0a0a0a; position: absolute; top:0; left:0; z-index: 1; font-family: var(--font-head); font-size: 5em; color: #333; text-transform: uppercase; }
         .main-slide h3 { 
             font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 100%; padding: 20px;
             background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index: 2; 
@@ -69,138 +70,90 @@
         .main-slide.active:hover { border-color: var(--red); box-shadow: 0 0 50px rgba(255, 0, 51, 0.5); }
         .main-slide.active:hover img { filter: brightness(1); transform: scale(1.05); }
         .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); }
-
-        .arrow {
-            position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20;
-            background: rgba(0,0,0,0.5); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; transition: 0.3s;
-        }
+        .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
-
         .section-separator { width: 80%; height: 2px; background: var(--red); margin: 80px auto; box-shadow: 0 0 20px var(--red); border-radius: 50%; }
 
-        /* --- 2. ADDITIONAL NOMINATIONS (ИСПРАВЛЕНЫ ЩИТЫ) --- */
-        .slay-section { margin-top: 50px; position: relative; }
+        /* --- 2. ADDITIONAL NOMINATIONS (Исправлено обрезание) --- */
+        .slay-section { margin-top: 50px; position: relative; padding-bottom: 50px; } 
         h2 { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2.5em; text-transform: uppercase; margin-bottom: 20px; text-shadow: 0 0 10px var(--red); }
-
         .locked-container { text-align: center; margin-bottom: 40px; }
-        .locked-notice { 
-            color: #555; font-family: var(--font-head); text-transform: uppercase; 
-            border: 1px solid #333; display: inline-block; padding: 10px 30px; border-radius: 20px; font-weight: bold;
-        }
-
-        .slay-wrapper { position: relative; height: 450px; perspective: 1000px; overflow: hidden; display: flex; justify-content: center; }
+        .locked-notice { color: #555; font-family: var(--font-head); text-transform: uppercase; border: 1px solid #333; display: inline-block; padding: 10px 30px; border-radius: 20px; font-weight: bold; }
+        .slay-wrapper { position: relative; height: 500px; /* Увеличил высоту */ perspective: 1000px; overflow: visible; /* Чтобы не резало */ display: flex; justify-content: center; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
-        
-        .slay-item {
-            position: absolute; width: 240px; height: 350px;
-            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-
-        /* ИСПРАВЛЕННЫЙ ЩИТ */
-        .shield-card {
-            width: 100%; height: 100%;
-            background: #111;
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-            /* SVG Mask for proper shield shape without weird borders */
-            mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E");
-            -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E");
-            mask-size: 100% 100%; -webkit-mask-size: 100% 100%;
-            background: linear-gradient(180deg, #1a0000, #000);
-        }
-        
-        /* Рамка для щита (псевдоэлемент, так как clip-path режет border) */
-        .shield-border {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: transparent; z-index: 2; pointer-events: none;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-        }
-
-        .locked-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 5; display: flex; align-items: center; justify-content: center;
-        }
+        .slay-item { position: absolute; width: 240px; height: 350px; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .shield-card { width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center; position: relative; mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); mask-size: 100% 100%; -webkit-mask-size: 100% 100%; background: linear-gradient(180deg, #1a0000, #000); }
+        .shield-border { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 2; pointer-events: none; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
+        .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 5; display: flex; align-items: center; justify-content: center; }
         .locked-icon { font-size: 3em; color: #444; }
-
         .slay-title { 
-            position: absolute; bottom: -50px; width: 100%; text-align: center;
-            font-family: var(--font-head); font-size: 1.2em; color: #fff; text-transform: uppercase;
-            opacity: 0; transition: 0.3s; text-shadow: 0 0 10px #000;
+            position: absolute; bottom: -60px; /* Опустил ниже */
+            width: 150%; /* Шире блок текста */
+            text-align: center; font-family: var(--font-head); font-size: 1.1em; color: #fff; text-transform: uppercase; 
+            opacity: 0; transition: 0.3s; text-shadow: 0 0 10px #000; 
         }
-
-        /* Active State Slay */
         .slay-item.active { z-index: 100; pointer-events: auto; }
         .slay-item.active .shield-card { background: linear-gradient(180deg, #300000, #100000); }
         .slay-item.active .locked-icon { color: #666; text-shadow: 0 0 10px var(--red); }
-        .slay-item.active .slay-title { opacity: 1; color: var(--red); bottom: -40px; }
-
-        .slay-nav { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 50; }
+        .slay-item.active .slay-title { opacity: 1; color: var(--red); bottom: -60px; }
+        .slay-nav { position: absolute; bottom: 0px; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 50; }
         .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; }
         .slay-cnt { font-family: var(--font-head); font-size: 1.5em; color: var(--red); }
 
-        /* --- 3. SUGGESTIONS --- */
-        .suggest-section { max-width: 600px; margin: 80px auto; padding: 30px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .suggest-header { text-align: center; color: var(--red); font-family: var(--font-head); margin-bottom: 5px; }
+        /* --- 3. SUGGESTIONS (КРАСИВОЕ ОФОРМЛЕНИЕ) --- */
+        .suggest-section { max-width: 600px; margin: 80px auto; padding: 30px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
+        .suggest-header { text-align: center; color: var(--red); font-family: var(--font-head); margin-bottom: 5px; font-size: 1.8em; }
         .suggest-desc { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 20px; line-height: 1.5; }
         
+        /* HEADER СЧЕТЧИК */
+        .sug-counter-box {
+            text-align: center; margin-bottom: 15px; font-family: var(--font-head); color: #fff;
+        }
+        .sug-counter-box span { color: var(--red); font-size: 1.2em; }
+
         .slots-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .slot { width: 15px; height: 15px; border: 2px solid #333; border-radius: 50%; transition: 0.3s; }
         .slot.filled { background: var(--red); border-color: var(--red); box-shadow: 0 0 10px var(--red); }
 
-        .suggest-form input, .suggest-form textarea { width: 100%; background: #151515; border: 1px solid #333; color: #fff; padding: 15px; margin-bottom: 15px; font-family: var(--font-body); border-radius: 5px; font-weight: bold; }
-        .suggest-btn { width: 100%; padding: 15px; background: #333; color: #fff; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; border-radius: 5px; }
-        .suggest-btn:hover { background: var(--red); box-shadow: 0 0 15px var(--red); }
+        /* ФОРМА */
+        .suggest-form input, .suggest-form textarea { 
+            width: 100%; background: #111; border: 1px solid #333; color: #fff; 
+            padding: 15px; margin-bottom: 15px; font-family: var(--font-body); border-radius: 8px; font-weight: bold; transition: 0.3s;
+        }
+        .suggest-form input:focus, .suggest-form textarea:focus { border-color: var(--red); outline: none; box-shadow: 0 0 10px rgba(255,0,51,0.2); }
+        .suggest-btn { width: 100%; padding: 15px; background: #222; color: #fff; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; border-radius: 8px; border: 1px solid #333; }
+        .suggest-btn:hover { background: var(--red); border-color: var(--red); box-shadow: 0 0 20px var(--red); }
 
-        /* MODALS */
+        /* ИСТОРИЯ ПРЕДЛОЖЕНИЙ */
+        .sug-history { margin-top: 20px; border-top: 1px solid #222; padding-top: 20px; }
+        .sug-history h4 { margin: 0 0 10px 0; color: #555; text-transform: uppercase; font-size: 0.9em; text-align: center; }
+        .sug-item { background: #111; padding: 10px 15px; margin-bottom: 8px; border-radius: 5px; border-left: 3px solid var(--red); font-size: 0.9em; color: #ccc; }
+
+        /* --- MODALS --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; }
-        /* NEW ANIMATION: SUBTLE RED GLOW ON OPEN */
         .modal.active { display: flex; animation: openPulse 0.5s forwards; }
-        @keyframes openPulse {
-            0% { opacity: 0; box-shadow: inset 0 0 0 var(--red); }
-            100% { opacity: 1; box-shadow: inset 0 0 100px rgba(255,0,51,0.2); }
-        }
-
-        .modal-content { 
-            width: 90%; max-width: 600px; padding: 40px; 
-            border: 2px solid #333; background: #0a0a0a; 
-            position: relative; max-height: 90vh; overflow-y: auto; border-radius: 10px; 
-            box-shadow: 0 0 30px #000;
-        }
-        
+        @keyframes openPulse { 0% { opacity: 0; box-shadow: inset 0 0 0 var(--red); } 100% { opacity: 1; box-shadow: inset 0 0 100px rgba(255,0,51,0.2); } }
+        .modal-content { width: 90%; max-width: 600px; padding: 40px; border: 2px solid #333; background: #0a0a0a; position: relative; max-height: 90vh; overflow-y: auto; border-radius: 10px; box-shadow: 0 0 30px #000; }
         .close { position: absolute; top: 15px; right: 20px; font-size: 40px; cursor: pointer; color: #555; transition: 0.3s; line-height: 1; }
         .close:hover { color: var(--red); transform: rotate(90deg); }
 
-        /* CANDIDATE GRID */
+        /* GRID & AVATAR */
         .cand-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
-        .cand-card { 
-            background: #111; border: 1px solid #333; padding: 15px; text-align: center; 
-            cursor: pointer; transition: 0.3s; border-radius: 5px; font-size: 1em; font-weight: bold;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        .cand-avatar {
-            width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
-            border: 2px solid #444; margin-bottom: 10px; background: #222;
-        }
+        .cand-card { background: #111; border: 1px solid #333; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; border-radius: 5px; font-size: 1em; font-weight: bold; display: flex; flex-direction: column; align-items: center; }
+        .cand-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #444; margin-bottom: 10px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 2em; color: #555; }
         .cand-card:hover { border-color: var(--red); transform: translateY(-5px); }
         .cand-card.selected { border-color: var(--red); background: #1a0000; box-shadow: 0 0 15px rgba(255,0,51,0.2); }
-        
         .vote-btn { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; font-weight: bold; font-size: 1.2em; text-transform: uppercase; margin-top: 20px; cursor: pointer; transition: 0.3s; }
         .vote-btn:hover { background: #fff; color: var(--red); box-shadow: 0 0 20px var(--red); }
 
         /* PROFILE */
-        .token-box { border: 2px dashed #333; padding: 10px; margin: 20px 0; font-family: var(--font-head); font-size: 2.5em; letter-spacing: 5px; color: var(--red); }
+        .token-box { border: 2px dashed #333; padding: 10px; margin: 20px 0; font-family: var(--font-head); font-size: 2.5em; letter-spacing: 5px; color: var(--red); user-select: all; }
         .refresh-btn { background: var(--red); color: #fff; border: none; padding: 12px 25px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 15px; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         .refresh-btn:hover { background: #ff3355; transform: translateY(-2px); }
-        .stats-row { display: flex; justify-content: space-around; margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; }
-
         .toast { position: fixed; top: 20px; right: 20px; background: #000; border: 1px solid var(--red); border-left: 5px solid var(--red); padding: 15px 30px; color: #fff; z-index: 10000; transform: translateX(200%); transition: 0.3s; font-weight: bold; }
         .toast.show { transform: translateX(0); }
         footer { margin-top: 80px; padding: 40px; border-top: 1px solid #222; text-align: center; color: #444; font-family: var(--font-head); letter-spacing: 2px; }
-        
-        @media (max-width: 768px) {
-            h1 { font-size: 3em; } .main-slide { width: 220px; height: 350px; } .slay-item { width: 160px; height: 280px; }
-        }
+        @media (max-width: 768px) { h1 { font-size: 3em; } .main-slide { width: 220px; height: 350px; } .slay-item { width: 160px; height: 280px; } }
     </style>
 </head>
 <body>
@@ -229,9 +182,7 @@
 
     <section class="slay-section">
         <h2>ДОПОЛНИТЕЛЬНЫЕ НОМИНАЦИИ</h2>
-        <div class="locked-container">
-            <div class="locked-notice"><i class="fas fa-lock"></i> Голосование откроется позже</div>
-        </div>
+        <div class="locked-container"><div class="locked-notice"><i class="fas fa-lock"></i> Голосование откроется позже</div></div>
         <div class="slay-wrapper"><div class="slay-track" id="slayTrack"></div></div>
         <div class="slay-nav">
             <button class="slay-btn" onclick="moveSlay(-1)"><i class="fas fa-caret-left"></i></button>
@@ -244,16 +195,20 @@
         <h3 class="suggest-header">ПРЕДЛОЖИТЬ НОМИНАЦИЮ</h3>
         <p class="suggest-desc">Учитывайте: моменты с CatField начиная с 2025 года.<br>Топ-3 попадут в премию.</p>
         
-        <div class="slots-container" id="slotsCont">
-            <div class="slot empty"></div><div class="slot empty"></div><div class="slot empty"></div><div class="slot empty"></div><div class="slot empty"></div>
-        </div>
+        <div class="sug-counter-box">Ваши идеи: <span id="sugCounterText">0/5</span></div>
+        <div class="slots-container" id="slotsCont"></div>
 
         <div class="suggest-form" id="sugForm">
             <input type="text" id="sugName" placeholder="Название номинации">
             <textarea id="sugDesc" placeholder="Краткое описание (за что дается)" rows="3"></textarea>
             <button class="suggest-btn" onclick="sendSuggestion()">ОТПРАВИТЬ</button>
         </div>
-        <div id="sugLimitMsg" style="display:none; text-align:center; color:var(--red); font-weight:bold;">Лимит исчерпан! Спасибо за идеи.</div>
+        <div id="sugLimitMsg" style="display:none; text-align:center; color:var(--red); font-weight:bold; margin-bottom:20px;">Лимит исчерпан! Спасибо за идеи.</div>
+
+        <div class="sug-history" id="sugHistory" style="display:none;">
+            <h4>Вы предложили:</h4>
+            <div id="sugList"></div>
+        </div>
     </section>
 
     <div id="voteModal" class="modal">
@@ -269,19 +224,15 @@
         <div class="modal-content" style="text-align: center;">
             <span class="close" onclick="closeModal('profileModal')">&times;</span>
             <h2 style="font-family: var(--font-head); color: var(--red); margin-top: 0;">ПРОФИЛЬ</h2>
-            
             <div id="loading">Загрузка...</div>
-            
             <div id="profileContent" style="display:none;">
-                <div id="statusText" style="font-weight:900; color: #555; margin-bottom: 20px; font-size: 1.5em; font-family: var(--font-head);">НЕ ЗАРЕГ.</div>
-                
+                <div id="statusText" style="font-weight:900; color: #555; margin-bottom: 20px; font-size: 1.2em; font-family: var(--font-head);">НЕ ЗАРЕГИСТРИРОВАН</div>
                 <div id="authSection">
                     <p>Код для <a href="https://t.me/CatLay_bot" target="_blank" style="color:var(--red);">@CatLay_bot</a></p>
-                    <div class="token-box" id="tokenDisplay">---</div>
+                    <input type="text" value="---" readonly class="token-box" id="tokenDisplay" style="background:transparent; width:100%; text-align:center;">
                     <div id="timer" style="color:#666; font-family:monospace; font-size:1.2em;">--:--</div>
                     <button class="refresh-btn" onclick="refreshToken()">ОБНОВИТЬ КОД</button>
                 </div>
-
                 <div style="display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
                     <div><h3 id="statVoted" style="color: var(--red); margin:0; font-size:2em; font-family:var(--font-head);">0</h3><p style="margin:0; color:#888;">Голосов</p></div>
                     <div><h3 id="statLeft" style="margin:0; font-size:2em; font-family:var(--font-head);">15</h3><p style="margin:0; color:#888;">Осталось</p></div>
@@ -297,7 +248,7 @@
             <div style="color:#ccc; line-height:1.6; font-size:0.9em;">
                 <p>1. Голосуйте за тех номинантов, которых считаете наиболее подходящими.</p>
                 <p>2. Запрещено голосовать с нескольких аккаунтов.</p>
-                <p>3. Запрещено предлагать номинантов, которые никак не относятся к теме.</p>
+                <p>3. Запрещено предлагать номинантов которые никак не относятся к теме.</p>
                 <p>4. Запрещено предлагать абсолютно бредовые номинации.</p>
                 <p>5. Запрещено абузить баги сайта (сообщайте организаторам CLAY).</p>
                 <p>6. Голосование ТОЛЬКО о моментах с Кетфилда, начиная с 2025 года.</p>
@@ -310,18 +261,20 @@
     <footer><hr style="border-color: #222; margin-bottom: 30px;">2025 CatField - CLAY</footer>
 
     <script>
-        // 👇 ПРОВЕРЬ ССЫЛКУ! ДОЛЖНА БЫТЬ HTTPS 👇
+        // 👇 ПРОВЕРЬ ССЫЛКУ! 👇
         const API_URL = "https://sstamin.pythonanywhere.com"; 
+        
+        // ВВЕДИ ЭТОТ КОД В ПРОФИЛЕ, ЧТОБЫ СТАТЬ АДМИНОМ БЕЗ БОТА:
+        const ADMIN_SECRET = "ADMIN-666-KING";
 
-        // --- ДАННЫЕ ---
         const mainNoms = [
-            {title: "Король CLAY", cands: ["Foltt1k", "Machinae", "fifa20120022", "SStamin", "Yanantess", "Homiki0"]},
-            {title: "Королева CLAY", cands: ["BaBdjoN", "k4agune", "l0lpiks", "Marusan19", "Poroxhaha"]},
-            {title: "Лучшая постройка", cands: ["База хранителей кф4", "Остров сс кф4", "Остров BaBdjoN кф5", "Спавн кф4", "Спавн кф5"]},
-            {title: "Фейл года", cands: ["Кража яйца у сс кф4", "Приваты 42х42", "Межсезонье", "Уход стамина", "Клей 2024", "Sdas_garula x-ray"]},
-            {title: "Человек мем", cands: ["Homiki0", "Timoxa118", "SStamin", "Chumachecha", "vital3000", "Foltt1k", "kkkkkeeeefff"]},
-            {title: "Завоз года", cands: ["Война пранков кф5", "Правила сс кф4-кф5", "42х42 блока", "Взрыв запретной зоны"]},
-            {title: "Клан/Команда", cands: ["SSquadra", "ВОСХОД", "КПZZ", "ТЦК", "AUGUST"]}
+            {title: "Король CLAY", isPerson: true, cands: ["Foltt1k", "Machinae", "fifa20120022", "SStamin", "Yanantess", "Homiki0"]},
+            {title: "Королева CLAY", isPerson: true, cands: ["BaBdjoN", "k4agune", "l0lpiks", "Marusan19", "Poroxhaha"]},
+            {title: "Лучшая постройка", isPerson: false, cands: ["База хранителей кф4", "Остров сс кф4", "Остров BaBdjoN кф5", "Спавн кф4", "Спавн кф5"]},
+            {title: "Фейл года", isPerson: false, cands: ["Кража яйца у сс кф4", "Приваты 42х42", "Межсезонье", "Уход стамина", "Клей 2024", "Sdas_garula x-ray"]},
+            {title: "Человек мем", isPerson: true, cands: ["Homiki0", "Timoxa118", "SStamin", "Chumachecha", "vital3000", "Foltt1k", "kkkkkeeeefff"]},
+            {title: "Завоз года", isPerson: false, cands: ["Война пранков кф5", "Правила сс кф4-кф5", "42х42 блока", "Взрыв запретной зоны"]},
+            {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "КПZZ", "ТЦК", "AUGUST"]}
         ];
         const subNoms = [
             {title: "Лучший строитель", icon: "tools"}, {title: "Лучший ПВП", icon: "skull"},
@@ -330,13 +283,14 @@
         ];
         const totalNoms = mainNoms.length;
 
-        // --- INIT MAIN SLIDER ---
+        // --- INIT MAIN ---
         let mainIdx = 0;
         function initMain() {
             const cont = document.getElementById('mainContainer'); cont.innerHTML = '';
             mainNoms.forEach((n, i) => {
                 let d = document.createElement('div'); d.className = 'main-slide hidden'; d.id = `ms-${i}`;
-                d.innerHTML = `<img src="${API_URL}/static/main_${i}.jpg" onerror="this.src='https://placehold.co/300x450/000/333?text=${n.title.charAt(0)}'"><h3 style="">${n.title}</h3>`;
+                let placeholder = n.isPerson ? `<div class="person-placeholder"><i class="fas fa-user person-icon"></i></div>` : `<div class="text-placeholder">${n.title.charAt(0)}</div>`;
+                d.innerHTML = `<img src="${API_URL}/static/main_${i}.jpg" onerror="this.outerHTML='${placeholder.replace(/'/g, "\\'")}'"><h3>${n.title}</h3>`;
                 d.onclick = () => { if(i===mainIdx) openVote(i); else { mainIdx=i; updateMain(); }};
                 cont.appendChild(d);
             });
@@ -353,15 +307,13 @@
         }
         function moveMain(d) { mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
 
-        // --- INIT SLAY SLIDER ---
+        // --- INIT SLAY ---
         let slayIdx = 0;
         function initSlay() {
             const tr = document.getElementById('slayTrack'); tr.innerHTML = '';
             subNoms.forEach((n, i) => {
                 let d = document.createElement('div'); d.className = 'slay-item'; d.id = `sl-${i}`;
-                d.innerHTML = `<div class="locked-overlay"><i class="fas fa-lock locked-icon"></i></div>
-                               <div class="shield-card"><div class="shield-border"></div><i class="fas fa-${n.icon} fa-5x" style="color:#333;"></i></div>
-                               <div class="slay-title">${n.title}</div>`;
+                d.innerHTML = `<div class="locked-overlay"><i class="fas fa-lock locked-icon"></i></div><div class="shield-card"><div class="shield-border"></div><i class="fas fa-${n.icon} fa-5x" style="color:#333;"></i></div><div class="slay-title">${n.title}</div>`;
                 tr.appendChild(d);
             });
             updateSlay();
@@ -372,10 +324,7 @@
                 let diff = i - slayIdx;
                 let tf = '', z = 10, op = 1;
                 if(diff===0) { tf='translateX(0) scale(1.1) translateZ(50px)'; z=100; el.classList.add('active'); }
-                else { 
-                    tf=`translateX(${diff*240}px) scale(${1-Math.abs(diff)*0.2}) rotateY(${-Math.sign(diff)*15}deg) translateZ(${-Math.abs(diff)*50}px)`; 
-                    op=Math.abs(diff)>2?0:1-Math.abs(diff)*0.3; z=50-Math.abs(diff); el.classList.remove('active');
-                }
+                else { tf=`translateX(${diff*240}px) scale(${1-Math.abs(diff)*0.2}) rotateY(${-Math.sign(diff)*15}deg) translateZ(${-Math.abs(diff)*50}px)`; op=Math.abs(diff)>2?0:1-Math.abs(diff)*0.3; z=50-Math.abs(diff); el.classList.remove('active'); }
                 el.style.transform=tf; el.style.zIndex=z; el.style.opacity=op;
             }
             document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNoms.length}`;
@@ -384,13 +333,9 @@
 
         initMain(); initSlay();
 
-        // --- UI LOGIC ---
-        function openModal(id){
-            document.getElementById(id).classList.add('active');
-        }
-        function closeModal(id){
-            document.getElementById(id).classList.remove('active');
-        }
+        // --- UI & AUTH ---
+        function openModal(id){ document.getElementById(id).classList.add('active'); }
+        function closeModal(id){ document.getElementById(id).classList.remove('active'); }
         
         let currIdx;
         function openVote(idx) {
@@ -398,14 +343,14 @@
             const g = document.getElementById('candGrid'); g.innerHTML='';
             mainNoms[idx].cands.forEach(c => {
                 let d = document.createElement('div'); d.className='cand-card';
-                d.innerHTML = `<img src="https://via.placeholder.com/80/222/fff?text=${c[0]}" class="cand-avatar"><div>${c}</div>`;
+                let icon = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
+                d.innerHTML = `<div class="cand-avatar">${icon}</div><div>${c}</div>`;
                 d.onclick=()=>{ document.querySelectorAll('.cand-card').forEach(x=>x.classList.remove('selected')); d.classList.add('selected'); d.dataset.val=c; };
                 g.appendChild(d);
             });
             openModal('voteModal');
         }
 
-        // --- BACKEND ---
         let myToken = localStorage.getItem('tk');
         let tmr;
 
@@ -413,34 +358,38 @@
             openModal('profileModal');
             document.getElementById('loading').style.display='block';
             document.getElementById('profileContent').style.display='none';
+            // Если в поле ввода что-то ввели (админ код), используем его
+            const inputVal = document.getElementById('tokenDisplay').value;
+            if(inputVal === ADMIN_SECRET) { myToken = ADMIN_SECRET; localStorage.setItem('tk', myToken); }
+            
             if(!myToken) await refreshToken();
-            else check(); // Try check first
+            else check();
         }
 
         async function refreshToken() {
             try {
                 let res = await fetch(API_URL + '/api/get_token');
-                if(!res.ok) throw new Error("Net Err");
                 let d = await res.json();
                 myToken = d.token; localStorage.setItem('tk', myToken);
                 check();
-            } catch(e) { 
-                toast("Ошибка подключения!"); 
-                document.getElementById('loading').innerText = "Нет связи с сервером";
-            }
+            } catch(e) { toast("Ошибка сети"); document.getElementById('loading').innerText = "Нет связи"; }
         }
 
         async function check() {
             try {
                 let res = await fetch(API_URL + '/api/check_status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
-                if(!res.ok) throw new Error("Net Err");
                 let d = await res.json();
                 
-                if (d.expired) { await refreshToken(); return; }
+                if (d.expired && myToken !== ADMIN_SECRET) { await refreshToken(); return; }
 
                 document.getElementById('loading').style.display='none';
                 document.getElementById('profileContent').style.display='block';
-                document.getElementById('tokenDisplay').innerText = myToken;
+                
+                // ВАЖНО: Разрешаем редактировать поле, чтобы ввести админ код
+                const tokenInput = document.getElementById('tokenDisplay');
+                tokenInput.value = myToken;
+                tokenInput.removeAttribute('readonly'); 
+
                 document.getElementById('statVoted').innerText = d.vote_count || 0;
                 document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
                 
@@ -448,17 +397,17 @@
                 const auth = document.getElementById('authSection');
                 
                 if(d.status==='approved') {
-                    st.innerText = "ЗАРЕГ."; st.style.color = "#0f0"; auth.style.display = 'none'; clearInterval(tmr);
+                    st.innerText = d.is_admin ? "ADMIN" : "ЗАРЕГИСТРИРОВАН";
+                    st.style.color = "#0f0";
+                    auth.style.display = d.is_admin ? 'none' : 'none'; 
+                    clearInterval(tmr);
                 } else {
-                    st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГ.";
+                    st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГИСТРИРОВАН";
                     st.style.color = d.status==='review'?"#fa0":"#555";
                     auth.style.display = 'block'; startTimer(d.time_left);
                 }
-                updateSlots(d.sug_count || 0);
-            } catch(e) { 
-                toast("Ошибка сети"); 
-                document.getElementById('loading').innerText = "Сервер недоступен";
-            }
+                updateSlots(d.sug_count || 0, d.suggestions || []);
+            } catch(e) { toast("Ошибка сервера"); }
         }
 
         function startTimer(s) {
@@ -491,15 +440,20 @@
                 let d = await res.json();
                 toast(d.message);
                 if(d.success) { 
-                    document.getElementById('sugName').value=''; 
-                    document.getElementById('sugDesc').value='';
-                    updateSlots(d.new_count);
+                    document.getElementById('sugName').value=''; document.getElementById('sugDesc').value='';
+                    updateSlots(5, d.suggestions); // Mock update, re-check triggers real
+                    check();
                 }
             } catch(e) { toast("Ошибка!"); }
         }
 
-        function updateSlots(cnt) {
+        function updateSlots(cnt, list) {
             const cont = document.getElementById('slotsCont'); cont.innerHTML='';
+            const hist = document.getElementById('sugList'); hist.innerHTML='';
+            const histBox = document.getElementById('sugHistory');
+            
+            document.getElementById('sugCounterText').innerText = `${cnt}/5`;
+
             if(cnt >= 5) {
                 document.getElementById('sugForm').style.display = 'none';
                 document.getElementById('sugLimitMsg').style.display = 'block';
@@ -509,14 +463,22 @@
                 div.className = i < cnt ? 'slot filled' : 'slot empty';
                 cont.appendChild(div);
             }
+            
+            if(list && list.length > 0) {
+                histBox.style.display = 'block';
+                list.forEach(item => {
+                    let div = document.createElement('div');
+                    div.className = 'sug-item';
+                    div.innerText = item;
+                    hist.appendChild(div);
+                });
+            } else {
+                histBox.style.display = 'none';
+            }
         }
 
-        function toast(msg) {
-            let t = document.getElementById('toast'); t.innerText=msg; t.classList.add('show');
-            setTimeout(()=>t.classList.remove('show'),3000);
-        }
+        function toast(msg) { let t = document.getElementById('toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
         
-        // Particles & Scroll
         const pc = document.getElementById('particles');
         for(let i=0;i<40;i++) {
             let p=document.createElement('div'); p.className='particle';
