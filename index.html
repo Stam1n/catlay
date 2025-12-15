@@ -13,10 +13,10 @@
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
         body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
 
-        /* VIGNETTE (СВЕЧЕНИЕ ПО КРАЯМ) */
+        /* VIGNETTE */
         body::after {
             content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            box-shadow: inset 0 0 80px rgba(255, 0, 51, 0.15); /* Еле заметное */
+            box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.1);
             pointer-events: none; z-index: 8000;
         }
 
@@ -26,71 +26,90 @@
         @keyframes rise { 0% {transform:translateY(100vh) scale(0); opacity:0;} 50% {opacity:1;} 100% {transform:translateY(-10vh) scale(1.5); opacity:0;} }
 
         /* HEADER */
-        header { text-align: center; padding: 40px 20px 60px; position: relative; }
+        header { text-align: center; padding: 40px 20px 40px; position: relative; }
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
-        /* КНОПКИ В ШАПКЕ (ВИДНЫ ТОЛЬКО НА ПК) */
-        .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; pointer-events: none; }
-        .header-btn { 
-            background: rgba(0,0,0,0.5); border: 1px solid var(--red); color: var(--red); 
-            padding: 8px 20px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: bold; 
-            text-transform: uppercase; pointer-events: auto; transition: 0.3s; font-size: 0.8em;
+        /* КНОПКИ В ШАПКЕ (ИСПРАВЛЕНО) */
+        .header-btns-container { 
+            position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; 
+            display: none; justify-content: space-between; 
+            z-index: 100; /* Поднял слой, чтобы работали клики */
         }
-        .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 15px var(--red); }
+        .header-btn { 
+            background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); 
+            padding: 10px 25px; border-radius: 30px; cursor: pointer; 
+            font-family: var(--font-body); font-weight: bold; text-transform: uppercase; 
+            transition: 0.3s; font-size: 0.8em; pointer-events: auto;
+        }
+        .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
         
         @media (min-width: 768px) { .header-btns-container { display: flex; } }
 
-        /* FAB (Плавают, появляются при скролле) */
+        /* FAB */
         .fab {
             position: fixed; bottom: 20px; width: 55px; height: 55px;
             background: rgba(0,0,0,0.9); border: 2px solid var(--red); color: var(--red);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-size: 20px; cursor: pointer; z-index: 9000;
             box-shadow: 0 0 15px rgba(0,0,0,0.8); transition: 0.3s;
-            opacity: 0; transform: translateY(50px); pointer-events: none; /* Скрыты по умолчанию */
+            opacity: 0; transform: translateY(50px); pointer-events: none;
         }
-        /* На телефоне они видны всегда, на ПК - при скролле */
         @media (max-width: 767px) { .fab { opacity: 1; transform: translateY(0); pointer-events: auto; } }
-        
         .fab.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
         .fab:hover { background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); transform: scale(1.1); }
         .fab-rules { left: 20px; } .fab-profile { right: 20px; }
 
-        /* MAIN SLIDER & WINGS */
+        /* TITLES */
+        .section-title {
+            text-align: center; font-family: var(--font-head); color: var(--red); 
+            font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; 
+            text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px;
+        }
+
+        /* SLIDER */
         .main-section { position: relative; height: 500px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        
         .main-slide {
             position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: #000; border: 1px solid #333;
-            cursor: pointer; overflow: visible; border-radius: 8px; /* Overflow visible для крыльев */
+            cursor: pointer; overflow: visible; border-radius: 8px;
         }
+        .main-slide:hover { border-color: var(--red); transform: scale(1.05) !important; box-shadow: 0 0 30px rgba(255,0,51,0.3); z-index: 20; }
         .main-slide img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: brightness(0.6); border-radius: 8px; }
-        
-        /* КРЫЛЬЯ */
-        .wing {
-            position: absolute; top: 50%; transform: translateY(-50%); 
-            font-size: 4em; color: var(--red); opacity: 0; transition: 0.5s; z-index: 0;
-            filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none;
-        }
-        .wing-left { left: -60px; transform: translateY(-50%) rotateY(180deg); }
-        .wing-right { right: -60px; }
-        
-        /* Если проголосовал */
-        .main-slide.voted .wing { opacity: 1; }
-        .main-slide.voted { border-color: var(--red); box-shadow: 0 0 30px rgba(255,0,51,0.2); }
+        .main-slide:hover img { filter: brightness(1); }
 
         .ph-wrap { width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 1; display: flex; align-items: center; justify-content: center; background: #050505; border-radius: 8px;}
         .person-ph i { font-size: 8em; background: linear-gradient(to bottom, var(--red), #220000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255,0,51,0.3)); }
         .text-ph { font-family: var(--font-head); font-size: 6em; color: #222; text-transform: uppercase; }
 
-        .main-slide h3 { font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); z-index: 2; text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; border-radius: 0 0 8px 8px; }
+        /* WINGS */
+        .wing {
+            position: absolute; top: 50%; transform: translateY(-50%); font-size: 4em; color: var(--red); opacity: 0; transition: 0.5s; z-index: 0;
+            filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none;
+        }
+        .wing-left { left: -60px; transform: translateY(-50%) rotateY(180deg); }
+        .wing-right { right: -60px; }
+        .main-slide.voted .wing { opacity: 1; }
+        .main-slide.voted { border-color: var(--red); box-shadow: 0 0 30px rgba(255,0,51,0.2); }
+
+        .main-slide h3 { 
+            font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 100%; padding: 20px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); z-index: 2; 
+            text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; border-radius: 0 0 8px 8px; 
+            transition: 0.3s;
+        }
+        .main-slide:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); }
+
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; border-color: #555; }
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
         .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
-        .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         
+        .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
+
         @media (max-width: 768px) { 
             .main-slide { width: 240px; height: 360px; } 
             .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } 
@@ -99,16 +118,20 @@
         }
 
         /* LOCKED SLAY */
-        .slay-section { margin-top: 30px; position: relative; padding-bottom: 60px; } 
-        h2 { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin-bottom: 20px; padding: 0 10px; }
         .locked-notice { color: #555; font-family: var(--font-head); text-transform: uppercase; border: 1px solid #333; display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 0.8em; margin-bottom: 30px; text-align: center; }
         .locked-container { text-align: center; }
         .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
-        .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .shield-card { width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center; position: relative; mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); mask-size: 100% 100%; -webkit-mask-size: 100% 100%; background: linear-gradient(180deg, #1a0000, #000); }
+        .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+        .slay-item:hover { transform: scale(1.05) !important; }
+        
+        .shield-card { width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center; position: relative; mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); mask-size: 100% 100%; -webkit-mask-size: 100% 100%; background: linear-gradient(180deg, #1a0000, #000); transition: 0.3s; }
+        .slay-item:hover .shield-card { background: linear-gradient(180deg, #330000, #111); }
+        
+        .shield-border { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 2; pointer-events: none; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
         .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 5; display: flex; align-items: center; justify-content: center; }
         .slay-title { position: absolute; bottom: -50px; width: 140%; text-align: center; font-family: var(--font-head); font-size: 1em; color: #fff; text-transform: uppercase; opacity: 0; transition: 0.3s; }
+        
         .slay-item.active { z-index: 100; }
         .slay-item.active .shield-card { background: linear-gradient(180deg, #300000, #100000); }
         .slay-item.active .slay-title { opacity: 1; color: var(--red); }
@@ -119,6 +142,7 @@
         /* SUGGESTIONS */
         .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
         .suggest-header { text-align: center; color: var(--red); font-family: var(--font-head); margin-bottom: 5px; font-size: 1.5em; }
+        .suggest-desc { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 20px; line-height: 1.5; }
         .sug-counter-box { text-align: center; margin-bottom: 15px; font-family: var(--font-head); color: #fff; }
         .slots-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
         .slot { width: 12px; height: 12px; border: 2px solid #333; border-radius: 50%; transition: 0.3s; }
@@ -129,27 +153,41 @@
         .sug-history { margin-top: 20px; border-top: 1px solid #222; padding-top: 15px; }
         .sug-item { background: #111; padding: 8px 12px; margin-bottom: 6px; border-radius: 5px; border-left: 3px solid var(--red); font-size: 0.85em; color: #ccc; }
 
-        /* GRID */
+        /* GRID (BIG RECTANGLES) */
         .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
         .cand-card { 
             background: #151515; border: 1px solid #333; 
             padding: 20px 10px; text-align: center; cursor: pointer; 
             border-radius: 12px; display: flex; flex-direction: column; align-items: center;
-            height: 100%; min-height: 180px; transition: 0.2s;
+            height: 100%; min-height: 180px; transition: 0.3s;
         }
+        /* Увеличение при наведении */
+        .cand-card:hover { 
+            border-color: var(--red); transform: translateY(-5px); 
+            box-shadow: 0 0 20px rgba(255,0,51,0.2); 
+        }
+        
         .cand-avatar { 
             width: 100%; height: 100px; margin-bottom: 15px; 
             border-radius: 8px; border: 2px solid #333; background: #222;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2.5em; color: #666; object-fit: cover;
+            font-size: 2.5em; color: #666; object-fit: cover; transition: 0.3s;
         }
+        
+        /* Спец. стили для больших иконок (постройки, фейл, завоз) */
+        .cand-card.big-mode .cand-avatar { 
+            font-size: 4em; height: 120px; 
+            color: #ccc; font-family: var(--font-head);
+        }
+
         .cand-name { font-weight: bold; font-size: 1.1em; line-height: 1.3; }
         
         /* ВЫДЕЛЕННЫЙ (ПРОГОЛОСОВАЛ) */
         .cand-card.selected { border-color: var(--red); background: #2a0005; box-shadow: 0 0 15px rgba(255,0,51,0.3); transform: translateY(-5px); }
         .cand-card.selected .cand-avatar { border-color: var(--red); color: var(--red); }
         
-        .vote-btn { width: 100%; padding: 15px; margin-top: 20px; background: var(--red); color: #fff; border: none; font-weight: bold; text-transform: uppercase; font-size: 1.1em; cursor: pointer; border-radius: 6px; }
+        .vote-btn { width: 100%; padding: 15px; margin-top: 20px; background: var(--red); color: #fff; border: none; font-weight: bold; text-transform: uppercase; font-size: 1.1em; cursor: pointer; border-radius: 6px; transition: 0.3s; }
+        .vote-btn:hover { background: #fff; color: var(--red); box-shadow: 0 0 20px var(--red); }
 
         /* MODALS */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; padding: 10px; }
@@ -166,7 +204,7 @@
         .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #111; border: 1px solid var(--red); padding: 15px 25px; border-radius: 30px; color: #fff; z-index: 20000; opacity: 0; transition: 0.4s; font-weight: bold; box-shadow: 0 5px 20px #000; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
+        footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.2em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -188,6 +226,8 @@
         <p class="intro">Твой голос решает судьбу сервера</p>
     </header>
 
+    <h2 class="section-title">ОСНОВНЫЕ НОМИНАЦИИ</h2>
+
     <section class="main-section">
         <div class="arrow" style="left: 5%;" onclick="moveMain(-1)"><i class="fas fa-chevron-left"></i></div>
         <div class="arrow" style="right: 5%;" onclick="moveMain(1)"><i class="fas fa-chevron-right"></i></div>
@@ -197,7 +237,7 @@
     <div class="section-separator"></div>
 
     <section class="slay-section">
-        <h2>ДОПОЛНИТЕЛЬНЫЕ НОМИНАЦИИ</h2>
+        <h2 class="section-title">ДОПОЛНИТЕЛЬНЫЕ НОМИНАЦИИ</h2>
         <div class="locked-container"><div class="locked-notice"><i class="fas fa-lock"></i> Голосование откроется позже</div></div>
         <div class="slay-wrapper"><div class="slay-track" id="slayTrack"></div></div>
         <div class="slay-nav">
@@ -209,6 +249,10 @@
 
     <section class="suggest-section">
         <h3 class="suggest-header">ПРЕДЛОЖИТЬ НОМИНАЦИЮ</h3>
+        <p class="suggest-desc">
+            Каждый человек может предложить до 5 номинаций. <br>
+            Через некоторое время 3 самых популярных вариантов из всех предложенных попадут в дополнительные номинации и за них можно будет проголосовать.
+        </p>
         <div class="sug-counter-box">Ваши идеи: <span id="sugCounterText">0/5</span></div>
         <div class="slots-container" id="slotsCont"></div>
         <div class="suggest-form" id="sugForm">
@@ -256,7 +300,14 @@
             <span class="close" onclick="closeModal('rulesModal')">&times;</span>
             <h2 style="font-family: var(--font-head); text-align:center;">ПРАВИЛА</h2>
             <div style="color:#ccc; line-height:1.6; font-size:0.9em;">
-                <p>1. Голосуйте честно.<br>2. Мультиаккаунты запрещены.<br>3. Только актуальные номинанты (2025).<br>4. Без спама.</p>
+                <p>1. Голосуйте за тех номинантов, которых считаете наиболее подходящими.</p>
+                <p>2. Запрещено голосовать с нескольких аккаунтов.</p>
+                <p>3. Запрещено предлагать номинантов, которые никак не относятся к теме.</p>
+                <p>4. Запрещено предлагать абсолютно бредовые номинации.</p>
+                <p>5. Запрещено абузить баги сайта (сообщайте организаторам CLAY).</p>
+                <p>6. Голосование ТОЛЬКО о моментах с Кетфилда, начиная с 2025 года.</p>
+                <p>7. Популярные предложения попадают в официальный пул номинантов.</p>
+                <p>8. Результаты будут опубликованы после проведения премии.</p>
             </div>
         </div>
     </div>
@@ -287,7 +338,6 @@
             mainNoms.forEach((n, i) => {
                 let d = document.createElement('div'); d.className = 'main-slide hidden'; d.id = `ms-${i}`;
                 let ph = `<div class="ph-wrap text-ph">${n.title.charAt(0)}</div>`;
-                // Добавляем крылья
                 let wings = `<div class="wing wing-left"><i class="fas fa-feather-alt"></i></div><div class="wing wing-right"><i class="fas fa-feather-alt"></i></div>`;
                 d.innerHTML = `${wings}${ph}<img src="${API_URL}/static/main_${i}.jpg" onload="this.style.opacity=1" onerror="this.style.opacity=0"><h3>${n.title}</h3>`;
                 d.onclick = () => { if(i===mainIdx) openVote(i); else { mainIdx=i; updateMain(); }};
@@ -299,9 +349,7 @@
             for(let i=0; i<mainNoms.length; i++) {
                 let el = document.getElementById(`ms-${i}`);
                 el.className = 'main-slide hidden';
-                // Проверяем голос
                 if(myVotes[mainNoms[i].title]) el.classList.add('voted'); else el.classList.remove('voted');
-
                 if(i===mainIdx) el.className='main-slide active ' + (myVotes[mainNoms[i].title] ? 'voted' : '');
                 else if(i===(mainIdx-1+mainNoms.length)%mainNoms.length) el.className='main-slide prev';
                 else if(i===(mainIdx+1)%mainNoms.length) el.className='main-slide next';
@@ -342,15 +390,16 @@
             currIdx = idx; document.getElementById('voteTitle').innerText = mainNoms[idx].title;
             const g = document.getElementById('candGrid'); g.innerHTML='';
             let votedFor = myVotes[mainNoms[idx].title];
+            
+            // Если номинация требует больших иконок
+            let isBigIcon = ["Лучшая постройка", "Фейл года", "Завоз года"].includes(mainNoms[idx].title);
 
             mainNoms[idx].cands.forEach(c => {
                 let d = document.createElement('div'); 
                 d.className = 'cand-card';
-                if(votedFor === c) d.classList.add('selected'); // Выделение
+                if(isBigIcon) d.classList.add('big-mode');
+                if(votedFor === c) d.classList.add('selected');
 
-                // Логика плейсхолдера для кандидата
-                // Если номинация isPerson=true -> иконка человечка
-                // Если isPerson=false -> буква
                 let icon = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
                 
                 d.innerHTML = `<div class="cand-avatar">${icon}</div><div class="cand-name">${c}</div>`;
@@ -409,7 +458,7 @@
                 document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
                 
                 myVotes = d.my_votes || {}; 
-                updateMain(); // Обновляем крылья
+                updateMain(); 
 
                 const st = document.getElementById('statusText');
                 const auth = document.getElementById('authSection');
@@ -423,7 +472,7 @@
                     st.style.color = d.status==='review'?"#fa0":"#555";
                     auth.style.display = 'block'; startTimer(d.time_left);
                 }
-                updateSlots(d.suggestions.length, d.suggestions || []);
+                updateSlots(d.sug_count || 0, d.suggestions || []);
             } catch(e) { toast("Ошибка сервера"); }
         }
 
@@ -447,7 +496,7 @@
                 if(d.success) { 
                     toast("ПРИНЯТО!"); 
                     closeModal('voteModal'); 
-                    check(); // Обновит крылья
+                    check();
                 }
                 else toast(d.message);
             } catch(e) { toast("Ошибка!"); }
@@ -463,7 +512,7 @@
                 toast(d.message);
                 if(d.success) { 
                     document.getElementById('sugName').value=''; document.getElementById('sugDesc').value='';
-                    updateSlots(d.suggestions.length, d.suggestions); // Используем длину массива
+                    updateSlots(d.suggestions.length, d.suggestions); 
                     check();
                 }
             } catch(e) { toast("Ошибка!"); }
@@ -495,18 +544,14 @@
             pc.appendChild(p);
         }
         
-        // Логика исчезновения кнопок шапки при скролле
         window.addEventListener('scroll', ()=>{
             const headerBtns = document.querySelector('.header-btns-container');
             const h = document.getElementById('mainHeader').getBoundingClientRect();
-            
-            // Если проскроллили за хедер - показываем FAB
             const showFab = h.bottom < 0;
             document.querySelector('.fab-rules').classList.toggle('visible', showFab);
             document.querySelector('.fab-profile').classList.toggle('visible', showFab);
             
-            // Если на ПК: скрываем кнопки в шапке, когда появились FAB
-            if(headerBtns) {
+            if(headerBtns && window.innerWidth > 768) {
                 headerBtns.style.opacity = showFab ? '0' : '1';
                 headerBtns.style.pointerEvents = showFab ? 'none' : 'auto';
             }
