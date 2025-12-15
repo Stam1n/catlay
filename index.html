@@ -14,11 +14,7 @@
         body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
 
         /* VIGNETTE */
-        body::after {
-            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.1);
-            pointer-events: none; z-index: 8000;
-        }
+        body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.1); pointer-events: none; z-index: 8000; }
 
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
@@ -30,28 +26,22 @@
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
-        /* КНОПКИ В ШАПКЕ (ИСПРАВЛЕНО) */
-        .header-btns-container { 
-            position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; 
-            display: none; justify-content: space-between; 
-            z-index: 100; /* Поднял слой, чтобы работали клики */
-        }
+        /* КНОПКИ */
+        .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; z-index: 100; }
         .header-btn { 
             background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); 
             padding: 10px 25px; border-radius: 30px; cursor: pointer; 
-            font-family: var(--font-body); font-weight: bold; text-transform: uppercase; 
-            transition: 0.3s; font-size: 0.8em; pointer-events: auto;
+            font-family: var(--font-body); font-weight: 900; /* ЖИРНЫЙ */
+            text-transform: uppercase; transition: 0.3s; font-size: 0.8em; pointer-events: auto;
         }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
-        
         @media (min-width: 768px) { .header-btns-container { display: flex; } }
 
-        /* FAB */
         .fab {
             position: fixed; bottom: 20px; width: 55px; height: 55px;
             background: rgba(0,0,0,0.9); border: 2px solid var(--red); color: var(--red);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 20px; cursor: pointer; z-index: 9000;
+            font-size: 20px; cursor: pointer; z-index: 9000; font-weight: 900;
             box-shadow: 0 0 15px rgba(0,0,0,0.8); transition: 0.3s;
             opacity: 0; transform: translateY(50px); pointer-events: none;
         }
@@ -60,12 +50,7 @@
         .fab:hover { background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); transform: scale(1.1); }
         .fab-rules { left: 20px; } .fab-profile { right: 20px; }
 
-        /* TITLES */
-        .section-title {
-            text-align: center; font-family: var(--font-head); color: var(--red); 
-            font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; 
-            text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px;
-        }
+        .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
         /* SLIDER */
         .main-section { position: relative; height: 500px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
@@ -76,65 +61,53 @@
             transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: #000; border: 1px solid #333;
             cursor: pointer; overflow: visible; border-radius: 8px;
         }
-        .main-slide:hover { border-color: var(--red); transform: scale(1.05) !important; box-shadow: 0 0 30px rgba(255,0,51,0.3); z-index: 20; }
-        .main-slide img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: brightness(0.6); border-radius: 8px; }
-        .main-slide:hover img { filter: brightness(1); }
+        /* ФИКС ДЕРГАНЬЯ: Hover только на активном */
+        .main-slide.active:hover { border-color: var(--red); transform: scale(1.05) !important; box-shadow: 0 0 30px rgba(255,0,51,0.3); z-index: 20; }
+        .main-slide img { width: 100%; height: 100%; object-fit: contain; background: #050505; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; border-radius: 8px; }
+        .main-slide.active:hover img { filter: brightness(1.2); }
 
         .ph-wrap { width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 1; display: flex; align-items: center; justify-content: center; background: #050505; border-radius: 8px;}
         .person-ph i { font-size: 8em; background: linear-gradient(to bottom, var(--red), #220000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255,0,51,0.3)); }
         .text-ph { font-family: var(--font-head); font-size: 6em; color: #222; text-transform: uppercase; }
 
-        /* WINGS */
-        .wing {
-            position: absolute; top: 50%; transform: translateY(-50%); font-size: 4em; color: var(--red); opacity: 0; transition: 0.5s; z-index: 0;
-            filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none;
-        }
+        .wing { position: absolute; top: 50%; transform: translateY(-50%); font-size: 4em; color: var(--red); opacity: 0; transition: 0.5s; z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none; }
         .wing-left { left: -60px; transform: translateY(-50%) rotateY(180deg); }
         .wing-right { right: -60px; }
         .main-slide.voted .wing { opacity: 1; }
         .main-slide.voted { border-color: var(--red); box-shadow: 0 0 30px rgba(255,0,51,0.2); }
 
-        .main-slide h3 { 
-            font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 100%; padding: 20px; 
-            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); z-index: 2; 
-            text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; border-radius: 0 0 8px 8px; 
-            transition: 0.3s;
-        }
-        .main-slide:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); }
+        .main-slide h3 { font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); z-index: 2; text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; border-radius: 0 0 8px 8px; transition: 0.3s; }
+        .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); }
 
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; border-color: #555; }
-        .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
-        .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
+        .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px); pointer-events: none; }
+        .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px); pointer-events: none; }
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
         
         .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
 
-        @media (max-width: 768px) { 
-            .main-slide { width: 240px; height: 360px; } 
-            .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } 
-            .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } 
-            .wing { font-size: 3em; } .wing-left { left: -40px; } .wing-right { right: -40px; }
-        }
+        @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } .wing { font-size: 3em; } .wing-left { left: -40px; } .wing-right { right: -40px; } }
 
-        /* LOCKED SLAY */
+        /* LOCKED SLAY (Nav Fix) */
+        .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; /* Больше места снизу */ }
         .locked-notice { color: #555; font-family: var(--font-head); text-transform: uppercase; border: 1px solid #333; display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 0.8em; margin-bottom: 30px; text-align: center; }
         .locked-container { text-align: center; }
         .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
         .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        .slay-item:hover { transform: scale(1.05) !important; }
         
-        .shield-card { width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center; position: relative; mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); mask-size: 100% 100%; -webkit-mask-size: 100% 100%; background: linear-gradient(180deg, #1a0000, #000); transition: 0.3s; }
-        .slay-item:hover .shield-card { background: linear-gradient(180deg, #330000, #111); }
-        
-        .shield-border { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 2; pointer-events: none; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
-        .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 5; display: flex; align-items: center; justify-content: center; }
+        /* ИЗМЕНЕНО: Просто картинка, без CSS щита */
+        .slay-img { width: 100%; height: 100%; object-fit: contain; filter: grayscale(1) brightness(0.5); transition: 0.3s; }
+        .slay-item:hover .slay-img { filter: grayscale(0) brightness(1); transform: scale(1.05); }
+        .slay-item.active .slay-img { filter: grayscale(0) brightness(1); }
+
+        .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 5; display: flex; align-items: center; justify-content: center; border-radius: 10px; }
         .slay-title { position: absolute; bottom: -50px; width: 140%; text-align: center; font-family: var(--font-head); font-size: 1em; color: #fff; text-transform: uppercase; opacity: 0; transition: 0.3s; }
-        
         .slay-item.active { z-index: 100; }
-        .slay-item.active .shield-card { background: linear-gradient(180deg, #300000, #100000); }
         .slay-item.active .slay-title { opacity: 1; color: var(--red); }
+        
+        /* NAV ВНИЗУ */
         .slay-nav { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 50; }
         .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
@@ -153,7 +126,7 @@
         .sug-history { margin-top: 20px; border-top: 1px solid #222; padding-top: 15px; }
         .sug-item { background: #111; padding: 8px 12px; margin-bottom: 6px; border-radius: 5px; border-left: 3px solid var(--red); font-size: 0.85em; color: #ccc; }
 
-        /* GRID (BIG RECTANGLES) */
+        /* GRID */
         .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
         .cand-card { 
             background: #151515; border: 1px solid #333; 
@@ -161,11 +134,7 @@
             border-radius: 12px; display: flex; flex-direction: column; align-items: center;
             height: 100%; min-height: 180px; transition: 0.3s;
         }
-        /* Увеличение при наведении */
-        .cand-card:hover { 
-            border-color: var(--red); transform: translateY(-5px); 
-            box-shadow: 0 0 20px rgba(255,0,51,0.2); 
-        }
+        .cand-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 0 20px rgba(255,0,51,0.2); }
         
         .cand-avatar { 
             width: 100%; height: 100px; margin-bottom: 15px; 
@@ -174,18 +143,12 @@
             font-size: 2.5em; color: #666; object-fit: cover; transition: 0.3s;
         }
         
-        /* Спец. стили для больших иконок (постройки, фейл, завоз) */
-        .cand-card.big-mode .cand-avatar { 
-            font-size: 4em; height: 120px; 
-            color: #ccc; font-family: var(--font-head);
-        }
+        /* Большой режим для построек */
+        .cand-card.big-mode .cand-avatar { height: 120px; font-size: 4em; }
 
         .cand-name { font-weight: bold; font-size: 1.1em; line-height: 1.3; }
-        
-        /* ВЫДЕЛЕННЫЙ (ПРОГОЛОСОВАЛ) */
         .cand-card.selected { border-color: var(--red); background: #2a0005; box-shadow: 0 0 15px rgba(255,0,51,0.3); transform: translateY(-5px); }
         .cand-card.selected .cand-avatar { border-color: var(--red); color: var(--red); }
-        
         .vote-btn { width: 100%; padding: 15px; margin-top: 20px; background: var(--red); color: #fff; border: none; font-weight: bold; text-transform: uppercase; font-size: 1.1em; cursor: pointer; border-radius: 6px; transition: 0.3s; }
         .vote-btn:hover { background: #fff; color: var(--red); box-shadow: 0 0 20px var(--red); }
 
@@ -194,17 +157,18 @@
         .modal.active { display: flex; animation: openPulse 0.3s forwards; }
         @keyframes openPulse { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
         .modal-content { width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; padding: 30px 20px; border: 2px solid #333; background: #0a0a0a; border-radius: 12px; position: relative; }
-        .close { position: absolute; top: 10px; right: 15px; font-size: 35px; cursor: pointer; color: #555; line-height: 1; }
+        .close { position: absolute; top: 10px; right: 15px; font-size: 40px; cursor: pointer; color: #555; line-height: 1; font-weight: bold; }
         .close:hover { color: var(--red); }
 
         /* PROFILE */
         .token-box { width: 100%; border: 2px dashed #333; background: #000; color: var(--red); font-family: var(--font-head); font-size: 2em; text-align: center; padding: 15px; margin: 10px 0; border-radius: 8px; letter-spacing: 3px; }
-        .check-btn { background: var(--red); color: #fff; padding: 12px 20px; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1em; margin-top: 10px; }
+        .check-btn { background: var(--red); color: #fff; padding: 12px 20px; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1em; margin-top: 10px; transition: 0.3s; }
+        .check-btn:disabled { background: #555; cursor: not-allowed; }
         .reset-btn { background: transparent; color: #555; border: 1px solid #333; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8em; margin-top: 15px; }
         .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #111; border: 1px solid var(--red); padding: 15px 25px; border-radius: 30px; color: #fff; z-index: 20000; opacity: 0; transition: 0.4s; font-weight: bold; box-shadow: 0 5px 20px #000; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.2em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
+        footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.5em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -284,7 +248,7 @@
                     <p style="font-size:0.9em; color:#ccc;">Отправьте код боту <a href="https://t.me/CatLay_bot" target="_blank" style="color:var(--red);">@CatLay_bot</a></p>
                     <input type="text" value="---" readonly class="token-box" id="tokenDisplay">
                     <div id="timer" style="color:#666; font-family:monospace; margin:10px 0;">--:--</div>
-                    <button class="check-btn" onclick="check()">ПРОВЕРИТЬ СТАТУС</button>
+                    <button id="checkBtn" class="check-btn" onclick="check(true)">ПРОВЕРИТЬ СТАТУС</button>
                     <div><button class="reset-btn" onclick="hardReset()">СБРОСИТЬ КОД (ЕСЛИ ИСТЕК)</button></div>
                 </div>
                 <div style="display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
@@ -327,7 +291,8 @@
             {title: "Завоз года", isPerson: false, cands: ["Война пранков кф5", "Правила сс кф4-кф5", "42х42 блока", "Взрыв запретной зоны"]},
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "КПZZ", "ТЦК", "AUGUST"]}
         ];
-        const subNoms = [{title: "Лучший строитель", icon: "tools"}, {title: "Лучший ПВП", icon: "skull"}, {title: "Скин года", icon: "tshirt"}, {title: "Пара/Шип года", icon: "heart"}, {title: "Пиздабол года", icon: "comment-slash"}];
+        // Доп. номинации тоже грузят картинки теперь
+        const subNoms = ["Лучший строитель", "Лучший ПВП", "Скин года", "Пара/Шип года", "Пиздабол года"];
         const totalNoms = mainNoms.length;
         
         let myVotes = {}; 
@@ -339,7 +304,8 @@
                 let d = document.createElement('div'); d.className = 'main-slide hidden'; d.id = `ms-${i}`;
                 let ph = `<div class="ph-wrap text-ph">${n.title.charAt(0)}</div>`;
                 let wings = `<div class="wing wing-left"><i class="fas fa-feather-alt"></i></div><div class="wing wing-right"><i class="fas fa-feather-alt"></i></div>`;
-                d.innerHTML = `${wings}${ph}<img src="${API_URL}/static/main_${i}.jpg" onload="this.style.opacity=1" onerror="this.style.opacity=0"><h3>${n.title}</h3>`;
+                // Грузим PNG
+                d.innerHTML = `${wings}${ph}<img src="${API_URL}/static/main_${i}.png" onload="this.style.opacity=1" onerror="this.style.opacity=0"><h3>${n.title}</h3>`;
                 d.onclick = () => { if(i===mainIdx) openVote(i); else { mainIdx=i; updateMain(); }};
                 cont.appendChild(d);
             });
@@ -360,9 +326,13 @@
         let slayIdx = 0;
         function initSlay() {
             const tr = document.getElementById('slayTrack'); tr.innerHTML = '';
-            subNoms.forEach((n, i) => {
+            subNoms.forEach((title, i) => {
                 let d = document.createElement('div'); d.className = 'slay-item'; d.id = `sl-${i}`;
-                d.innerHTML = `<div class="locked-overlay"><i class="fas fa-lock locked-icon"></i></div><div class="shield-card"><div class="shield-border"></div><i class="fas fa-${n.icon} fa-5x" style="color:#333;"></i></div><div class="slay-title">${n.title}</div>`;
+                // ГРУЗИМ PNG ДЛЯ ДОП. НОМИНАЦИЙ
+                d.innerHTML = `
+                    <div class="locked-overlay"><i class="fas fa-lock locked-icon"></i></div>
+                    <img src="${API_URL}/static/sub_${i}.png" class="slay-img" onerror="this.style.display='none'">
+                    <div class="slay-title">${title}</div>`;
                 tr.appendChild(d);
             });
             updateSlay();
@@ -391,18 +361,28 @@
             const g = document.getElementById('candGrid'); g.innerHTML='';
             let votedFor = myVotes[mainNoms[idx].title];
             
-            // Если номинация требует больших иконок
             let isBigIcon = ["Лучшая постройка", "Фейл года", "Завоз года"].includes(mainNoms[idx].title);
 
             mainNoms[idx].cands.forEach(c => {
-                let d = document.createElement('div'); 
-                d.className = 'cand-card';
+                let d = document.createElement('div'); d.className = 'cand-card';
                 if(isBigIcon) d.classList.add('big-mode');
                 if(votedFor === c) d.classList.add('selected');
 
-                let icon = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
+                // Ищем картинку номинанта (cand_Имя.png)
+                // Если не найдено - показываем плейсхолдер
+                let safeName = c.replace(/ /g, '_');
+                let phIcon = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
                 
-                d.innerHTML = `<div class="cand-avatar">${icon}</div><div class="cand-name">${c}</div>`;
+                // Хитрый трюк: фон картинкой, если она есть
+                let imgUrl = `${API_URL}/static/cand_${safeName}.png`;
+                
+                d.innerHTML = `
+                    <div class="cand-avatar">
+                        <img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;" onload="this.style.display='block'; this.previousElementSibling.style.display='none'">
+                        <span>${phIcon}</span>
+                    </div>
+                    <div class="cand-name">${c}</div>`;
+                
                 d.onclick=()=>{ document.querySelectorAll('.cand-card').forEach(x=>x.classList.remove('selected')); d.classList.add('selected'); d.dataset.val=c; };
                 g.appendChild(d);
             });
@@ -416,7 +396,7 @@
             openModal('profileModal');
             const inputVal = document.getElementById('tokenDisplay').value;
             if(inputVal === ADMIN_SECRET) { myToken = ADMIN_SECRET; localStorage.setItem('tk', myToken); }
-            if(!myToken) await refreshToken(); else check();
+            if(!myToken) await refreshToken(); else check(false);
         }
 
         async function refreshToken() {
@@ -424,7 +404,7 @@
                 let res = await fetch(API_URL + '/api/get_token');
                 let d = await res.json();
                 myToken = d.token; localStorage.setItem('tk', myToken);
-                check();
+                check(false);
             } catch(e) { toast("Нет связи"); }
         }
         
@@ -434,7 +414,13 @@
             refreshToken();
         }
 
-        async function check() {
+        async function check(manual) {
+            const btn = document.getElementById('checkBtn');
+            if(manual) {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                btn.style.background = "#555";
+            }
+
             try {
                 let res = await fetch(API_URL + '/api/check_status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
                 let d = await res.json();
@@ -444,6 +430,7 @@
                     document.getElementById('statusText').style.color = "red";
                     document.getElementById('loading').style.display='none';
                     document.getElementById('profileContent').style.display='block';
+                    if(manual) { btn.innerText = "ИСТЕК"; btn.style.background = "red"; setTimeout(()=>{btn.innerText="ПРОВЕРИТЬ СТАТУС"; btn.style.background="var(--red)"}, 2000); }
                     return; 
                 }
 
@@ -467,13 +454,15 @@
                     st.innerText = d.is_admin ? "ADMIN" : "ЗАРЕГИСТРИРОВАН";
                     st.style.color = "#0f0";
                     document.getElementById('timer').style.display='none';
+                    if(manual) { btn.innerText = "УСПЕХ"; btn.style.background = "#0f0"; setTimeout(()=>{btn.innerText="ПРОВЕРИТЬ СТАТУС"; btn.style.background="var(--red)"}, 2000); }
                 } else {
                     st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГИСТРИРОВАН";
                     st.style.color = d.status==='review'?"#fa0":"#555";
                     auth.style.display = 'block'; startTimer(d.time_left);
+                    if(manual) { btn.innerText = "ЖДЕМ..."; btn.style.background = "#fa0"; setTimeout(()=>{btn.innerText="ПРОВЕРИТЬ СТАТУС"; btn.style.background="var(--red)"}, 2000); }
                 }
-                updateSlots(d.sug_count || 0, d.suggestions || []);
-            } catch(e) { toast("Ошибка сервера"); }
+                updateSlots(d.suggestions.length, d.suggestions || []);
+            } catch(e) { toast("Ошибка сервера"); if(manual) btn.innerText = "ОШИБКА"; }
         }
 
         function startTimer(s) {
@@ -494,9 +483,7 @@
                 let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:mainNoms[currIdx].title, candidate:sel.dataset.val})});
                 let d = await res.json();
                 if(d.success) { 
-                    toast("ПРИНЯТО!"); 
-                    closeModal('voteModal'); 
-                    check();
+                    toast("ПРИНЯТО!"); closeModal('voteModal'); check(false);
                 }
                 else toast(d.message);
             } catch(e) { toast("Ошибка!"); }
@@ -512,8 +499,7 @@
                 toast(d.message);
                 if(d.success) { 
                     document.getElementById('sugName').value=''; document.getElementById('sugDesc').value='';
-                    updateSlots(d.suggestions.length, d.suggestions); 
-                    check();
+                    updateSlots(d.suggestions.length, d.suggestions); check(false);
                 }
             } catch(e) { toast("Ошибка!"); }
         }
@@ -550,11 +536,7 @@
             const showFab = h.bottom < 0;
             document.querySelector('.fab-rules').classList.toggle('visible', showFab);
             document.querySelector('.fab-profile').classList.toggle('visible', showFab);
-            
-            if(headerBtns && window.innerWidth > 768) {
-                headerBtns.style.opacity = showFab ? '0' : '1';
-                headerBtns.style.pointerEvents = showFab ? 'none' : 'auto';
-            }
+            if(headerBtns && window.innerWidth > 768) { headerBtns.style.opacity = showFab ? '0' : '1'; headerBtns.style.pointerEvents = showFab ? 'none' : 'auto'; }
         });
     </script>
 </body>
