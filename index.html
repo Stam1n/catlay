@@ -2,191 +2,114 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>CATLAY 2025</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CATLAY 2025</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* === CATLAY 2025 FINAL STYLE === */
         * { box-sizing: border-box; }
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 80px; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
 
-        /* Фон */
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: var(--red); border-radius: 50%; animation: rise 5s infinite; opacity: 0; }
         @keyframes rise { 0% {transform:translateY(100vh) scale(0); opacity:0;} 50% {opacity:1;} 100% {transform:translateY(-10vh) scale(1.5); opacity:0;} }
 
-        /* Header */
         header { text-align: center; padding: 40px 20px 60px; position: relative; }
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
-        .header-btn {
-            /* Скрываем кнопки из хедера на телефоне, оставим только FAB */
-            display: none; 
-        }
-        @media (min-width: 768px) {
-            .header-btn { display: block; position: absolute; top: 30px; background: #000; border: 2px solid var(--red); color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: 900; transition: 0.3s; text-transform: uppercase; z-index: 10; }
-            .btn-rules { left: 30px; } .btn-profile { right: 30px; }
-            .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
-            h1 { font-size: 4.5em; letter-spacing: 10px; }
-        }
-
-        /* FAB (Плавающие кнопки для телефона и ПК) */
-        .fab {
-            position: fixed; bottom: 20px; width: 55px; height: 55px;
-            background: rgba(0,0,0,0.9); border: 2px solid var(--red); color: var(--red);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 22px; cursor: pointer; z-index: 9000;
-            box-shadow: 0 0 15px rgba(0,0,0,0.8); transition: 0.3s;
-        }
+        .fab { position: fixed; bottom: 20px; width: 55px; height: 55px; background: rgba(0,0,0,0.9); border: 2px solid var(--red); color: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; z-index: 9000; box-shadow: 0 0 15px rgba(0,0,0,0.8); transition: 0.3s; }
         .fab:hover { background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); transform: scale(1.1); }
         .fab-rules { left: 20px; } .fab-profile { right: 20px; }
 
-        /* --- СЛАЙДЕР ОСНОВНОЙ --- */
+        /* SLIDER */
         .main-section { position: relative; height: 500px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        
-        .main-slide {
-            position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: #000; border: 1px solid #333;
-            cursor: pointer; overflow: hidden; border-radius: 8px;
-        }
+        .main-slide { position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: #000; border: 1px solid #333; cursor: pointer; overflow: hidden; border-radius: 8px; }
         .main-slide img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: brightness(0.6); }
-        
-        /* Плейсхолдеры */
         .ph-wrap { width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 1; display: flex; align-items: center; justify-content: center; background: #050505; }
-        .person-ph i { font-size: 8em; background: linear-gradient(to bottom, var(--red), #220000); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(255,0,51,0.3)); }
         .text-ph { font-family: var(--font-head); font-size: 6em; color: #222; text-transform: uppercase; }
-
-        .main-slide h3 { 
-            font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 100%; padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); z-index: 2; 
-            text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000;
-        }
-        
+        .main-slide h3 { font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); z-index: 2; text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; }
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; border-color: #555; }
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
         .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px); }
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
-
-        .main-slide.active:hover { border-color: var(--red); box-shadow: 0 0 40px rgba(255, 0, 51, 0.4); }
-        .main-slide.active:hover img { filter: brightness(1); transform: scale(1.05); }
-        .main-slide.active:hover h3 { color: var(--red); }
-
         .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .arrow:hover { background: var(--red); color: #fff; }
+        @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
-        /* Мобильная адаптация слайдера */
-        @media (max-width: 768px) {
-            .main-slide { width: 240px; height: 360px; }
-            .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; }
-            .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; }
-        }
-
-        /* --- ЩИТЫ --- */
+        /* LOCKED SLAY (CENTERED FIX) */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 60px; } 
         h2 { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin-bottom: 20px; padding: 0 10px; }
         .locked-notice { color: #555; font-family: var(--font-head); text-transform: uppercase; border: 1px solid #333; display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 0.8em; margin-bottom: 30px; text-align: center; }
         .locked-container { text-align: center; }
-        
-        .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; }
+        .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
+        .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
         .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        
         .shield-card { width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center; position: relative; mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0 L100 15 L100 85 L50 120 L0 85 L0 15 Z' fill='black'/%3E%3C/svg%3E"); mask-size: 100% 100%; -webkit-mask-size: 100% 100%; background: linear-gradient(180deg, #1a0000, #000); }
+        .shield-border { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 2; pointer-events: none; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); }
         .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 5; display: flex; align-items: center; justify-content: center; }
-        
         .slay-title { position: absolute; bottom: -50px; width: 140%; text-align: center; font-family: var(--font-head); font-size: 1em; color: #fff; text-transform: uppercase; opacity: 0; transition: 0.3s; }
         .slay-item.active { z-index: 100; }
         .slay-item.active .shield-card { background: linear-gradient(180deg, #300000, #100000); }
         .slay-item.active .slay-title { opacity: 1; color: var(--red); }
-
         .slay-nav { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 50; }
         .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
 
-        /* --- SUGGESTIONS --- */
+        /* SUGGESTIONS */
         .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
         .suggest-header { text-align: center; color: var(--red); font-family: var(--font-head); margin-bottom: 5px; font-size: 1.5em; }
-        .suggest-desc { text-align: center; color: #888; font-size: 0.85em; margin-bottom: 20px; line-height: 1.4; }
         .sug-counter-box { text-align: center; margin-bottom: 15px; font-family: var(--font-head); color: #fff; }
-        .sug-counter-box span { color: var(--red); font-size: 1.2em; }
         .slots-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
         .slot { width: 12px; height: 12px; border: 2px solid #333; border-radius: 50%; transition: 0.3s; }
         .slot.filled { background: var(--red); border-color: var(--red); box-shadow: 0 0 8px var(--red); }
-        
-        .suggest-form input, .suggest-form textarea { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 12px; margin-bottom: 12px; font-family: var(--font-body); border-radius: 8px; transition: 0.3s; }
-        .suggest-form input:focus, .suggest-form textarea:focus { border-color: var(--red); outline: none; }
+        .suggest-form input, .suggest-form textarea { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 12px; margin-bottom: 12px; font-family: var(--font-body); border-radius: 8px; }
         .suggest-btn { width: 100%; padding: 15px; background: #222; color: #fff; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.3s; border-radius: 8px; border: 1px solid #333; }
         .suggest-btn:hover { background: var(--red); border-color: var(--red); }
-        
         .sug-history { margin-top: 20px; border-top: 1px solid #222; padding-top: 15px; }
         .sug-item { background: #111; padding: 8px 12px; margin-bottom: 6px; border-radius: 5px; border-left: 3px solid var(--red); font-size: 0.85em; color: #ccc; }
 
-        /* --- МОДАЛЬНЫЕ ОКНА (FIXED MOBILE) --- */
-        .modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.9); 
-            z-index: 10000; /* Самый верхний слой */
-            align-items: center; justify-content: center; /* Центровка */
-            padding: 10px;
-        }
-        .modal.active { display: flex; animation: openPulse 0.3s forwards; }
-        @keyframes openPulse { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
-        
-        .modal-content { 
-            width: 100%; max-width: 500px; 
-            max-height: 85vh; /* Чтобы не улетало за экран */
-            overflow-y: auto; /* Скролл внутри окна, а не страницы */
-            padding: 30px 20px; 
-            border: 2px solid #333; background: #0a0a0a; 
-            border-radius: 12px; position: relative; 
-            box-shadow: 0 0 40px #000;
-        }
-        .modal-content::-webkit-scrollbar { width: 5px; }
-        .modal-content::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; }
-
-        .close { position: absolute; top: 10px; right: 15px; font-size: 35px; cursor: pointer; color: #555; line-height: 1; z-index: 10; }
-        .close:hover { color: var(--red); }
-
-        /* GRID ГОЛОСОВАНИЯ (ПРЯМОУГОЛЬНИКИ) */
-        .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; margin-top: 20px; }
+        /* GRID (BIG RECTANGLES) */
+        .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; }
         .cand-card { 
             background: #151515; border: 1px solid #333; 
-            padding: 15px 10px; text-align: center; cursor: pointer; 
-            border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            height: 100%; min-height: 140px;
+            padding: 20px 10px; text-align: center; cursor: pointer; 
+            border-radius: 12px; display: flex; flex-direction: column; align-items: center;
+            height: 100%; min-height: 180px; transition: 0.2s;
         }
         .cand-avatar { 
-            width: 70px; height: 70px; margin-bottom: 12px; 
-            border-radius: 50%; border: 2px solid #444; background: #222;
+            width: 100%; height: 100px; margin-bottom: 15px; 
+            border-radius: 8px; border: 2px solid #333; background: #222;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.8em; color: #666; object-fit: cover;
+            font-size: 2.5em; color: #666; object-fit: cover;
         }
-        .cand-name { font-weight: bold; font-size: 0.9em; line-height: 1.3; }
-        .cand-card.selected { border-color: var(--red); background: #2a0005; box-shadow: 0 0 10px rgba(255,0,51,0.2); }
+        .cand-name { font-weight: bold; font-size: 1.1em; line-height: 1.3; }
+        .cand-card.selected { border-color: var(--red); background: #2a0005; box-shadow: 0 0 15px rgba(255,0,51,0.3); transform: translateY(-5px); }
         .cand-card.selected .cand-avatar { border-color: var(--red); color: var(--red); }
-
         .vote-btn { width: 100%; padding: 15px; margin-top: 20px; background: var(--red); color: #fff; border: none; font-weight: bold; text-transform: uppercase; font-size: 1.1em; cursor: pointer; border-radius: 6px; }
 
-        /* ПРОФИЛЬ */
-        .token-box { width: 100%; border: 2px dashed #333; background: #000; color: var(--red); font-family: var(--font-head); font-size: 2em; text-align: center; padding: 15px; margin: 20px 0; border-radius: 8px; letter-spacing: 3px; }
-        .refresh-btn { background: var(--red); color: #fff; padding: 10px 20px; border: none; font-weight: bold; border-radius: 5px; cursor: pointer; }
-        .stat-item h3 { color: var(--red); font-size: 2em; margin: 0; font-family: var(--font-head); }
-        .stat-item p { color: #888; margin: 5px 0 0; font-size: 0.9em; }
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; padding: 10px; }
+        .modal.active { display: flex; animation: openPulse 0.3s forwards; }
+        @keyframes openPulse { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
+        .modal-content { width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; padding: 30px 20px; border: 2px solid #333; background: #0a0a0a; border-radius: 12px; position: relative; }
+        .close { position: absolute; top: 10px; right: 15px; font-size: 35px; cursor: pointer; color: #555; line-height: 1; }
+        .close:hover { color: var(--red); }
 
-        /* TOAST */
-        .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #111; border: 1px solid var(--red); padding: 15px 25px; border-radius: 30px; color: #fff; z-index: 20000; opacity: 0; transition: 0.4s; font-weight: bold; box-shadow: 0 5px 20px #000; width: auto; max-width: 90%; text-align: center; white-space: nowrap; }
+        /* PROFILE */
+        .token-box { width: 100%; border: 2px dashed #333; background: #000; color: var(--red); font-family: var(--font-head); font-size: 2em; text-align: center; padding: 15px; margin: 10px 0; border-radius: 8px; letter-spacing: 3px; }
+        .check-btn { background: var(--red); color: #fff; padding: 12px 20px; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1em; margin-top: 10px; }
+        .reset-btn { background: transparent; color: #555; border: 1px solid #333; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8em; margin-top: 15px; }
+        .reset-btn:hover { border-color: var(--red); color: var(--red); }
+        .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #111; border: 1px solid var(--red); padding: 15px 25px; border-radius: 30px; color: #fff; z-index: 20000; opacity: 0; transition: 0.4s; font-weight: bold; box-shadow: 0 5px 20px #000; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* LIGHTBOX (УВЕЛИЧЕНИЕ КАРТИНКИ) */
-        #mediaModal img { width: 100%; height: auto; max-height: 80vh; object-fit: contain; border: 2px solid #333; }
-
-        footer { text-align: center; padding: 40px; color: #444; font-family: var(--font-head); font-size: 0.8em; border-top: 1px solid #222; margin-top: 50px; }
+        footer { text-align: center; padding: 60px 20px; color: #444; font-family: var(--font-head); font-size: 2.5em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; font-weight: 900; letter-spacing: 5px; }
     </style>
 </head>
 <body>
@@ -198,8 +121,6 @@
     <div class="fab fab-profile" onclick="openProfile()"><i class="fas fa-user"></i></div>
 
     <header id="mainHeader">
-        <button class="header-btn btn-rules" onclick="openModal('rulesModal')"><i class="fas fa-gavel"></i> ПРАВИЛА</button>
-        <button class="header-btn btn-profile" onclick="openProfile()"><i class="fas fa-user"></i> ПРОФИЛЬ</button>
         <h1>CATLAY</h1>
         <div style="font-family: var(--font-head); color: #666; letter-spacing: 3px; margin-top: 10px;">2025 AWARDS</div>
         <p class="intro">Твой голос решает судьбу сервера</p>
@@ -226,25 +147,21 @@
 
     <section class="suggest-section">
         <h3 class="suggest-header">ПРЕДЛОЖИТЬ НОМИНАЦИЮ</h3>
-        <p class="suggest-desc">Учитывайте: моменты с CatField начиная с 2025 года.<br>Топ-3 попадут в премию.</p>
         <div class="sug-counter-box">Ваши идеи: <span id="sugCounterText">0/5</span></div>
         <div class="slots-container" id="slotsCont"></div>
         <div class="suggest-form" id="sugForm">
-            <input type="text" id="sugName" placeholder="Название номинации">
+            <input type="text" id="sugName" placeholder="Название">
             <textarea id="sugDesc" placeholder="Краткое описание" rows="3"></textarea>
             <button class="suggest-btn" onclick="sendSuggestion()">ОТПРАВИТЬ</button>
         </div>
-        <div id="sugLimitMsg" style="display:none; text-align:center; color:var(--red); font-weight:bold; margin-bottom:20px;">Лимит исчерпан! Спасибо.</div>
-        <div class="sug-history" id="sugHistory" style="display:none;">
-            <h4>Вы предложили:</h4>
-            <div id="sugList"></div>
-        </div>
+        <div id="sugLimitMsg" style="display:none; text-align:center; color:var(--red); font-weight:bold; margin-bottom:20px;">Лимит исчерпан!</div>
+        <div class="sug-history" id="sugHistory" style="display:none;"><h4>История:</h4><div id="sugList"></div></div>
     </section>
 
     <div id="voteModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('voteModal')">&times;</span>
-            <h2 id="voteTitle" style="font-family: var(--font-head); color: #fff; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 15px; font-size:1.5em; text-align:center;"></h2>
+            <h2 id="voteTitle" style="font-family: var(--font-head); color: #fff; margin-top: 0; text-align:center;"></h2>
             <div class="cand-grid" id="candGrid"></div>
             <button class="vote-btn" onclick="submitVote()">ГОЛОСОВАТЬ</button>
         </div>
@@ -258,24 +175,17 @@
             <div id="profileContent" style="display:none;">
                 <div id="statusText" style="font-weight:900; color: #555; margin-bottom: 20px; font-size: 1.1em; font-family: var(--font-head);">НЕ ЗАРЕГИСТРИРОВАН</div>
                 <div id="authSection">
-                    <p style="font-size:0.9em; color:#ccc;">Отправьте этот код боту <a href="https://t.me/CatLay_bot" target="_blank" style="color:var(--red); text-decoration:none;">@CatLay_bot</a></p>
+                    <p style="font-size:0.9em; color:#ccc;">Отправьте код боту <a href="https://t.me/CatLay_bot" target="_blank" style="color:var(--red);">@CatLay_bot</a></p>
                     <input type="text" value="---" readonly class="token-box" id="tokenDisplay">
-                    <p style="font-size:0.8em; color:#666;">Если вы уже регистрировались, отправьте этот новый код боту, чтобы войти в старый аккаунт.</p>
-                    <div id="timer" style="color:#666; font-family:monospace; margin-top:10px;">--:--</div>
-                    <button class="refresh-btn" onclick="refreshToken()" style="margin-top:15px;">ОБНОВИТЬ КОД</button>
+                    <div id="timer" style="color:#666; font-family:monospace; margin:10px 0;">--:--</div>
+                    <button class="check-btn" onclick="check()">ПРОВЕРИТЬ СТАТУС</button>
+                    <div><button class="reset-btn" onclick="hardReset()">СБРОСИТЬ КОД (ЕСЛИ ИСТЕК)</button></div>
                 </div>
                 <div style="display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
-                    <div class="stat-item"><h3 id="statVoted">0</h3><p>Голосов</p></div>
-                    <div class="stat-item"><h3 id="statLeft">15</h3><p>Осталось</p></div>
+                    <div><h3 id="statVoted" style="color:var(--red);">0</h3><p>Голосов</p></div>
+                    <div><h3 id="statLeft">15</h3><p>Осталось</p></div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div id="mediaModal" class="modal" onclick="if(event.target===this) closeModal('mediaModal')">
-        <div class="modal-content" style="background:transparent; border:none; box-shadow:none; max-width:800px; text-align:center;">
-            <span class="close" onclick="closeModal('mediaModal')">&times;</span>
-            <div id="mediaContainer"></div>
         </div>
     </div>
 
@@ -284,11 +194,7 @@
             <span class="close" onclick="closeModal('rulesModal')">&times;</span>
             <h2 style="font-family: var(--font-head); text-align:center;">ПРАВИЛА</h2>
             <div style="color:#ccc; line-height:1.6; font-size:0.9em;">
-                <p>1. Голосуйте честно.</p>
-                <p>2. Мультиаккаунты запрещены.</p>
-                <p>3. Предлагайте только релевантные номинации (с 2025 года).</p>
-                <p>4. Запрещен спам и бред.</p>
-                <p>5. О багах сообщайте организаторам.</p>
+                <p>1. Голосуйте честно.<br>2. Мультиаккаунты запрещены.<br>3. Только актуальные номинанты (2025).<br>4. Без спама.</p>
             </div>
         </div>
     </div>
@@ -308,50 +214,23 @@
             {title: "Завоз года", isPerson: false, cands: ["Война пранков кф5", "Правила сс кф4-кф5", "42х42 блока", "Взрыв запретной зоны"]},
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "КПZZ", "ТЦК", "AUGUST"]}
         ];
-        const subNoms = [
-            {title: "Лучший строитель", icon: "tools"}, {title: "Лучший ПВП", icon: "skull"},
-            {title: "Скин года", icon: "tshirt"}, {title: "Пара/Шип года", icon: "heart"},
-            {title: "Пиздабол года", icon: "comment-slash"}
-        ];
+        const subNoms = [{title: "Лучший строитель", icon: "tools"}, {title: "Лучший ПВП", icon: "skull"}, {title: "Скин года", icon: "tshirt"}, {title: "Пара/Шип года", icon: "heart"}, {title: "Пиздабол года", icon: "comment-slash"}];
         const totalNoms = mainNoms.length;
+        
+        let myVotes = {}; // Храним голоса локально для отображения
 
         let mainIdx = 0;
         function initMain() {
             const cont = document.getElementById('mainContainer'); cont.innerHTML = '';
             mainNoms.forEach((n, i) => {
                 let d = document.createElement('div'); d.className = 'main-slide hidden'; d.id = `ms-${i}`;
-                
-                // Разные плейсхолдеры
-                let ph = n.isPerson 
-                    ? `<div class="ph-wrap person-ph"><i class="fas fa-user"></i></div>` 
-                    : `<div class="ph-wrap text-ph">${n.title.charAt(0)}</div>`;
-
-                // Картинка с обработкой ошибки и клика
+                let ph = `<div class="ph-wrap text-ph">${n.title.charAt(0)}</div>`; // Плейсхолдер для НОМИНАЦИИ - буква
                 d.innerHTML = `${ph}<img src="${API_URL}/static/main_${i}.jpg" onload="this.style.opacity=1" onerror="this.style.opacity=0"><h3>${n.title}</h3>`;
-                
-                // Клик: если активный - открыть голосование (или просмотр), иначе листать
-                d.onclick = (e) => { 
-                    if(i===mainIdx) {
-                        // Если кликнули именно по картинке - открыть лайтбокс? 
-                        // Но пользователь просил голосование. Сделаем так: клик по карточке - голосование.
-                        // А лайтбокс сделаем отдельной кнопкой или долгим тапом?
-                        // По ТЗ: "нажимаешь на картинку - она открылась побольше".
-                        // Давай сделаем так: Клик по центру -> Голосование. В голосовании будет большая картинка номинанта?
-                        // Нет, речь про номинацию. ОК, при клике открываем Голосование.
-                        // А внутри голосования можно сделать кнопку "Посмотреть медиа".
-                        openVote(i); 
-                    } else { 
-                        mainIdx=i; updateMain(); 
-                    }
-                };
-                
-                // Добавим иконку "Лупа" для открытия картинки, если это активный слайд
-                // Сложно совместить. Давай просто по клику открывать голосование, как и было.
+                d.onclick = () => { if(i===mainIdx) openVote(i); else { mainIdx=i; updateMain(); }};
                 cont.appendChild(d);
             });
             updateMain();
         }
-
         function updateMain() {
             for(let i=0; i<mainNoms.length; i++) {
                 let el = document.getElementById(`ms-${i}`);
@@ -391,30 +270,29 @@
         function openModal(id){ document.getElementById(id).classList.add('active'); }
         function closeModal(id){ document.getElementById(id).classList.remove('active'); }
         
-        // Открытие картинки на весь экран
-        function openMedia(src) {
-            const c = document.getElementById('mediaContainer');
-            c.innerHTML = `<img src="${src}">`;
-            openModal('mediaModal');
-        }
-
         let currIdx;
         function openVote(idx) {
             currIdx = idx; document.getElementById('voteTitle').innerText = mainNoms[idx].title;
             const g = document.getElementById('candGrid'); g.innerHTML='';
             
+            // Проверяем, голосовали ли уже
+            let votedFor = myVotes[mainNoms[idx].title];
+
             mainNoms[idx].cands.forEach(c => {
-                let d = document.createElement('div'); d.className='cand-card';
-                // Аватар кандидата (или иконка)
-                let ava = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
-                d.innerHTML = `<div class="cand-avatar">${ava}</div><div class="cand-name">${c}</div>`;
+                let d = document.createElement('div'); 
+                d.className = 'cand-card';
+                if(votedFor === c) d.classList.add('selected'); // Подсветка выбора
+
+                // Иконка для КАНДИДАТА (человечек или буква)
+                // Если номинация про людей (isPerson=true) - иконка человечка
+                // Если нет - буква
+                let icon = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
+                
+                d.innerHTML = `<div class="cand-avatar">${icon}</div><div class="cand-name">${c}</div>`;
                 d.onclick=()=>{ document.querySelectorAll('.cand-card').forEach(x=>x.classList.remove('selected')); d.classList.add('selected'); d.dataset.val=c; };
                 g.appendChild(d);
             });
             openModal('voteModal');
-            
-            // Если у номинации есть картинка/видео, можно добавить кнопку "Посмотреть медиа" в заголовок
-            // Но пока оставим просто голосование
         }
 
         let myToken = localStorage.getItem('tk');
@@ -433,7 +311,13 @@
                 let d = await res.json();
                 myToken = d.token; localStorage.setItem('tk', myToken);
                 check();
-            } catch(e) { toast("Ошибка сети"); }
+            } catch(e) { toast("Нет связи"); }
+        }
+        
+        function hardReset() {
+            localStorage.removeItem('tk');
+            myToken = null;
+            refreshToken();
         }
 
         async function check() {
@@ -441,7 +325,13 @@
                 let res = await fetch(API_URL + '/api/check_status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
                 let d = await res.json();
                 
-                if (d.expired && myToken !== ADMIN_SECRET) { await refreshToken(); return; }
+                if (d.expired && myToken !== ADMIN_SECRET) { 
+                    document.getElementById('statusText').innerText = "КОД ИСТЕК";
+                    document.getElementById('statusText').style.color = "red";
+                    document.getElementById('loading').style.display='none';
+                    document.getElementById('profileContent').style.display='block';
+                    return; 
+                }
 
                 document.getElementById('loading').style.display='none';
                 document.getElementById('profileContent').style.display='block';
@@ -453,30 +343,31 @@
                 document.getElementById('statVoted').innerText = d.vote_count || 0;
                 document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
                 
+                myVotes = d.my_votes || {}; // Сохраняем голоса
+
                 const st = document.getElementById('statusText');
                 const auth = document.getElementById('authSection');
                 
                 if(d.status==='approved') {
                     st.innerText = d.is_admin ? "ADMIN" : "ЗАРЕГИСТРИРОВАН";
                     st.style.color = "#0f0";
-                    // Скрываем инструкцию, но оставляем токен, чтобы человек мог скопировать его на телефон
-                    // auth.style.display = 'none'; <--- Не скрываем, чтобы видеть код для переноса!
-                    document.getElementById('timer').style.display='none'; // Таймер не нужен
+                    document.getElementById('timer').style.display='none';
                 } else {
                     st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГИСТРИРОВАН";
                     st.style.color = d.status==='review'?"#fa0":"#555";
                     auth.style.display = 'block'; startTimer(d.time_left);
                 }
                 updateSlots(d.sug_count || 0, d.suggestions || []);
-            } catch(e) { toast("Сервер недоступен"); }
+            } catch(e) { toast("Ошибка сервера"); }
         }
 
         function startTimer(s) {
             clearInterval(tmr); let l=Math.floor(s);
             const display = document.getElementById('timer');
-            if(l <= 0) { display.innerText = "00:00"; return; }
+            display.style.display = 'block';
+            if(l <= 0) { display.innerText = "00:00 (Обновите код)"; return; }
             tmr = setInterval(() => {
-                if(l<=0) { clearInterval(tmr); refreshToken(); return; }
+                if(l<=0) { clearInterval(tmr); display.innerText = "00:00"; return; }
                 l--; display.innerText = `${Math.floor(l/60)}:${(l%60)<10?'0'+(l%60):l%60}`;
             }, 1000);
         }
