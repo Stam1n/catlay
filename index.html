@@ -13,7 +13,6 @@
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
         body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
 
-        /* VIGNETTE */
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
@@ -21,30 +20,16 @@
         .particle { position: absolute; background: var(--red); border-radius: 50%; animation: rise 5s infinite; opacity: 0; }
         @keyframes rise { 0% {transform:translateY(100vh) scale(0); opacity:0;} 50% {opacity:1;} 100% {transform:translateY(-10vh) scale(1.5); opacity:0;} }
 
-        /* HEADER */
         header { text-align: center; padding: 40px 20px 40px; position: relative; }
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
-        /* КНОПКИ */
         .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; z-index: 100; }
-        .header-btn { 
-            background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); 
-            padding: 10px 25px; border-radius: 30px; cursor: pointer; 
-            font-family: var(--font-body); font-weight: 900; text-transform: uppercase; 
-            transition: 0.3s; font-size: 0.8em; pointer-events: auto;
-        }
+        .header-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.8em; pointer-events: auto; }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
         @media (min-width: 768px) { .header-btns-container { display: flex; } }
 
-        .fab {
-            position: fixed; bottom: 20px; width: 55px; height: 55px;
-            background: rgba(0,0,0,0.9); border: 2px solid var(--red); color: var(--red);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 20px; cursor: pointer; z-index: 9000; font-weight: 900;
-            box-shadow: 0 0 15px rgba(0,0,0,0.8); transition: 0.3s;
-            opacity: 0; transform: translateY(50px); pointer-events: none;
-        }
+        .fab { position: fixed; bottom: 20px; width: 55px; height: 55px; background: rgba(0,0,0,0.9); border: 2px solid var(--red); color: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; z-index: 9000; font-weight: 900; box-shadow: 0 0 15px rgba(0,0,0,0.8); transition: 0.3s; opacity: 0; transform: translateY(50px); pointer-events: none; }
         @media (max-width: 767px) { .fab { opacity: 1; transform: translateY(0); pointer-events: auto; } }
         .fab.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
         .fab:hover { background: var(--red); color: #000; box-shadow: 0 0 30px var(--red); transform: scale(1.1); }
@@ -52,77 +37,41 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
-        /* MAIN SLIDER */
+        /* SLIDER */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        
-        .main-slide {
-            position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible;
-        }
+        .main-slide { position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible; }
         .main-slide.active:hover { transform: scale(1.25) !important; z-index: 20; }
-        
-        .main-slide img { 
-            width: 100%; height: 100%; object-fit: contain; 
-            transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; 
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transform: scale(1.25);
-        }
+        .main-slide img { width: 100%; height: 100%; object-fit: contain; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transform: scale(1.25); }
         .main-slide.active:hover img { transform: scale(1.35); filter: brightness(1.2) drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
-
         .ph-wrap { width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 1; display: flex; align-items: center; justify-content: center; background: transparent; }
         .text-ph { font-family: var(--font-head); font-size: 6em; color: #333; text-transform: uppercase; }
-
         .wing { position: absolute; top: 50%; transform: translateY(-50%); font-size: 4em; color: var(--red); opacity: 0; transition: 0.5s; z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none; }
         .wing-left { left: -80px; transform: translateY(-50%) rotateY(180deg); }
         .wing-right { right: -80px; }
         .main-slide.voted .wing { opacity: 1; }
-
-        .main-slide h3 { 
-            font-family: var(--font-head); color: #fff; margin: 0; 
-            position: absolute; bottom: 0; width: 150%; 
-            text-transform: uppercase; font-size: 1.3em; text-align: center; 
-            text-shadow: 0 0 10px #000; transition: 0.3s; pointer-events: none; 
-        }
+        .main-slide h3 { font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 150%; text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; transition: 0.3s; pointer-events: none; }
         .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); transform: scale(0.8); }
-
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; }
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
-        
         .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
-
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
-        /* LOCKED SLAY (RED LOCK & BLUR) */
+        /* LOCKED SLAY */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
         .locked-notice { color: #555; font-family: var(--font-head); text-transform: uppercase; border: 1px solid #333; display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 0.8em; margin-bottom: 30px; text-align: center; }
         .locked-container { text-align: center; }
         .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
         .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        
-        /* КАРТИНКА РАЗМЫТАЯ И ТЕМНАЯ */
-        .slay-img { 
-            width: 100%; height: 100%; object-fit: contain; 
-            filter: blur(5px) brightness(0.4) grayscale(0.8); /* Размытие для фона */
-            transition: 0.3s; transform: scale(1.25); 
-        }
+        .slay-img { width: 100%; height: 100%; object-fit: contain; filter: blur(5px) brightness(0.4) grayscale(0.8); transition: 0.3s; transform: scale(1.25); }
         .slay-item:hover .slay-img { filter: blur(3px) brightness(0.6); transform: scale(1.35); }
         .slay-item.active .slay-img { filter: blur(4px) brightness(0.5); transform: scale(1.25); }
-
         .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        
-        /* КРАСНЫЙ ЗАМОК */
-        .locked-icon { 
-            font-size: 5em; 
-            color: var(--red); /* Красный */
-            margin-top: -30px; /* Выше */
-            text-shadow: 0 0 20px rgba(0,0,0,0.9);
-            opacity: 1;
-        }
-
+        .locked-icon { font-size: 5em; color: var(--red); margin-top: -30px; text-shadow: 0 0 20px rgba(0,0,0,0.9); opacity: 1; }
         .slay-title { position: absolute; bottom: -50px; width: 140%; text-align: center; font-family: var(--font-head); font-size: 1em; color: #fff; text-transform: uppercase; opacity: 0; transition: 0.3s; }
         .slay-item.active { z-index: 100; }
         .slay-item.active .slay-title { opacity: 1; color: var(--red); }
@@ -146,29 +95,9 @@
 
         /* GRID */
         .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
-        .cand-card { 
-            background: #151515; border: 1px solid #333; 
-            padding: 20px 10px; text-align: center; cursor: pointer; 
-            border-radius: 12px; display: flex; flex-direction: column; align-items: center;
-            height: 100%; min-height: 180px; transition: 0.3s;
-        }
+        .cand-card { background: #151515; border: 1px solid #333; padding: 20px 10px; text-align: center; cursor: pointer; border-radius: 12px; display: flex; flex-direction: column; align-items: center; height: 100%; min-height: 180px; transition: 0.3s; }
         .cand-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 0 20px rgba(255,0,51,0.2); }
-        
-        .cand-avatar { 
-            width: 100%; height: 100px; margin-bottom: 15px; 
-            border-radius: 8px; border: 2px solid #333; background: #222;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5em; color: #666; object-fit: cover; transition: 0.3s;
-        }
-        
-        /* Иконка человечка по умолчанию */
-        .cand-avatar i {
-            font-size: 2em;
-            background: linear-gradient(to bottom, var(--red), #440000);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 5px var(--red));
-        }
-
+        .cand-avatar { width: 100%; height: 100px; margin-bottom: 15px; border-radius: 8px; border: 2px solid #333; background: #222; display: flex; align-items: center; justify-content: center; font-size: 2.5em; color: #666; object-fit: cover; transition: 0.3s; }
         .cand-card.big-mode .cand-avatar { height: 120px; font-size: 4em; }
         .cand-name { font-weight: bold; font-size: 1.1em; line-height: 1.3; }
         .cand-card.selected { border-color: var(--red); background: #2a0005; box-shadow: 0 0 15px rgba(255,0,51,0.3); transform: translateY(-5px); }
@@ -180,13 +109,7 @@
         .custom-btn:hover { background: #444; color: #fff; }
         
         /* PREVIEW BUTTON (PULSING) */
-        .preview-btn { 
-            width: 100%; padding: 15px; background: var(--red); color: #fff; 
-            border: none; font-weight: 900; text-transform: uppercase; font-size: 1.2em; 
-            cursor: pointer; border-radius: 6px; margin-top: 20px; 
-            box-shadow: 0 0 20px rgba(255,0,51,0.3); 
-            animation: btnPulse 2s infinite;
-        }
+        .preview-btn { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; font-weight: 900; text-transform: uppercase; font-size: 1.2em; cursor: pointer; border-radius: 6px; margin-top: 20px; box-shadow: 0 0 20px rgba(255,0,51,0.3); animation: btnPulse 2s infinite; }
         .preview-btn:hover { background: #fff; color: var(--red); animation: none; }
         @keyframes btnPulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 51, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 0, 51, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 51, 0); } }
 
@@ -352,7 +275,7 @@
         const totalNoms = mainNoms.length;
         
         let myVotes = {}; 
-        let currentCand = null; // Для превью
+        let currentCand = null; 
 
         let mainIdx = 0;
         function initMain() {
@@ -411,8 +334,6 @@
         function closeModal(id){ document.getElementById(id).classList.remove('active'); }
         
         let currIdx;
-        
-        // 1. ОТКРЫТЬ СПИСОК
         function openVoteList(idx) {
             currIdx = idx; 
             document.getElementById('voteTitle').innerText = mainNoms[idx].title;
@@ -425,33 +346,25 @@
                 if(isBigIcon) d.classList.add('big-mode');
                 if(votedFor === c) d.classList.add('selected');
 
-                // Генерация имен файлов: cand_Номинация_Кандидат
                 let safeNom = mainNoms[idx].title.replace(/ /g, '_');
                 let safeCand = c.replace(/ /g, '_');
-                let imgUrl = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
+                let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
+                let imgJpg = `${API_URL}/static/cand_${safeNom}_${safeCand}.jpg`;
                 
-                // FALLBACK ICON: Если картинки нет, этот блок будет показан
-                let fallback = `<div class="cand-avatar"><i class="fas fa-user"></i></div>`;
+                // ЛОГИКА ЗАГРУЗКИ: Пробуем PNG -> JPG -> Показываем иконку (если ошибка)
+                // Изначально показываем иконку (букву или человечка)
+                let phIcon = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
                 
-                d.innerHTML = `
-                    <div class="cand-avatar" style="display:none;"> <img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" 
-                             onload="this.parentElement.style.display='flex'" 
-                             onerror="this.parentElement.style.display='none'; this.parentElement.nextElementSibling.style.display='flex'">
-                    </div>
-                    ${fallback} <div class="cand-name">${c}</div>`;
-                
-                // Исправляем логику скрытия через onerror
-                // Проще: грузим картинку. Если ок -> показываем img, скрываем иконку. 
-                // Если ошибка -> скрываем img, показываем иконку.
                 d.innerHTML = `
                     <div class="cand-avatar">
-                        <img src="${imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;" 
-                             onload="this.style.display='block'; this.nextElementSibling.style.display='none'">
-                        <i class="fas fa-user"></i>
+                        <img src="${imgPng}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;" 
+                             onload="this.style.display='block'; this.nextElementSibling.style.display='none'"
+                             onerror="this.onerror=null; this.src='${imgJpg}'">
+                        <span>${phIcon}</span>
                     </div>
                     <div class="cand-name">${c}</div>`;
-
-                d.onclick = () => openPreview(c);
+                
+                d.onclick=()=>{ openPreview(c); };
                 g.appendChild(d);
             });
             
@@ -463,7 +376,7 @@
             openModal('voteModal');
         }
 
-        // 2. ОТКРЫТЬ ПРЕВЬЮ
+        // PREVIEW: Видео -> PNG -> JPG -> BIG RED ICON
         function openPreview(candName) {
             currentCand = candName;
             closeModal('voteModal');
@@ -477,16 +390,29 @@
             let safeCand = candName.replace(/ /g, '_');
             
             let vidUrl = `${API_URL}/static/cand_${safeNom}_${safeCand}.mp4`;
-            let imgUrl = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
+            let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
+            let imgJpg = `${API_URL}/static/cand_${safeNom}_${safeCand}.jpg`;
             
-            // Проверка видео
+            // 1. Создаем видео
             let video = document.createElement('video');
             video.src = vidUrl; video.controls = true; video.autoplay = true; video.muted = true; video.loop = true;
             
             video.onloadeddata = () => { container.innerHTML = ''; container.appendChild(video); };
             video.onerror = () => {
-                // Если видео нет -> Картинка
-                container.innerHTML = `<img src="${imgUrl}" onerror="this.parentElement.innerHTML='<div style=\'font-size:5em;color:var(--red)\'><i class=\'fas fa-user\'></i></div>'">`;
+                // 2. Если видео нет -> Пробуем PNG
+                let img = new Image();
+                img.src = imgPng;
+                img.onload = () => { container.innerHTML = ''; container.appendChild(img); };
+                img.onerror = () => {
+                    // 3. Если PNG нет -> Пробуем JPG
+                    let img2 = new Image();
+                    img2.src = imgJpg;
+                    img2.onload = () => { container.innerHTML = ''; container.appendChild(img2); };
+                    img2.onerror = () => {
+                        // 4. Если ничего нет -> КРАСНЫЙ ЧЕЛОВЕЧЕК
+                        container.innerHTML = '<div style="font-size:5em;color:var(--red);padding:20px;"><i class="fas fa-user"></i></div>';
+                    }
+                }
             };
         }
 
@@ -500,6 +426,7 @@
 
         async function openProfile() {
             openModal('profileModal');
+            const inputVal = document.getElementById('tokenDisplay').value;
             if(!myToken) await refreshToken(); else check(false);
         }
 
