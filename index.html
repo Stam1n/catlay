@@ -52,13 +52,11 @@
         /* MAIN SLIDER */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
-        
         .main-slide {
             position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible;
         }
         .main-slide.active:hover { transform: scale(1.25) !important; z-index: 20; }
-        
         .main-slide img { 
             width: 100%; height: 100%; object-fit: contain; 
             transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; 
@@ -86,10 +84,8 @@
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
-        
         .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
-
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
         /* LOCKED SLAY */
@@ -99,11 +95,9 @@
         .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
         .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        
         .slay-img { width: 100%; height: 100%; object-fit: contain; filter: blur(5px) brightness(0.4) grayscale(0.8); transition: 0.3s; transform: scale(1.25); }
         .slay-item:hover .slay-img { filter: blur(3px) brightness(0.6); transform: scale(1.35); }
         .slay-item.active .slay-img { filter: blur(4px) brightness(0.5); transform: scale(1.25); }
-
         .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .locked-icon { font-size: 5em; color: var(--red); margin-top: -30px; text-shadow: 0 0 20px rgba(0,0,0,0.9); opacity: 1; }
         .slay-title { position: absolute; bottom: -50px; width: 140%; text-align: center; font-family: var(--font-head); font-size: 1em; color: #fff; text-transform: uppercase; opacity: 0; transition: 0.3s; }
@@ -131,7 +125,17 @@
         .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
         .cand-card { background: #151515; border: 1px solid #333; padding: 20px 10px; text-align: center; cursor: pointer; border-radius: 12px; display: flex; flex-direction: column; align-items: center; height: 100%; min-height: 180px; transition: 0.3s; }
         .cand-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 0 20px rgba(255,0,51,0.2); }
-        .cand-avatar { width: 100%; height: 100px; margin-bottom: 15px; border-radius: 8px; border: 2px solid #333; background: #222; display: flex; align-items: center; justify-content: center; font-size: 2.5em; color: #666; object-fit: cover; transition: 0.3s; }
+        
+        .cand-avatar { 
+            width: 100%; height: 100px; margin-bottom: 15px; 
+            border-radius: 10px; /* ПРЯМОУГОЛЬНЫЕ ИКОНКИ */
+            border: 2px solid #333; background: #222;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5em; color: #666; object-fit: cover; transition: 0.3s;
+        }
+        
+        .cand-avatar img { border-radius: 10px; } /* КАРТИНКИ ТОЖЕ ПРЯМОУГОЛЬНЫЕ */
+
         .cand-card.big-mode .cand-avatar { height: 120px; font-size: 4em; }
         .cand-name { font-weight: bold; font-size: 1.1em; line-height: 1.3; }
         .cand-card.selected { border-color: var(--red); background: #2a0005; box-shadow: 0 0 15px rgba(255,0,51,0.3); transform: translateY(-5px); }
@@ -292,7 +296,7 @@
         </div>
     </div>
 
-    <footer>2025 CatField - CLAY by ZZ</footer>
+    <footer>2025 CatField - CLAY</footer>
 
     <script>
         const API_URL = "https://sstamin.pythonanywhere.com"; 
@@ -366,7 +370,14 @@
         initMain(); initSlay();
 
         function openModal(id){ document.getElementById(id).classList.add('active'); }
-        function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+        
+        function closeModal(id){ 
+            document.getElementById(id).classList.remove('active');
+            // STOP VIDEO WHEN CLOSE PREVIEW
+            if(id === 'previewModal') {
+                document.getElementById('previewMediaContainer').innerHTML = '';
+            }
+        }
         
         let currIdx;
         function openVoteList(idx) {
@@ -391,7 +402,7 @@
                 
                 d.innerHTML = `
                     <div class="cand-avatar">
-                        <img src="${imgPng}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:none;" 
+                        <img src="${imgPng}" style="width:100%;height:100%;object-fit:cover;display:none;" 
                              onload="this.style.display='block'; this.nextElementSibling.style.display='none'"
                              onerror="this.onerror=null; this.src='${imgJpg}'">
                         <span>${phIcon}</span>
@@ -429,7 +440,7 @@
             
             // 1. VIDEO CHECK
             let video = document.createElement('video');
-            video.src = vidUrl; video.controls = true; video.autoplay = true; video.muted = true; video.loop = true;
+            video.src = vidUrl; video.controls = true; video.autoplay = true; video.muted = false; video.loop = true;
             
             // Если видео есть, показываем "Видео найдено"
             video.onloadedmetadata = () => { container.innerHTML = '<div style="color:#0f0">Видео найдено, подождите...</div>'; };
@@ -437,17 +448,17 @@
             video.oncanplay = () => { container.innerHTML = ''; container.appendChild(video); };
             
             video.onerror = () => {
-                // 2. VIDEO FAILED -> PNG
+                // 2. Если видео нет -> Пробуем PNG
                 let img = new Image();
                 img.src = imgPng;
                 img.onload = () => { container.innerHTML = ''; container.appendChild(img); };
                 img.onerror = () => {
-                    // 3. PNG FAILED -> JPG
+                    // 3. Если PNG нет -> Пробуем JPG
                     let img2 = new Image();
                     img2.src = imgJpg;
                     img2.onload = () => { container.innerHTML = ''; container.appendChild(img2); };
                     img2.onerror = () => {
-                        // 4. ALL FAILED -> BIG RED ICON
+                        // 4. Если ничего нет -> КРАСНЫЙ ЧЕЛОВЕЧЕК
                         container.innerHTML = '<div style="font-size:8em;color:var(--red);padding:40px;"><i class="fas fa-user"></i></div>';
                     }
                 }
@@ -464,6 +475,7 @@
 
         async function openProfile() {
             openModal('profileModal');
+            const inputVal = document.getElementById('tokenDisplay').value;
             if(!myToken) await refreshToken(); else check(false);
         }
 
