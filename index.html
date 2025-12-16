@@ -2,16 +2,16 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CATLAY 2025</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } /* Убирает синий клик на мобилках */
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 80px; }
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
@@ -20,9 +20,16 @@
         .particle { position: absolute; background: var(--red); border-radius: 50%; animation: rise 5s infinite; opacity: 0; }
         @keyframes rise { 0% {transform:translateY(100vh) scale(0); opacity:0;} 50% {opacity:1;} 100% {transform:translateY(-10vh) scale(1.5); opacity:0;} }
 
-        header { text-align: center; padding: 40px 20px 40px; position: relative; }
+        /* HEADER */
+        header { text-align: center; padding: 40px 20px 20px; position: relative; }
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
+
+        /* АДАПТАЦИЯ ЗАГОЛОВКА */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; letter-spacing: 2px; }
+            .intro { font-size: 0.8em; padding: 0 10px; }
+        }
 
         .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; z-index: 100; }
         .header-btn { 
@@ -48,40 +55,61 @@
         .fab-rules { left: 20px; } .fab-profile { right: 20px; }
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
+        @media (max-width: 768px) { .section-title { font-size: 1.5em; margin: 20px 0; } }
 
         /* MAIN SLIDER */
-        .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
+        .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 30px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
+        
         .main-slide {
             position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible;
         }
-        .main-slide.active:hover { transform: scale(1.25) !important; z-index: 20; }
         .main-slide img { 
             width: 100%; height: 100%; object-fit: contain; 
             transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; 
             filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transform: scale(1.25);
         }
-        .main-slide.active:hover img { transform: scale(1.35); filter: brightness(1.2) drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
+        
         .ph-wrap { width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 1; display: flex; align-items: center; justify-content: center; background: transparent; }
         .text-ph { font-family: var(--font-head); font-size: 6em; color: #333; text-transform: uppercase; }
+
         .wing { position: absolute; top: 50%; transform: translateY(-50%); font-size: 4em; color: var(--red); opacity: 0; transition: 0.5s; z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none; }
         .wing-left { left: -80px; transform: translateY(-50%) rotateY(180deg); }
         .wing-right { right: -80px; }
         .main-slide.voted .wing { opacity: 1; }
+
         .main-slide h3 { 
-            font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 150%; 
+            font-family: var(--font-head); color: #fff; margin: 0; 
+            position: absolute; bottom: 0; width: 150%; 
             text-transform: uppercase; font-size: 1.3em; text-align: center; 
             text-shadow: 0 0 10px #000; transition: 0.3s; pointer-events: none; 
         }
-        .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); transform: scale(0.8); }
+
+        /* Hover только на ПК */
+        @media (min-width: 769px) {
+            .main-slide.active:hover { transform: scale(1.25) !important; z-index: 20; }
+            .main-slide.active:hover img { transform: scale(1.35); filter: brightness(1.2) drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
+            .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); transform: scale(0.8); }
+        }
+
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; }
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
+        
         .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
-        @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
+        .arrow:active { transform: translateY(-50%) scale(0.9); } /* Анимация нажатия */
+
+        /* АДАПТАЦИЯ ГЛАВНОГО СЛАЙДЕРА */
+        @media (max-width: 768px) { 
+            .main-section { height: 450px; }
+            .main-slide { width: 240px; height: 340px; } 
+            .main-slide.prev { transform: translateX(-140px) scale(0.8) rotateY(10deg); opacity: 0.3; } 
+            .main-slide.next { transform: translateX(140px) scale(0.8) rotateY(-10deg); opacity: 0.3; } 
+            .wing { font-size: 3em; } .wing-left { left: -40px; } .wing-right { right: -40px; }
+            .arrow { width: 40px; height: 40px; font-size: 2em; }
+        }
 
         /* LOCKED SLAY */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
@@ -90,17 +118,26 @@
         .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
         .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+        
         .slay-img { width: 100%; height: 100%; object-fit: contain; filter: blur(5px) brightness(0.4) grayscale(0.8); transition: 0.3s; transform: scale(1.25); }
-        .slay-item:hover .slay-img { filter: blur(3px) brightness(0.6); transform: scale(1.35); }
         .slay-item.active .slay-img { filter: blur(4px) brightness(0.5); transform: scale(1.25); }
+
         .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .locked-icon { font-size: 5em; color: var(--red); margin-top: -30px; text-shadow: 0 0 20px rgba(0,0,0,0.9); opacity: 1; }
         .slay-title { position: absolute; bottom: -50px; width: 140%; text-align: center; font-family: var(--font-head); font-size: 1em; color: #fff; text-transform: uppercase; opacity: 0; transition: 0.3s; }
         .slay-item.active { z-index: 100; }
         .slay-item.active .slay-title { opacity: 1; color: var(--red); }
+        
         .slay-nav { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 50; }
         .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
+
+        /* АДАПТАЦИЯ ДОП. НОМИНАЦИЙ */
+        @media (max-width: 768px) {
+            .slay-wrapper { height: 380px; }
+            .slay-item { width: 180px; height: 260px; }
+            .locked-icon { font-size: 4em; }
+        }
 
         /* SUGGESTIONS */
         .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); }
@@ -118,6 +155,9 @@
 
         /* GRID */
         .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
+        /* Мобильная сетка: меньше колонки */
+        @media (max-width: 480px) { .cand-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); } }
+
         .cand-card { 
             background: #151515; border: 1px solid #333; position: relative;
             padding: 20px 10px; text-align: center; cursor: pointer; 
@@ -126,7 +166,6 @@
         }
         .cand-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 0 20px rgba(255,0,51,0.2); }
         
-        /* БЛОКИРОВКА СЕТКИ ЕСЛИ ГОЛОСОВАЛ */
         .cand-grid.locked { pointer-events: none; opacity: 0.5; filter: grayscale(1); }
 
         .cand-avatar { 
@@ -137,13 +176,12 @@
         }
         .cand-avatar img { border-radius: 10px; }
         
-        /* ИКОНКА ВИДЕО В СПИСКЕ */
         .video-badge {
-            position: absolute; top: -5px; right: -5px; 
-            background: var(--red); color: #fff; width: 25px; height: 25px; 
-            border-radius: 50%; font-size: 12px; display: flex; 
+            position: absolute; top: -8px; right: -8px; 
+            background: var(--red); color: #fff; width: 28px; height: 28px; 
+            border-radius: 50%; font-size: 14px; display: flex; 
             align-items: center; justify-content: center; 
-            box-shadow: 0 0 10px #000; z-index: 10;
+            box-shadow: 0 2px 10px #000; z-index: 10; border: 2px solid #fff;
         }
 
         .cand-card.big-mode .cand-avatar { height: 120px; font-size: 4em; }
@@ -157,27 +195,32 @@
         .custom-btn { width: 100%; background: #333; color: #ccc; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .custom-btn:hover { background: #444; color: #fff; }
         
-        /* CHANGE VOTE PANEL */
-        .change-panel {
-            background: #2a0000; border: 1px solid var(--red); border-radius: 8px;
-            padding: 15px; margin-top: 20px; text-align: center;
-        }
-        .change-btn {
-            background: var(--red); color: #fff; border: none; padding: 8px 15px;
-            border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px;
-        }
+        .change-panel { background: #2a0000; border: 1px solid var(--red); border-radius: 8px; padding: 15px; margin-top: 20px; text-align: center; }
+        .change-btn { background: var(--red); color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
-        /* PREVIEW BUTTON */
         .preview-btn { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; font-weight: 900; text-transform: uppercase; font-size: 1.2em; cursor: pointer; border-radius: 6px; margin-top: 20px; box-shadow: 0 0 20px rgba(255,0,51,0.3); animation: btnPulse 2s infinite; }
         .preview-btn:hover { background: #fff; color: var(--red); animation: none; }
         @keyframes btnPulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 51, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(255, 0, 51, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 51, 0); } }
 
         /* MODALS */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; padding: 10px; }
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; 
+            padding: 10px; 
+        }
         .modal.active { display: flex; animation: openPulse 0.3s forwards; }
         @keyframes openPulse { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
-        .modal-content { width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; padding: 30px 20px; border: 2px solid #333; background: #0a0a0a; border-radius: 12px; position: relative; }
-        .close { position: absolute; top: 10px; right: 15px; font-size: 35px; cursor: pointer; color: #555; line-height: 1; }
+        
+        /* МОБИЛЬНАЯ АДАПТАЦИЯ МОДАЛОК */
+        .modal-content { 
+            width: 95%; max-width: 600px; 
+            max-height: 85vh; /* Чтобы влазило в экран */
+            overflow-y: auto; /* Скролл внутри */
+            padding: 25px 15px; 
+            border: 2px solid #333; background: #0a0a0a; border-radius: 12px; position: relative; 
+        }
+        
+        .close { position: absolute; top: 10px; right: 15px; font-size: 35px; cursor: pointer; color: #555; line-height: 1; z-index: 100; }
         .close:hover { color: var(--red); }
 
         #previewMediaContainer { width: 100%; text-align: center; margin-bottom: 20px; min-height: 200px; display: flex; align-items: center; justify-content: center; background: #111; border-radius: 10px; border: 1px solid #333; overflow: hidden; }
@@ -192,6 +235,7 @@
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
         footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.5em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
+        @media (max-width: 768px) { footer { font-size: 1em; padding: 30px 10px; } }
     </style>
 </head>
 <body>
@@ -256,11 +300,11 @@
             <span class="close" onclick="closeModal('voteModal')">&times;</span>
             <h2 id="voteTitle" style="font-family: var(--font-head); color: #fff; margin-top: 0; text-align:center;"></h2>
             
-            <div id="lockedMessage" style="display:none; text-align:center; padding:20px;">
+            <div id="lockedMessage" style="display:none; text-align:center; padding:10px;">
                 <h3 style="color:#888;">ВЫ УЖЕ ПРОГОЛОСОВАЛИ</h3>
                 <div class="change-panel">
-                    <p style="color:#ccc;">Ваш выбор: <b id="votedName" style="color:var(--red);"></b></p>
-                    <p style="font-size:0.9em; color:#888;">Изменений осталось: <span id="changesLeft">3</span>/3</p>
+                    <p style="color:#ccc;">Выбор: <b id="votedName" style="color:var(--red);"></b></p>
+                    <p style="font-size:0.9em; color:#888;">Изменений: <span id="changesLeft">3</span>/3</p>
                     <button id="changeBtn" class="change-btn" onclick="unlockVote()">ИЗМЕНИТЬ ГОЛОС</button>
                 </div>
             </div>
@@ -404,7 +448,7 @@
         function openModal(id){ document.getElementById(id).classList.add('active'); }
         function closeModal(id){ 
             document.getElementById(id).classList.remove('active');
-            if(id === 'previewModal') document.getElementById('previewMediaContainer').innerHTML = '';
+            if(id === 'previewModal') document.getElementById('previewMediaContainer').innerHTML = ''; // KILL VIDEO
         }
         
         let currIdx;
@@ -416,15 +460,12 @@
             let votedFor = myVotes[mainNoms[idx].title];
             let changesDone = myChanges[mainNoms[idx].title] || 0;
             
-            // ЛОГИКА БЛОКИРОВКИ
             let isLocked = votedFor !== undefined;
             if(isLocked) {
                 document.getElementById('lockedMessage').style.display = 'block';
                 document.getElementById('votedName').innerText = votedFor;
                 document.getElementById('changesLeft').innerText = (3 - changesDone);
                 g.classList.add('locked');
-                
-                // Если лимит исчерпан
                 document.getElementById('changeBtn').style.display = (changesDone >= 3) ? 'none' : 'inline-block';
             } else {
                 document.getElementById('lockedMessage').style.display = 'none';
@@ -443,13 +484,10 @@
                 let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
                 let imgJpg = `${API_URL}/static/cand_${safeNom}_${safeCand}.jpg`;
                 
-                // DETECTOR VIDEO ICON
+                // VIDEO CHECK (ONLY ICON)
                 let vidUrl = `${API_URL}/static/cand_${safeNom}_${safeCand}.mp4`;
                 let vidBadge = `<div id="vid-${safeCand}" class="video-badge" style="display:none"><i class="fas fa-video"></i></div>`;
-                
-                // Check if video exists
-                let vtest = document.createElement('video');
-                vtest.src = vidUrl;
+                let vtest = document.createElement('video'); vtest.src = vidUrl;
                 vtest.onloadedmetadata = () => { document.getElementById(`vid-${safeCand}`).style.display = 'flex'; };
 
                 let phIcon = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
@@ -464,10 +502,7 @@
                     </div>
                     <div class="cand-name">${c}</div>`;
                 
-                d.onclick=()=>{ 
-                    if(g.classList.contains('locked')) return; 
-                    openPreview(c); 
-                };
+                d.onclick=()=>{ if(!g.classList.contains('locked')) openPreview(c); };
                 g.appendChild(d);
             });
             
@@ -573,7 +608,7 @@
                 document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
                 
                 myVotes = d.my_votes || {}; 
-                myChanges = d.changes || {}; // Получаем счетчик изменений
+                myChanges = d.changes || {}; 
                 updateMain(); 
 
                 const st = document.getElementById('statusText');
