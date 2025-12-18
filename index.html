@@ -442,11 +442,7 @@
                 if(d.success) { 
                     cancelEdit(); check(false); 
                 }
-            } catch(e) { 
-                alert("ОШИБКА: " + e + "\n\nОтвет сервера мог быть не JSON.");
-                console.error(e);
-                toast("См. ошибку на экране"); 
-            }
+            } catch(e) { toast("Ошибка!"); }
         }
 
         // ... EXISTING VOTE LOGIC ...
@@ -629,12 +625,7 @@
                     if(manual) { btn.innerText = "ЖДЕМ..."; btn.style.background = "#fa0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"}, 2000); }
                 }
                 updateSlots(d.sug_count, d.suggestions || []);
-            } catch(e) { 
-                alert("ОШИБКА: " + e + "\n\nОтвет сервера мог быть не JSON.");
-                console.error(e);
-                toast("См. ошибку на экране"); 
-                if(manual) btn.innerText = "ОШИБКА"; 
-            }
+            } catch(e) { toast("Ошибка сервера"); if(manual) btn.innerText = "ОШИБКА"; }
         }
 
         function startTimer(s) {
@@ -666,11 +657,7 @@
                 let d = await res.json();
                 if(d.success) { toast("ПРИНЯТО!"); closeModal('voteModal'); check(false); }
                 else toast(d.message);
-            } catch(e) { 
-                alert("ОШИБКА: " + e + "\n\nОтвет сервера мог быть не JSON.");
-                console.error(e);
-                toast("См. ошибку на экране"); 
-            }
+            } catch(e) { toast("Ошибка!"); }
         }
 
         function updateSlots(cnt, list) {
