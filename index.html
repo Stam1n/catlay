@@ -11,7 +11,7 @@
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* СКРЫВАЕМ СКРОЛЛБАР, НО ОСТАВЛЯЕМ СКРОЛЛ */
+        /* СКРЫВАЕМ СКРОЛЛБАР */
         body::-webkit-scrollbar, .modal-content::-webkit-scrollbar { display: none; }
         body, .modal-content { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -106,19 +106,9 @@
         .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
         .cand-card { background: #151515; border: 1px solid #333; padding: 20px 10px; text-align: center; cursor: pointer; border-radius: 12px; display: flex; flex-direction: column; align-items: center; height: 100%; min-height: 180px; transition: 0.3s; }
         .cand-card:hover { border-color: var(--red); transform: translateY(-5px); box-shadow: 0 0 20px rgba(255,0,51,0.2); }
-        
         .cand-avatar { width: 100%; height: 100px; margin-bottom: 15px; border-radius: 10px; border: 2px solid #333; background: #222; display: flex; align-items: center; justify-content: center; font-size: 2.5em; color: #666; object-fit: cover; transition: 0.3s; position: relative; }
         .cand-avatar img { border-radius: 10px; }
-        
-        /* ИКОНКА ВИДЕО ВНУТРИ АВАТАРА - ТЕПЕРЬ НЕ ПРЫГАЕТ */
-        .video-badge { 
-            position: absolute; top: -8px; right: -8px; 
-            background: var(--red); color: #fff; width: 28px; height: 28px; 
-            border-radius: 50%; font-size: 14px; 
-            display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 2px 10px #000; z-index: 10; border: 2px solid #fff; 
-        }
-
+        .video-badge { position: absolute; top: -8px; right: -8px; background: var(--red); color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px #000; z-index: 10; border: 2px solid #fff; }
         .cand-card.big-mode .cand-avatar { height: 120px; font-size: 4em; }
         .cand-name { font-weight: bold; font-size: 1.1em; line-height: 1.3; }
         .cand-card.selected { border-color: var(--red); background: #2a0005; box-shadow: 0 0 15px rgba(255,0,51,0.3); transform: translateY(-5px); }
@@ -142,7 +132,6 @@
         @keyframes openPulse { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
         .modal-content { width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; padding: 30px 20px; border: 2px solid #333; background: #0a0a0a; border-radius: 12px; position: relative; }
         
-        /* КНОПКА ЗАКРЫТИЯ - БОЛЬШЕ И С АНИМАЦИЕЙ */
         .close { 
             position: absolute; top: 10px; right: 15px; 
             font-size: 40px; cursor: pointer; color: #555; 
@@ -157,7 +146,6 @@
         .check-btn { background: var(--red); color: #fff; padding: 12px 20px; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1em; margin-top: 10px; transition: 0.3s; }
         .check-btn:disabled { background: #555; cursor: not-allowed; }
         
-        /* КНОПКА СБРОСА - ЗАМЕТНАЯ */
         .reset-btn { 
             background: #220000; color: #ff5555; border: 1px solid #500; 
             padding: 10px 20px; border-radius: 8px; cursor: pointer; 
@@ -285,6 +273,7 @@
                 <div style="display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
                     <div><h3 id="statVoted" style="color:var(--red);">0</h3><p>Голосов</p></div>
                     <div><h3 id="statLeft">15</h3><p>Осталось</p></div>
+                    <div id="statSugBox"><h3 id="statSug" style="color:#888;">0</h3><p>Идей</p></div>
                 </div>
             </div>
         </div>
@@ -315,7 +304,7 @@
         const mainNoms = [
             {title: "Король CLAY", isPerson: true, cands: ["Foltt1k", "Machinae", "fifa20120022", "SStamin", "Yanantess", "Homiki0"]},
             {title: "Королева CLAY", isPerson: true, cands: ["BaBdjoN", "k4agune", "l0lpiks", "Marusan19", "Poroxhaha"]},
-            {title: "Лучшая постройка", isPerson: false, cands: ["База хранителей кф4", "Остров СС мини кф4", "Остров BaBdjoN кф5", "Спавн кф4", "Спавн кф5"]},
+            {title: "Лучшая постройка", isPerson: false, cands: ["База хранителей кф4", "Остров СС мини кф4", "Остров BaBdjoN кф5", "Спавн кф4", "Спавн кф5", "База Machinae КФ4"]},
             {title: "Фейл года", isPerson: false, cands: ["Кража яйца у сс кф4", "Приваты 42х42", "Межсезонье", "Уход стамина", "Клей 2024", "Sdas_garula x-ray"]},
             {title: "Человек мем", isPerson: true, cands: ["Homiki0", "Timoxa118", "SStamin", "Chumachecha", "vital3000", "Foltt1k", "kkkkkeeeefff", "NarkoBobr1k"]},
             {title: "Завоз года", isPerson: false, cands: ["Война пранков кф5", "Правила сс кф4-кф5", "42х42 блока", "Взрыв запретной зоны"]},
@@ -395,7 +384,7 @@
             if (!deadlineSug || !openingAdd) return;
             let now = Date.now() / 1000 + serverTimeOffset; 
 
-            // SUGGESTION
+            // SUGGESTION TIMER
             let diffSug = deadlineSug - now;
             if (diffSug <= 0) {
                 document.getElementById('timerSug').innerText = "ЗАВЕРШЕНО";
@@ -405,7 +394,7 @@
                 document.getElementById('sugSection').classList.remove('locked');
             }
 
-            // ADD NOMINATIONS
+            // ADD NOMINATIONS TIMER
             let diffAdd = openingAdd - now;
             if (diffAdd <= 0) {
                 document.getElementById('timerAdd').innerText = "ОТКРЫТО";
@@ -421,7 +410,12 @@
         function fmtTime(s) {
             let h = Math.floor(s / 3600); s %= 3600;
             let m = Math.floor(s / 60); s = Math.floor(s % 60);
-            return `${h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+            
+            let mStr = m < 10 ? '0' + m : m;
+            let sStr = s < 10 ? '0' + s : s;
+            let hStr = h < 10 ? '0' + h : h;
+            
+            return `${hStr}:${mStr}:${sStr}`;
         }
 
         function startEdit(id, nom, desc) {
@@ -605,6 +599,7 @@
 
                 document.getElementById('statVoted').innerText = d.vote_count || 0;
                 document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
+                document.getElementById('statSug').innerText = d.sug_count || 0;
                 
                 myVotes = d.my_votes || {}; 
                 myChanges = d.changes || {}; 
@@ -613,6 +608,11 @@
                 serverTimeOffset = d.server_time - (Date.now()/1000);
                 deadlineSug = d.deadline_sug;
                 openingAdd = d.opening_add;
+                
+                // SKRYT' IDEI ESLI VREMYA VYSHLO
+                let now = Date.now() / 1000 + serverTimeOffset;
+                if(now > deadlineSug) document.getElementById('statSugBox').style.display = 'none';
+                else document.getElementById('statSugBox').style.display = 'block';
 
                 updateMain(); 
 
