@@ -304,6 +304,7 @@
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "zz / КПZZ", "ТЦК", "AUGUST"]}
         ];
         const subNoms = ["Лучший строитель", "Лучший ПВП", "Скин года", "Пара/Шип года", "Пиздабол года"];
+        const totalNoms = mainNoms.length; // ВОТ ОНА - ЗАБЫТАЯ СТРОЧКА!
         
         let myVotes = {}, myChanges = {}, mySugs = []; 
         let editModeId = null; 
@@ -442,11 +443,7 @@
                 if(d.success) { 
                     cancelEdit(); check(false); 
                 }
-            } catch(e) { 
-                alert("ОШИБКА: " + e + "\n\nОтвет сервера мог быть не JSON.");
-                console.error(e);
-                toast("См. ошибку на экране"); 
-            }
+            } catch(e) { toast("Ошибка сети"); }
         }
 
         // ... EXISTING VOTE LOGIC ...
@@ -630,9 +627,8 @@
                 }
                 updateSlots(d.sug_count, d.suggestions || []);
             } catch(e) { 
-                alert("ОШИБКА: " + e + "\n\nОтвет сервера мог быть не JSON.");
                 console.error(e);
-                toast("См. ошибку на экране"); 
+                toast("Ошибка сервера"); 
                 if(manual) btn.innerText = "ОШИБКА"; 
             }
         }
@@ -666,11 +662,7 @@
                 let d = await res.json();
                 if(d.success) { toast("ПРИНЯТО!"); closeModal('voteModal'); check(false); }
                 else toast(d.message);
-            } catch(e) { 
-                alert("ОШИБКА: " + e + "\n\nОтвет сервера мог быть не JSON.");
-                console.error(e);
-                toast("См. ошибку на экране"); 
-            }
+            } catch(e) { toast("Ошибка сети"); }
         }
 
         function updateSlots(cnt, list) {
@@ -718,3 +710,4 @@
     </script>
 </body>
 </html>
+
