@@ -304,7 +304,7 @@
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "zz / КПZZ", "ТЦК", "AUGUST"]}
         ];
         const subNoms = ["Лучший строитель", "Лучший ПВП", "Скин года", "Пара/Шип года", "Пиздабол года"];
-        const totalNoms = mainNoms.length; // ВОТ ОНА - ЗАБЫТАЯ СТРОЧКА!
+        const totalNoms = mainNoms.length;
         
         let myVotes = {}, myChanges = {}, mySugs = []; 
         let editModeId = null; 
@@ -402,10 +402,14 @@
         }
 
         function fmtTime(s) {
-            let d = Math.floor(s / 86400); s %= 86400;
             let h = Math.floor(s / 3600); s %= 3600;
             let m = Math.floor(s / 60); s = Math.floor(s % 60);
-            return `${d}д ${h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
+            
+            let mStr = m < 10 ? '0' + m : m;
+            let sStr = s < 10 ? '0' + s : s;
+            let hStr = h < 10 ? '0' + h : h;
+            
+            return `${hStr}:${mStr}:${sStr}`;
         }
 
         // --- EDIT SUGGESTION ---
@@ -710,4 +714,3 @@
     </script>
 </body>
 </html>
-
