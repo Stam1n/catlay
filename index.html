@@ -28,22 +28,6 @@
         #maintenanceScreen h1 { font-size: 3em; color: var(--red); margin-bottom: 20px; animation: pulse 2s infinite; }
         #maintenanceScreen p { font-size: 1.2em; color: #888; max-width: 80%; }
 
-        /* BANNER */
-        .floating-banner {
-            position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(90deg, rgba(20,0,0,0.9), rgba(50,0,10,0.9));
-            border: 1px solid var(--red);
-            color: #fff; text-align: center;
-            padding: 12px 30px; font-family: var(--font-head); font-weight: 900;
-            z-index: 9000; box-shadow: 0 0 20px rgba(255,0,51,0.3);
-            font-size: 0.8em; letter-spacing: 2px; text-transform: uppercase;
-            border-radius: 30px;
-            backdrop-filter: blur(5px);
-            animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            white-space: nowrap;
-        }
-        @keyframes slideDown { from { top: -60px; opacity:0; } to { top: 25px; opacity:1; } }
-
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: var(--red); border-radius: 50%; animation: rise 5s infinite; opacity: 0; }
@@ -66,6 +50,14 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
+        /* WINGS (SHARED) */
+        .wing { position: absolute; top: 50%; transform: translateY(-50%); font-size: 4em; color: var(--red); opacity: 0; transition: 0.5s; z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none; }
+        .wing-left { left: -80px; transform: translateY(-50%) rotateY(180deg); }
+        .wing-right { right: -80px; }
+        
+        /* VOTED STATE FOR SLIDES */
+        .main-slide.voted .wing, .slay-item.voted .wing { opacity: 1; }
+
         /* MAIN SLIDER */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
@@ -75,10 +67,6 @@
         .main-slide.active:hover img { transform: scale(1.35); filter: brightness(1.2) drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
         .ph-wrap { width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 1; display: flex; align-items: center; justify-content: center; background: transparent; }
         .text-ph { font-family: var(--font-head); font-size: 6em; color: #333; text-transform: uppercase; }
-        .wing { position: absolute; top: 50%; transform: translateY(-50%); font-size: 4em; color: var(--red); opacity: 0; transition: 0.5s; z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none; }
-        .wing-left { left: -80px; transform: translateY(-50%) rotateY(180deg); }
-        .wing-right { right: -80px; }
-        .main-slide.voted .wing { opacity: 1; }
         .main-slide h3 { font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 150%; text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; transition: 0.3s; pointer-events: none; }
         .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); transform: scale(0.8); }
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; }
@@ -112,6 +100,7 @@
             width: 100%; height: 100%; object-fit: contain; 
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); 
             transition: transform 0.3s ease-out, filter 0.3s; 
+            z-index: 2; /* Above wings */
         }
         
         .slay-item:hover .slay-img { 
@@ -126,17 +115,21 @@
             text-transform: uppercase; font-weight: 900; letter-spacing: 2px;
             text-shadow: 0 2px 10px #000;
             transition: all 0.3s ease; pointer-events: none;
-            opacity: 0.7; transform: scale(0.9);
+            opacity: 0.7; transform: scale(0.9); z-index: 3;
         }
         
         .slay-item.active .slay-title { opacity: 1; transform: scale(1); text-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
-        
-        /* FIX: Less intense white glow */
         .slay-item:hover .slay-title { 
             color: var(--red); transform: scale(1.1) translateY(-5px); 
-            text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3); /* WEAKER WHITE */
+            text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3);
         }
         
+        /* ADJUST WINGS FOR SLAY ITEMS */
+        .slay-item .wing { font-size: 3em; z-index: 1; opacity: 0; transition: opacity 0.5s; }
+        .slay-item .wing-left { left: -60px; }
+        .slay-item .wing-right { right: -60px; }
+        .slay-item.voted .wing { opacity: 1; }
+
         /* RED GLOW BEHIND ACTIVE (DELAYED APPEARANCE) */
         .slay-item::before {
             content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
@@ -144,36 +137,29 @@
             background: radial-gradient(circle, rgba(255,0,51,0.3) 0%, transparent 70%);
             z-index: -1; pointer-events: none;
             filter: blur(20px); 
-            opacity: 0; /* HIDDEN BY DEFAULT */
-            transition: opacity 0.5s ease 0.3s; /* DELAY 0.3s BEFORE SHOWING */
+            opacity: 0; transition: opacity 0.5s ease 0.3s;
         }
-        .slay-item.active::before {
-            opacity: 1; /* SHOW ONLY WHEN ACTIVE (AFTER DELAY) */
-        }
+        .slay-item.active::before { opacity: 1; }
 
         .slay-nav { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 200; }
         .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; transition: 0.2s; }
         .slay-btn:active { transform: scale(0.9); }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
 
-        /* SUGGESTIONS - NO BACKGROUND, BLURRED CONTENT */
+        /* SUGGESTIONS BLURRED & LOCKED */
         .suggest-section { 
             max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; 
-            background: transparent; /* REMOVED BACKGROUND */
-            border: none; /* REMOVED BORDER */
+            background: transparent; border: none;
             position: relative; overflow: hidden; 
         }
         
-        /* BLUR CONTENT BEHIND LOCK */
         .suggest-section.chained .suggest-form, 
         .suggest-section.chained .slots-container,
         .suggest-section.chained .suggest-desc,
         .suggest-section.chained .sug-counter-box { 
-            opacity: 0.4; pointer-events: none; 
-            filter: blur(8px); /* STRONG BLUR */
+            opacity: 0.4; pointer-events: none; filter: blur(8px);
         }
 
-        /* LOCK ICON & TEXT - CENTERED */
         .suggest-section.chained .lock-icon-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex !important; flex-direction: column; 
@@ -255,8 +241,6 @@
         <h1>🛠 ТЕХ. РАБОТЫ</h1>
         <p>Сайт временно закрыт на обновление.<br>Зайдите позже.</p>
     </div>
-
-    <div class="floating-banner" id="floatBanner">ГОЛОСОВАНИЕ ЗА ДОП. НОМИНАЦИИ ОТКРЫТО!</div>
 
     <div class="ambient-bg"></div>
     <div class="particles" id="particles"></div>
@@ -452,6 +436,7 @@
             subNomsList.forEach((n, i) => {
                 let d = document.createElement('div'); d.className = 'slay-item'; d.id = `sl-${i}`;
                 d.innerHTML = `
+                    <div class="wing wing-left"><i class="fas fa-feather-alt"></i></div><div class="wing wing-right"><i class="fas fa-feather-alt"></i></div>
                     <img src="${API_URL}/static/sub_${n.imgId}.png" class="slay-img" onerror="this.style.display='none'">
                     <div class="slay-title">${n.title}</div>`;
                 d.onclick = () => openVoteList(1, i);
@@ -460,12 +445,13 @@
             updateSlay();
         }
         
-        // 3D ORBIT MECHANIC
         function updateSlay() {
             for(let i=0; i<subNomsList.length; i++) {
                 let el = document.getElementById(`sl-${i}`);
                 let diff = i - slayIdx;
                 
+                if(myVotes[subNomsList[i].title]) el.classList.add('voted'); else el.classList.remove('voted');
+
                 if (diff === 0) {
                     el.style.transform = `translate(-50%, -50%) translateZ(200px)`; 
                     el.style.zIndex = 100;
@@ -589,6 +575,7 @@
             
             let video = document.createElement('video');
             video.src = vidUrl; video.controls = true; video.autoplay = true; video.muted = false; video.loop = true;
+            
             video.onloadedmetadata = () => { container.innerHTML = '<div style="color:#0f0">Видео найдено, подождите...</div>'; };
             video.oncanplay = () => { container.innerHTML = ''; container.appendChild(video); };
             
