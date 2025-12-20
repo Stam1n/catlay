@@ -66,10 +66,6 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
-        .countdown-wrap { text-align: center; margin-bottom: 20px; }
-        .countdown-title { color: #888; font-size: 0.9em; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
-        .countdown-time { font-family: var(--font-head); font-size: 1.5em; color: #fff; text-shadow: 0 0 10px var(--red); }
-
         /* MAIN SLIDER */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
@@ -97,7 +93,6 @@
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
         .slay-wrapper { position: relative; height: 450px; display: flex; justify-content: center; align-items: center; overflow: visible; perspective: 1200px; }
         
-        /* 3D Container */
         .slay-track { 
             position: relative; width: 100%; height: 100%; 
             display: flex; justify-content: center; align-items: center; 
@@ -106,56 +101,44 @@
         
         .slay-item { 
             position: absolute; 
-            top: 50%; left: 50%; /* Anchor Center */
+            top: 50%; left: 50%; 
             width: 260px; height: 360px; 
-            /* Start centered */
             transform: translate(-50%, -50%); 
-            /* SPRING ANIMATION (Not clumsy) */
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s, z-index 0s;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; 
         }
         
-        /* IMAGE STYLING - NO DARK OVERLAY */
         .slay-img { 
             width: 100%; height: 100%; object-fit: contain; 
-            /* Clean look, no dimming */
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); 
             transition: transform 0.3s ease-out, filter 0.3s; 
         }
         
-        /* HOVER INTERACTION */
         .slay-item:hover .slay-img { 
             transform: scale(1.1) translateY(-10px); 
             filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); 
         }
         
-        /* REACTIVE TITLES */
         .slay-title { 
             position: absolute; bottom: 10px;
             width: 140%; text-align: center; 
             font-family: var(--font-head); font-size: 1.4em; color: #fff; 
             text-transform: uppercase; font-weight: 900; letter-spacing: 2px;
             text-shadow: 0 2px 10px #000;
-            transition: all 0.3s ease;
-            pointer-events: none;
+            transition: all 0.3s ease; pointer-events: none;
             opacity: 0.7; transform: scale(0.9);
         }
         
-        /* Active Item Title */
         .slay-item.active .slay-title { opacity: 1; transform: scale(1); text-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
+        .slay-item:hover .slay-title { color: var(--red); transform: scale(1.1) translateY(-5px); text-shadow: 0 0 20px var(--red), 0 0 40px #fff; }
         
-        /* Hover Effect on Title */
-        .slay-item:hover .slay-title {
-            color: var(--red);
-            transform: scale(1.1) translateY(-5px);
-            text-shadow: 0 0 20px var(--red), 0 0 40px #fff;
-        }
-        
-        /* RED GLOW BEHIND ACTIVE */
+        /* RED GLOW BEHIND ACTIVE (FIXED CUT-OFF) */
         .slay-item.active::before {
             content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-            width: 80%; height: 80%; background: radial-gradient(circle, rgba(255,0,51,0.3) 0%, transparent 70%);
+            width: 130%; height: 130%; /* Larger than item */
+            background: radial-gradient(circle, rgba(255,0,51,0.3) 0%, transparent 70%);
             z-index: -1; pointer-events: none;
+            filter: blur(20px); /* Smooth edges */
         }
 
         .slay-nav { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 200; }
@@ -163,25 +146,35 @@
         .slay-btn:active { transform: scale(0.9); }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
 
-        /* SUGGESTIONS WITH CHAINS */
-        .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); position: relative; overflow: hidden; }
-        
-        .suggest-section.chained::before, .suggest-section.chained::after {
-            content: ''; position: absolute; top: 50%; left: 50%;
-            width: 120%; height: 18px;
-            background: repeating-linear-gradient(90deg, #222 0, #222 10px, #444 12px, #111 20px);
-            border-top: 2px solid #555; border-bottom: 2px solid #555;
-            box-shadow: 0 5px 15px #000; z-index: 10; pointer-events: none;
+        /* SUGGESTIONS BLURRED & LOCKED */
+        .suggest-section { 
+            max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; 
+            background: #080808; border-radius: 15px; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.8); 
+            position: relative; overflow: hidden; 
+            /* NO BORDER */
         }
-        .suggest-section.chained::before { transform: translate(-50%, -50%) rotate(25deg); }
-        .suggest-section.chained::after { transform: translate(-50%, -50%) rotate(-25deg); }
+        
+        /* BLUR CONTENT BEHIND LOCK */
+        .suggest-section.chained .suggest-form, 
+        .suggest-section.chained .slots-container,
+        .suggest-section.chained .suggest-desc,
+        .suggest-section.chained .sug-counter-box { 
+            opacity: 0.3; pointer-events: none; 
+            filter: blur(6px); /* Strong Blur */
+        }
 
+        /* LOCK ICON & TEXT */
         .suggest-section.chained .lock-icon-overlay {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             font-size: 5em; color: var(--red); z-index: 12; text-shadow: 0 0 20px #000;
-            display: block !important;
+            display: flex !important; flex-direction: column; align-items: center;
         }
-        .suggest-section.chained .suggest-form, .suggest-section.chained .slots-container { opacity: 0.2; pointer-events: none; filter: blur(2px); }
+        .suggest-section.chained::after {
+            content: 'ПРЕДЛОЖЕНИЯ ЗАКРЫТЫ'; margin-top: 15px;
+            color: var(--red); font-family: var(--font-head); font-size: 0.4em; 
+            text-shadow: 0 0 10px #000; text-align: center; white-space: nowrap;
+        }
 
         .suggest-header { text-align: center; color: var(--red); font-family: var(--font-head); margin-bottom: 5px; font-size: 1.5em; }
         .suggest-desc { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 20px; line-height: 1.5; }
@@ -394,13 +387,12 @@
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "zz / КПZZ", "ТЦК", "AUGUST"]}
         ];
         
-        // ORDER: OLD (0-4), NEW (5-7).
         const subNomsList = [
-            {title: "Лучший строитель", isPerson: true, cands: [], imgId: 0}, 
-            {title: "Лучший ПВП", isPerson: true, cands: [], imgId: 1},
-            {title: "Скин года", isPerson: true, cands: [], imgId: 2},
-            {title: "Пара/Шип года", isPerson: false, cands: [], imgId: 3},
-            {title: "Пиздабол года", isPerson: true, cands: [], imgId: 4},
+            {title: "Лучший строитель", isPerson: true, cands: ["BaBdjoN", "MetOssinka", "Foltt1k", "k4agune", "kkkkkeeeefff", "l0lpiks", "flakePok", "Machinae"], imgId: 0}, 
+            {title: "Лучший ПВП", isPerson: true, cands: ["Foltt1k", "fifa20120022", "mirik2025", "Homiki0", "SStamin", "NarkoBobr1k", "OduVaNchIIk", "KToYuO_O", "Sdas_garula"], imgId: 1},
+            {title: "Скин года", isPerson: true, cands: ["k4agune", "BaBdjoN", "Foltt1k", "MetOssinka", "Homiki0"], imgId: 2},
+            {title: "Пара/Шип года", isPerson: false, cands: ["Homik + BaBdjoN", "Poroxhaha + KQOS_Kara", "mirik2025 + fifa20120022", "Marusan19 + SumyRaider", "k4agune + BaBdjoN", "Marusan19 + Foltt1k", "k4agune + Foltt1k"], imgId: 3},
+            {title: "Пиздабол года", isPerson: true, cands: ["Yanantess", "Sdas_garula", "SStamin", "Homiki0", "Timoxa118"], imgId: 4},
             {title: "Афк года", isPerson: true, cands: ["Yanantess", "MetOssinka", "Chumachecha", "Illyuha", "Safov"], imgId: 5},
             {title: "Фармила года", isPerson: true, cands: ["Sdas_garula", "Homiki0", "BaBdjoN", "SStamin", "fifa2012022", "wwawkkk", "vital3000", "k4agune"], imgId: 6},
             {title: "Стример года", isPerson: true, cands: ["Foltt1k", "BaBdjoN", "Manshikage (Пельмень)", "EnterUp (Торф)", "pehaold"], imgId: 7}
@@ -451,15 +443,13 @@
             updateSlay();
         }
         
-        // 3D ORBIT MECHANIC (NO CLUMSINESS)
+        // 3D ORBIT MECHANIC
         function updateSlay() {
             for(let i=0; i<subNomsList.length; i++) {
                 let el = document.getElementById(`sl-${i}`);
                 let diff = i - slayIdx;
                 
-                // Active Card
                 if (diff === 0) {
-                    // Slight move forward (translateZ), face front
                     el.style.transform = `translate(-50%, -50%) translateZ(200px)`; 
                     el.style.zIndex = 100;
                     el.style.opacity = 1;
@@ -467,13 +457,11 @@
                 } 
                 else {
                     el.classList.remove('active');
-                    
-                    // Cap diff to avoid items flying too far
                     let safeDiff = Math.max(-2, Math.min(2, diff)); 
-                    let xOffset = safeDiff * 260; // Spread
-                    let zOffset = 100 - Math.abs(safeDiff) * 100; // Depth
-                    let rotateY = -safeDiff * 25; // Rotate towards center
-                    let opacity = Math.abs(diff) > 2 ? 0 : 0.6; // Fade out far items
+                    let xOffset = safeDiff * 260; 
+                    let zOffset = 100 - Math.abs(safeDiff) * 100; 
+                    let rotateY = -safeDiff * 25; 
+                    let opacity = Math.abs(diff) > 2 ? 0 : 0.6; 
 
                     el.style.transform = `translate(-50%, -50%) translate3d(${xOffset}px, 0, ${zOffset}px) rotateY(${rotateY}deg)`;
                     el.style.zIndex = 50 - Math.abs(diff);
@@ -496,7 +484,6 @@
             if(id === 'previewModal') document.getElementById('previewMediaContainer').innerHTML = ''; 
         }
         
-        // AUTO LOCK SUGGESTIONS
         document.getElementById('sugSection').classList.add('chained');
         function startEdit() { toast("Закрыто!"); }
         function cancelEdit() {}
@@ -555,7 +542,6 @@
                 g.appendChild(d);
             });
             
-            // ALWAYS SHOW CUSTOM VOTE INPUT
             if(votedFor && !nom.cands.includes(votedFor)) {
                document.getElementById('customCandName').value = votedFor;
             } else {
@@ -671,7 +657,6 @@
                 myVotes = d.my_votes || {}; 
                 myChanges = d.changes || {}; 
                 sugEditsCount = d.sug_edits || 0;
-                
                 document.getElementById('statSugBox').style.display = 'none';
 
                 updateMain(); updateSlay();
