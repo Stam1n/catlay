@@ -18,6 +18,7 @@
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
+        /* MAINTENANCE SCREEN */
         #maintenanceScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: none;
@@ -36,6 +37,7 @@
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
+        /* BUTTONS */
         .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; z-index: 10001; pointer-events: auto; }
         .header-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.8em; }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
@@ -49,7 +51,7 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
-        /* WINGS SYSTEM (FIXED) */
+        /* WINGS */
         .wing { 
             position: absolute; top: 50%; 
             font-size: 3.5em; color: var(--red); 
@@ -57,12 +59,10 @@
             z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); 
             pointer-events: none; 
         }
-        
-        /* FIX MIRRORING: Left wing flipped, Right wing normal */
         .wing-left { transform: translateY(-50%) scaleX(-1); } 
         .wing-right { transform: translateY(-50%); }
 
-        /* MAIN SLIDER WINGS (Original Distance) */
+        /* MAIN SLIDER WINGS */
         .main-slide .wing-left { left: -80px; }
         .main-slide .wing-right { right: -80px; }
         
@@ -92,7 +92,7 @@
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
-        /* SLAY */
+        /* SLAY (ORBIT) */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
         .slay-wrapper { position: relative; height: 450px; display: flex; justify-content: center; align-items: center; overflow: visible; perspective: 1200px; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
@@ -117,6 +117,8 @@
         .slay-item.active .slay-title { opacity: 1; transform: scale(1); text-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
         .slay-item:hover .slay-title { color: var(--red); transform: scale(1.1) translateY(-5px); text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3); }
         
+        .slay-item .wing { font-size: 3em; z-index: 1; } /* Wings z-index inside item */
+
         .slay-item::before {
             content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
             width: 130%; height: 130%; background: radial-gradient(circle, rgba(255,0,51,0.3) 0%, transparent 70%);
@@ -192,7 +194,16 @@
         .reset-btn { background: #220000; color: #ff5555; border: 1px solid #500; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9em; margin-top: 15px; font-weight: bold; width: 100%; text-transform: uppercase; transition: 0.3s; }
         .reset-btn:hover { background: #400; color: #fff; border-color: var(--red); }
 
-        .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #111; border: 1px solid var(--red); padding: 15px 25px; border-radius: 30px; color: #fff; z-index: 20000; opacity: 0; transition: 0.4s; font-weight: bold; box-shadow: 0 5px 20px #000; }
+        /* TOAST - TOP LAYER */
+        .toast { 
+            position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-200%); 
+            background: #111; border: 1px solid var(--red); 
+            padding: 15px 30px; border-radius: 30px; 
+            color: #fff; z-index: 99999; /* MAX Z-INDEX */
+            opacity: 0; transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); 
+            font-weight: 900; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            font-family: var(--font-body); letter-spacing: 1px;
+        }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
         footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.5em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
@@ -350,6 +361,7 @@
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "zz / КПZZ", "ТЦК", "AUGUST"]}
         ];
         
+        // ORDER: OLD (0-4), NEW (5-7).
         const subNomsList = [
             {title: "Лучший строитель", isPerson: true, cands: ["BaBdjoN", "MetOssinka", "Foltt1k", "k4agune", "kkkkkeeeefff", "l0lpiks", "flakePok", "Machinae"], imgId: 0}, 
             {title: "Лучший ПВП", isPerson: true, cands: ["Foltt1k", "fifa20120022", "mirik2025", "Homiki0", "SStamin", "NarkoBobr1k", "OduVaNchIIk", "KToYuO_O", "Sdas_garula"], imgId: 1},
@@ -412,6 +424,7 @@
                 let el = document.getElementById(`sl-${i}`);
                 let diff = i - slayIdx;
                 
+                // FORCE WINGS UPDATE BASED ON VOTES
                 if(myVotes[subNomsList[i].title]) el.classList.add('voted'); else el.classList.remove('voted');
 
                 if (diff === 0) {
@@ -444,7 +457,6 @@
         }
         function closeModal(id){ 
             document.getElementById(id).classList.remove('active');
-            // STOP VIDEO ON CLOSE
             if(id === 'previewModal') {
                 const v = document.querySelector('#previewMediaContainer video');
                 if(v) v.pause();
@@ -564,17 +576,30 @@
 
         async function sendVote(cand) {
             let nomTitle = currGroup===0 ? mainNoms[currIdx].title : subNomsList[currIdx].title;
+            
+            // OPTIMISTIC UPDATE: SHOW WINGS INSTANTLY
+            myVotes[nomTitle] = cand; 
+            updateSlay(); updateMain();
+
             try {
                 let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nomTitle, candidate:cand})});
                 let d = await res.json();
-                if(d.success) { toast("ПРИНЯТО!"); check(false); }
-                else toast(d.message);
+                if(d.success) { 
+                    toast("ПРИНЯТО!"); 
+                    check(false); 
+                }
+                else { 
+                    toast(d.message);
+                    // REVERT IF FAILED
+                    if(d.message !== "ПРИНЯТО!") {
+                        delete myVotes[nomTitle];
+                        updateSlay(); updateMain();
+                    }
+                }
             } catch(e) { toast("Ошибка сети"); }
         }
 
         let myToken = localStorage.getItem('tk');
-        
-        // AUTO REFRESH LOGIC (2 MINS)
         let tokenTimer;
         let lastCheckTime = 0;
 
@@ -601,8 +626,6 @@
 
         async function check(manual) {
             const btn = document.getElementById('checkBtn');
-            
-            // COOLDOWN LOGIC (5 SEC)
             if(manual) {
                 if(Date.now() - lastCheckTime < 5000) { toast("Подождите..."); return; }
                 lastCheckTime = Date.now();
@@ -618,12 +641,8 @@
                 if(d.maintenance) { document.getElementById('maintenanceScreen').style.display = 'flex'; return; }
                 else document.getElementById('maintenanceScreen').style.display = 'none';
 
-                // AUTO REFRESH IF EXPIRED AND PROFILE OPEN
                 if (d.expired) { 
-                    if(document.getElementById('profileModal').classList.contains('active')) {
-                        refreshToken(); // Get new one immediately
-                        return;
-                    }
+                    if(document.getElementById('profileModal').classList.contains('active')) { refreshToken(); return; }
                     document.getElementById('statusText').innerText = "КОД ИСТЕК";
                     document.getElementById('statusText').style.color = "red";
                     document.getElementById('loading').style.display='none';
@@ -638,9 +657,7 @@
                 document.getElementById('loading').style.display='none';
                 document.getElementById('profileContent').style.display='block';
                 const tokenInput = document.getElementById('tokenDisplay');
-                tokenInput.value = myToken; 
-                // READONLY IS ALREADY IN HTML, BUT FORCE IT HERE TOO
-                tokenInput.readOnly = true;
+                tokenInput.value = myToken; tokenInput.readOnly = true;
 
                 document.getElementById('statVoted').innerText = d.vote_count || 0;
                 document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
@@ -653,8 +670,6 @@
                 updateMain(); updateSlay();
 
                 const st = document.getElementById('statusText');
-                const auth = document.getElementById('authSection');
-                
                 if(d.status==='approved') {
                     st.innerText = d.is_admin ? "ADMIN ACCESS" : "ЗАРЕГИСТРИРОВАН"; 
                     st.style.color = "#0f0";
@@ -663,8 +678,6 @@
                 } else {
                     st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГИСТРИРОВАН";
                     st.style.color = d.status==='review'?"#fa0":"#555";
-                    auth.style.display = 'block'; 
-                    // START CLIENT SIDE TIMER
                     startTimer(d.code_life);
                     if(manual) { btn.innerText = "ЖДЕМ..."; btn.style.background = "#fa0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"; btn.disabled=false;}, 2000); }
                 }
@@ -679,12 +692,9 @@
             let l = Math.floor(s);
             const display = document.getElementById('timer');
             display.style.display = 'block';
-            
             tokenTimer = setInterval(() => {
                 if(l <= 0) { 
-                    clearInterval(tokenTimer); 
-                    display.innerText = "Обновление..."; 
-                    // AUTO REFRESH IF OPEN
+                    clearInterval(tokenTimer); display.innerText = "Обновление..."; 
                     if(document.getElementById('profileModal').classList.contains('active')) refreshToken();
                     return; 
                 }
@@ -693,6 +703,21 @@
                 let sc = l % 60;
                 display.innerText = `${m}:${sc<10?'0'+sc:sc}`;
             }, 1000);
+        }
+        
+        function toast(msg) { 
+            let t = document.getElementById('toast'); 
+            t.innerText = msg; 
+            t.classList.add('show'); 
+            setTimeout(() => t.classList.remove('show'), 3000); 
+        }
+        
+        const pc = document.getElementById('particles');
+        for(let i=0;i<40;i++) {
+            let p=document.createElement('div'); p.className='particle';
+            p.style.left=Math.random()*100+'%'; p.style.width=p.style.height=(Math.random()*5+2)+'px';
+            p.style.animationDuration=(Math.random()*5+5)+'s'; p.style.animationDelay=Math.random()*5+'s';
+            pc.appendChild(p);
         }
         
         window.addEventListener('scroll', ()=>{
