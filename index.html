@@ -10,15 +10,32 @@
     
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        /* СКРЫВАЕМ СКРОЛЛБАР */
         body::-webkit-scrollbar, .modal-content::-webkit-scrollbar { display: none; }
         body, .modal-content { -ms-overflow-style: none; scrollbar-width: none; }
 
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 40px; /* Space for banner */ }
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
+
+        /* MAINTENANCE SCREEN */
+        #maintenanceScreen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 20000; display: none;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center;
+        }
+        #maintenanceScreen h1 { font-size: 3em; color: var(--red); margin-bottom: 20px; animation: pulse 2s infinite; }
+        #maintenanceScreen p { font-size: 1.2em; color: #888; max-width: 80%; }
+
+        /* FLOATING BANNER */
+        .floating-banner {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: var(--red); color: #fff; text-align: center;
+            padding: 8px 0; font-family: var(--font-head); font-weight: 900;
+            z-index: 9000; box-shadow: 0 5px 20px rgba(255,0,51,0.5);
+            font-size: 0.9em; letter-spacing: 1px;
+        }
 
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
@@ -68,17 +85,14 @@
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
+        /* SLAY (ADDITIONAL) */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
-        .locked-notice { color: #555; font-family: var(--font-head); text-transform: uppercase; border: 1px solid #333; display: inline-block; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 0.8em; margin-bottom: 30px; text-align: center; }
-        .locked-container { text-align: center; }
         .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
         .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        .slay-img { width: 100%; height: 100%; object-fit: contain; filter: blur(5px) brightness(0.4) grayscale(0.8); transition: 0.3s; transform: scale(1.25); }
-        .slay-item:hover .slay-img { filter: blur(3px) brightness(0.6); transform: scale(1.35); }
-        .slay-item.active .slay-img { filter: blur(4px) brightness(0.5); transform: scale(1.25); }
-        .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .locked-icon { font-size: 5em; color: var(--red); margin-top: -30px; text-shadow: 0 0 20px rgba(0,0,0,0.9); opacity: 1; }
+        .slay-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transition: 0.3s; transform: scale(1.25); }
+        .slay-item.active .slay-img { transform: scale(1.35); filter: drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
+        
         .slay-title { position: absolute; bottom: -50px; width: 140%; text-align: center; font-family: var(--font-head); font-size: 1em; color: #fff; text-transform: uppercase; opacity: 0; transition: 0.3s; }
         .slay-item.active { z-index: 100; }
         .slay-item.active .slay-title { opacity: 1; color: var(--red); }
@@ -86,9 +100,19 @@
         .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
 
+        /* SUGGESTIONS WITH CHAINS */
         .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); position: relative; overflow: hidden; }
-        .suggest-section.locked::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); z-index: 10; backdrop-filter: blur(5px); }
-        .suggest-section.locked::after { content: '\f023'; font-family: "Font Awesome 5 Free"; font-weight: 900; position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size: 5em; color: var(--red); z-index: 11; }
+        
+        .suggest-section.chained::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7) url('https://img.icons8.com/ios-filled/100/ff0033/lock.png') no-repeat center;
+            background-size: 100px; z-index: 10; backdrop-filter: grayscale(1) blur(2px);
+        }
+        .suggest-section.chained::after {
+            content: 'ПРЕДЛОЖЕНИЯ ЗАКРЫТЫ'; position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);
+            color: var(--red); font-family: var(--font-head); font-size: 1.5em; text-shadow: 0 0 10px #000; z-index: 11; width: 100%; text-align: center;
+        }
+
         .suggest-header { text-align: center; color: var(--red); font-family: var(--font-head); margin-bottom: 5px; font-size: 1.5em; }
         .suggest-desc { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 20px; line-height: 1.5; }
         .sug-counter-box { text-align: center; margin-bottom: 15px; font-family: var(--font-head); color: #fff; }
@@ -132,11 +156,7 @@
         @keyframes openPulse { 0% { opacity: 0; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1); } }
         .modal-content { width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; padding: 30px 20px; border: 2px solid #333; background: #0a0a0a; border-radius: 12px; position: relative; }
         
-        .close { 
-            position: absolute; top: 10px; right: 15px; 
-            font-size: 40px; cursor: pointer; color: #555; 
-            line-height: 1; z-index: 100; transition: 0.3s; 
-        }
+        .close { position: absolute; top: 10px; right: 15px; font-size: 40px; cursor: pointer; color: #555; line-height: 1; z-index: 100; transition: 0.3s; }
         .close:hover { color: var(--red); transform: rotate(90deg) scale(1.1); }
 
         #previewMediaContainer { width: 100%; text-align: center; margin-bottom: 20px; min-height: 200px; display: flex; align-items: center; justify-content: center; background: #111; border-radius: 10px; border: 1px solid #333; overflow: hidden; }
@@ -146,12 +166,7 @@
         .check-btn { background: var(--red); color: #fff; padding: 12px 20px; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1em; margin-top: 10px; transition: 0.3s; }
         .check-btn:disabled { background: #555; cursor: not-allowed; }
         
-        .reset-btn { 
-            background: #220000; color: #ff5555; border: 1px solid #500; 
-            padding: 10px 20px; border-radius: 8px; cursor: pointer; 
-            font-size: 0.9em; margin-top: 15px; font-weight: bold; width: 100%;
-            text-transform: uppercase; transition: 0.3s;
-        }
+        .reset-btn { background: #220000; color: #ff5555; border: 1px solid #500; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 0.9em; margin-top: 15px; font-weight: bold; width: 100%; text-transform: uppercase; transition: 0.3s; }
         .reset-btn:hover { background: #400; color: #fff; border-color: var(--red); }
 
         .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-100px); background: #111; border: 1px solid var(--red); padding: 15px 25px; border-radius: 30px; color: #fff; z-index: 20000; opacity: 0; transition: 0.4s; font-weight: bold; box-shadow: 0 5px 20px #000; }
@@ -161,6 +176,13 @@
     </style>
 </head>
 <body>
+    <div id="maintenanceScreen">
+        <h1>🛠 ТЕХ. РАБОТЫ</h1>
+        <p>Сайт временно закрыт на обновление.<br>Зайдите позже.</p>
+    </div>
+
+    <div class="floating-banner" id="floatBanner">ГОЛОСОВАНИЕ ЗА ДОП. НОМИНАЦИИ ОТКРЫТО!</div>
+
     <div class="ambient-bg"></div>
     <div class="particles" id="particles"></div>
     <div id="toast" class="toast">Info</div>
@@ -191,11 +213,6 @@
 
     <section class="slay-section" id="addNomSection">
         <h2 class="section-title">ДОПОЛНИТЕЛЬНЫЕ НОМИНАЦИИ</h2>
-        <div class="countdown-wrap">
-            <div class="countdown-title">ОТКРЫТИЕ ЧЕРЕЗ:</div>
-            <div id="timerAdd" class="countdown-time">--:--:--</div>
-        </div>
-        <div class="locked-container" id="lockedAddMsg"><div class="locked-notice"><i class="fas fa-lock"></i> СКОРО</div></div>
         <div class="slay-wrapper"><div class="slay-track" id="slayTrack"></div></div>
         <div class="slay-nav">
             <button class="slay-btn" onclick="moveSlay(-1)"><i class="fas fa-caret-left"></i></button>
@@ -206,10 +223,6 @@
 
     <section class="suggest-section" id="sugSection">
         <h3 class="suggest-header">ПРЕДЛОЖИТЬ НОМИНАЦИЮ</h3>
-        <div class="countdown-wrap">
-            <div class="countdown-title">ЗАКРЫТИЕ ПРЕДЛОЖЕНИЙ:</div>
-            <div id="timerSug" class="countdown-time">--:--:--</div>
-        </div>
         <p class="suggest-desc">
             Каждый человек может предложить до 5 номинаций. <br>
             Через некоторое время 3 самых популярных вариантов из всех предложенных попадут в дополнительные номинации и за них можно будет проголосовать.
@@ -310,14 +323,25 @@
             {title: "Завоз года", isPerson: false, cands: ["Война пранков кф5", "Правила сс кф4-кф5", "42х42 блока", "Взрыв запретной зоны"]},
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "zz / КПZZ", "ТЦК", "AUGUST"]}
         ];
-        const subNoms = ["Лучший строитель", "Лучший ПВП", "Скин года", "Пара/Шип года", "Пиздабол года"];
-        const totalNoms = mainNoms.length;
+        
+        // НОВЫЕ ДОП НОМИНАЦИИ (С КАНДИДАТАМИ)
+        const subNomsList = [
+            {title: "Афк года", isPerson: true, cands: ["Yanantess", "MetOssinka", "Chumachecha", "Illyuha", "Safov"]},
+            {title: "Фармила года", isPerson: true, cands: ["Sdas_garula", "Homiki0", "BaBdjoN", "SStamin", "fifa2012022", "wwawkkk", "vital3000", "k4agune"]},
+            {title: "Стример года", isPerson: true, cands: ["Foltt1k", "BaBdjoN", "Manshikage (Пельмень)", "EnterUp (Торф)", "pehaold"]},
+            {title: "Лучший строитель", isPerson: true, cands: []}, // locked
+            {title: "Лучший ПВП", isPerson: true, cands: []},
+            {title: "Скин года", isPerson: true, cands: []},
+            {title: "Пара/Шип года", isPerson: false, cands: []},
+            {title: "Пиздабол года", isPerson: true, cands: []}
+        ];
+        const totalNoms = mainNoms.length + 3; // +3 новых активных
         
         let myVotes = {}, myChanges = {}, mySugs = []; 
         let editModeId = null; 
         let sugEditsCount = 0;
         let serverTimeOffset = 0;
-        let deadlineSug = 0, openingAdd = 0;
+        let deadlineSug = 0;
 
         let mainIdx = 0;
         function initMain() {
@@ -327,7 +351,7 @@
                 let ph = `<div class="ph-wrap text-ph">${n.title.charAt(0)}</div>`;
                 let wings = `<div class="wing wing-left"><i class="fas fa-feather-alt"></i></div><div class="wing wing-right"><i class="fas fa-feather-alt"></i></div>`;
                 d.innerHTML = `${wings}${ph}<img src="${API_URL}/static/main_${i}.png" onload="this.style.opacity=1" onerror="this.style.opacity=0"><h3>${n.title}</h3>`;
-                d.onclick = () => { if(i===mainIdx) openVoteList(i); else { mainIdx=i; updateMain(); }};
+                d.onclick = () => { if(i===mainIdx) openVoteList(0, i); else { mainIdx=i; updateMain(); }};
                 cont.appendChild(d);
             });
             updateMain();
@@ -347,18 +371,20 @@
         let slayIdx = 0;
         function initSlay() {
             const tr = document.getElementById('slayTrack'); tr.innerHTML = '';
-            subNoms.forEach((title, i) => {
+            subNomsList.forEach((n, i) => {
                 let d = document.createElement('div'); d.className = 'slay-item'; d.id = `sl-${i}`;
+                let isLocked = n.cands.length === 0;
                 d.innerHTML = `
-                    <div class="locked-overlay" id="slayLock-${i}"><i class="fas fa-lock locked-icon"></i></div>
+                    <div class="locked-overlay" style="display:${isLocked?'flex':'none'}"><i class="fas fa-lock locked-icon"></i></div>
                     <img src="${API_URL}/static/sub_${i}.png" class="slay-img" onerror="this.style.display='none'">
-                    <div class="slay-title">${title}</div>`;
+                    <div class="slay-title">${n.title}</div>`;
+                if(!isLocked) d.onclick = () => openVoteList(1, i);
                 tr.appendChild(d);
             });
             updateSlay();
         }
         function updateSlay() {
-            for(let i=0; i<subNoms.length; i++) {
+            for(let i=0; i<subNomsList.length; i++) {
                 let el = document.getElementById(`sl-${i}`);
                 let diff = i - slayIdx;
                 let tf='', z=10, op=1;
@@ -366,101 +392,32 @@
                 else { tf=`translateX(${diff*240}px) scale(${1-Math.abs(diff)*0.2}) rotateY(${-Math.sign(diff)*15}deg) translateZ(${-Math.abs(diff)*50}px)`; op=Math.abs(diff)>2?0:1-Math.abs(diff)*0.3; z=50-Math.abs(diff); el.classList.remove('active'); }
                 el.style.transform=tf; el.style.zIndex=z; el.style.opacity=op;
             }
-            document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNoms.length}`;
+            document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNomsList.length}`;
         }
-        function moveSlay(d) { slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNoms.length) slayIdx=subNoms.length-1; updateSlay(); }
+        function moveSlay(d) { slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNomsList.length) slayIdx=subNomsList.length-1; updateSlay(); }
 
         initMain(); initSlay();
 
-        function openModal(id){ document.getElementById(id).classList.add('active'); }
+        function openModal(id){ 
+            if(id === 'voteModal' || id === 'profileModal') document.getElementById('floatBanner').style.display = 'none';
+            document.getElementById(id).classList.add('active'); 
+        }
         function closeModal(id){ 
             document.getElementById(id).classList.remove('active');
+            if(id === 'voteModal' || id === 'profileModal') document.getElementById('floatBanner').style.display = 'block';
             if(id === 'previewModal') document.getElementById('previewMediaContainer').innerHTML = ''; 
         }
         
-        setInterval(updateCountdowns, 1000);
-
-        function updateCountdowns() {
-            if (!deadlineSug || !openingAdd) return;
-            let now = Date.now() / 1000 + serverTimeOffset; 
-
-            // SUGGESTION TIMER
-            let diffSug = deadlineSug - now;
-            if (diffSug <= 0) {
-                document.getElementById('timerSug').innerText = "ЗАВЕРШЕНО";
-                document.getElementById('sugSection').classList.add('locked');
-            } else {
-                document.getElementById('timerSug').innerText = fmtTime(diffSug);
-                document.getElementById('sugSection').classList.remove('locked');
-            }
-
-            // ADD NOMINATIONS TIMER
-            let diffAdd = openingAdd - now;
-            if (diffAdd <= 0) {
-                document.getElementById('timerAdd').innerText = "ОТКРЫТО";
-                document.getElementById('lockedAddMsg').style.display = 'none';
-                document.querySelectorAll('.locked-overlay').forEach(el => el.style.display = 'none');
-                document.querySelectorAll('.slay-img').forEach(el => el.style.filter = 'grayscale(0) brightness(1)');
-            } else {
-                document.getElementById('timerAdd').innerText = fmtTime(diffAdd);
-                document.getElementById('lockedAddMsg').style.display = 'block';
-            }
-        }
-
-        function fmtTime(s) {
-            let h = Math.floor(s / 3600); s %= 3600;
-            let m = Math.floor(s / 60); s = Math.floor(s % 60);
+        let currGroup, currIdx;
+        function openVoteList(group, idx) {
+            currGroup = group; currIdx = idx;
+            let nom = group===0 ? mainNoms[idx] : subNomsList[idx];
             
-            let mStr = m < 10 ? '0' + m : m;
-            let sStr = s < 10 ? '0' + s : s;
-            let hStr = h < 10 ? '0' + h : h;
-            
-            return `${hStr}:${mStr}:${sStr}`;
-        }
-
-        function startEdit(id, nom, desc) {
-            if(sugEditsCount >= 5) { toast("Лимит редактирования исчерпан!"); return; }
-            editModeId = id;
-            document.getElementById('sugName').value = nom;
-            document.getElementById('sugDesc').value = desc;
-            document.getElementById('sugSubmitBtn').innerText = "ИЗМЕНИТЬ";
-            document.getElementById('sugCancelBtn').style.display = "inline-block";
-            document.querySelector('.suggest-section').scrollIntoView({behavior: 'smooth'});
-        }
-
-        function cancelEdit() {
-            editModeId = null;
-            document.getElementById('sugName').value = '';
-            document.getElementById('sugDesc').value = '';
-            document.getElementById('sugSubmitBtn').innerText = "ОТПРАВИТЬ";
-            document.getElementById('sugCancelBtn').style.display = "none";
-        }
-
-        async function sendSuggestion() {
-            let nom = document.getElementById('sugName').value;
-            let desc = document.getElementById('sugDesc').value;
-            if(!nom || !desc) { toast("Заполни все поля!"); return; }
-            
-            let url = editModeId ? '/api/edit_suggestion' : '/api/suggest';
-            let body = {token:myToken, nomination:nom, description:desc};
-            if(editModeId) body.id = editModeId;
-
-            try {
-                let res = await fetch(API_URL + url, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
-                let d = await res.json();
-                toast(d.message);
-                if(d.success) { cancelEdit(); check(false); }
-            } catch(e) { toast("Ошибка сети"); }
-        }
-        
-        let currIdx;
-        function openVoteList(idx) {
-            currIdx = idx; 
-            document.getElementById('voteTitle').innerText = mainNoms[idx].title;
+            document.getElementById('voteTitle').innerText = nom.title;
             const g = document.getElementById('candGrid'); g.innerHTML='';
             
-            let votedFor = myVotes[mainNoms[idx].title];
-            let changesDone = myChanges[mainNoms[idx].title] || 0;
+            let votedFor = myVotes[nom.title];
+            let changesDone = myChanges[nom.title] || 0;
             
             let isLocked = votedFor !== undefined;
             if(isLocked) {
@@ -474,14 +431,11 @@
                 g.classList.remove('locked');
             }
 
-            let isBigIcon = ["Лучшая постройка", "Фейл года", "Завоз года"].includes(mainNoms[idx].title);
-
-            mainNoms[idx].cands.forEach(c => {
+            nom.cands.forEach(c => {
                 let d = document.createElement('div'); d.className = 'cand-card';
-                if(isBigIcon) d.classList.add('big-mode');
                 if(votedFor === c) d.classList.add('selected');
 
-                let safeNom = mainNoms[idx].title.replace(/[\s\/]/g, '_');
+                let safeNom = nom.title.replace(/[\s\/]/g, '_');
                 let safeCand = c.replace(/[\s\/]/g, '_');
                 let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
                 let imgJpg = `${API_URL}/static/cand_${safeNom}_${safeCand}.jpg`;
@@ -491,7 +445,7 @@
                 let vtest = document.createElement('video'); vtest.src = vidUrl;
                 vtest.onloadedmetadata = () => { document.getElementById(`vid-${safeCand}`).style.display = 'flex'; };
 
-                let phIcon = mainNoms[idx].isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
+                let phIcon = nom.isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
                 
                 d.innerHTML = `
                     <div class="cand-avatar">
@@ -507,7 +461,7 @@
                 g.appendChild(d);
             });
             
-            if(votedFor && !mainNoms[idx].cands.includes(votedFor)) {
+            if(votedFor && !nom.cands.includes(votedFor)) {
                document.getElementById('customCandName').value = votedFor;
             } else {
                document.getElementById('customCandName').value = ''; 
@@ -528,7 +482,8 @@
             const container = document.getElementById('previewMediaContainer');
             container.innerHTML = '<div style="color:#666">Поиск медиа...</div>';
             
-            let safeNom = mainNoms[currIdx].title.replace(/[\s\/]/g, '_');
+            let nom = currGroup===0 ? mainNoms[currIdx] : subNomsList[currIdx];
+            let safeNom = nom.title.replace(/[\s\/]/g, '_');
             let safeCand = candName.replace(/[\s\/]/g, '_');
             let vidUrl = `${API_URL}/static/cand_${safeNom}_${safeCand}.mp4`;
             let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
@@ -564,6 +519,7 @@
             try {
                 let res = await fetch(API_URL + '/api/get_token');
                 let d = await res.json();
+                if(d.maintenance) { document.getElementById('maintenanceScreen').style.display = 'flex'; return; }
                 myToken = d.token; localStorage.setItem('tk', myToken);
                 check(false);
             } catch(e) { toast("Нет связи"); }
@@ -583,6 +539,9 @@
                 let res = await fetch(API_URL + '/api/check_status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
                 let d = await res.json();
                 
+                if(d.maintenance) { document.getElementById('maintenanceScreen').style.display = 'flex'; return; }
+                else document.getElementById('maintenanceScreen').style.display = 'none';
+
                 if (d.expired) { 
                     document.getElementById('statusText').innerText = "КОД ИСТЕК";
                     document.getElementById('statusText').style.color = "red";
@@ -607,20 +566,25 @@
                 sugEditsCount = d.sug_edits || 0;
                 serverTimeOffset = d.server_time - (Date.now()/1000);
                 deadlineSug = d.deadline_sug;
-                openingAdd = d.opening_add;
                 
-                // SKRYT' IDEI ESLI VREMYA VYSHLO
+                // HIDE SUG BOX IF EXPIRED
                 let now = Date.now() / 1000 + serverTimeOffset;
-                if(now > deadlineSug) document.getElementById('statSugBox').style.display = 'none';
-                else document.getElementById('statSugBox').style.display = 'block';
+                if(now > deadlineSug) {
+                    document.getElementById('statSugBox').style.display = 'none';
+                    document.getElementById('sugSection').classList.add('chained');
+                } else {
+                    document.getElementById('statSugBox').style.display = 'block';
+                    document.getElementById('sugSection').classList.remove('chained');
+                }
 
-                updateMain(); 
+                updateMain(); updateSlay();
 
                 const st = document.getElementById('statusText');
                 const auth = document.getElementById('authSection');
                 
                 if(d.status==='approved') {
-                    st.innerText = "ЗАРЕГИСТРИРОВАН"; st.style.color = "#0f0";
+                    st.innerText = d.is_admin ? "ADMIN ACCESS" : "ЗАРЕГИСТРИРОВАН"; 
+                    st.style.color = "#0f0";
                     document.getElementById('timer').style.display='none';
                     if(manual) { btn.innerText = "УСПЕХ"; btn.style.background = "#0f0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"}, 2000); }
                 } else {
@@ -630,11 +594,7 @@
                     if(manual) { btn.innerText = "ЖДЕМ..."; btn.style.background = "#fa0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"}, 2000); }
                 }
                 updateSlots(d.sug_count, d.suggestions || []);
-            } catch(e) { 
-                console.error(e);
-                toast("Ошибка сервера"); 
-                if(manual) btn.innerText = "ОШИБКА"; 
-            }
+            } catch(e) { console.error(e); toast("Ошибка сервера"); if(manual) btn.innerText = "ОШИБКА"; }
         }
 
         function startTimer(s) {
@@ -648,12 +608,7 @@
             }, 1000);
         }
 
-        async function submitVote() {
-            const sel = document.querySelector('.cand-card.selected');
-            if(!sel) { toast("Выбери кандидата!"); return; }
-            sendVote(sel.dataset.val);
-        }
-
+        async function submitVote() { closeModal('previewModal'); sendVote(currentCand); }
         async function submitCustomVote() {
             const val = document.getElementById('customCandName').value;
             if(!val) { toast("Введите имя!"); return; }
@@ -661,10 +616,11 @@
         }
 
         async function sendVote(cand) {
+            let nomTitle = currGroup===0 ? mainNoms[currIdx].title : subNomsList[currIdx].title;
             try {
-                let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:mainNoms[currIdx].title, candidate:cand})});
+                let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nomTitle, candidate:cand})});
                 let d = await res.json();
-                if(d.success) { toast("ПРИНЯТО!"); closeModal('voteModal'); check(false); }
+                if(d.success) { toast("ПРИНЯТО!"); check(false); }
                 else toast(d.message);
             } catch(e) { toast("Ошибка сети"); }
         }
@@ -682,8 +638,7 @@
                 histBox.style.display = 'block';
                 list.forEach(item => { 
                     let div = document.createElement('div'); div.className = 'sug-item'; 
-                    div.innerHTML = `<div><b>${item.nom}</b><br>${item.desc}</div>
-                                     <button class="edit-sug-btn" onclick="startEdit(${item.id}, '${item.nom}', '${item.desc}')"><i class="fas fa-pencil-alt"></i></button>`; 
+                    div.innerHTML = `<div><b>${item.nom}</b><br>${item.desc}</div><button class="edit-sug-btn" onclick="startEdit(${item.id}, '${item.nom}', '${item.desc}')"><i class="fas fa-pencil-alt"></i></button>`; 
                     hist.appendChild(div); 
                 });
             } else { histBox.style.display = 'none'; }
@@ -707,6 +662,9 @@
             document.querySelector('.fab-profile').classList.toggle('visible', showFab);
             if(headerBtns && window.innerWidth > 768) { headerBtns.style.opacity = showFab ? '0' : '1'; headerBtns.style.pointerEvents = showFab ? 'none' : 'auto'; }
         });
+        
+        // AUTO CHECK ON LOAD
+        if(myToken) check(false); else refreshToken();
     </script>
 </body>
 </html>
