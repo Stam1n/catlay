@@ -14,7 +14,7 @@
         body, .modal-content { -ms-overflow-style: none; scrollbar-width: none; }
 
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 40px; /* Space for banner */ }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 60px; }
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
@@ -28,13 +28,22 @@
         #maintenanceScreen h1 { font-size: 3em; color: var(--red); margin-bottom: 20px; animation: pulse 2s infinite; }
         #maintenanceScreen p { font-size: 1.2em; color: #888; max-width: 80%; }
 
-        /* FLOATING BANNER */
+        /* NEW MODERN FLOATING BANNER */
         .floating-banner {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: var(--red); color: #fff; text-align: center;
-            padding: 8px 0; font-family: var(--font-head); font-weight: 900;
-            z-index: 9000; box-shadow: 0 5px 20px rgba(255,0,51,0.5);
-            font-size: 0.9em; letter-spacing: 1px;
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(20, 0, 5, 0.9); border: 1px solid var(--red);
+            color: #fff; text-align: center;
+            padding: 10px 25px; font-family: var(--font-head); font-weight: 700;
+            z-index: 9000; box-shadow: 0 10px 30px rgba(255,0,51,0.4);
+            font-size: 0.85em; letter-spacing: 1px;
+            border-radius: 50px; /* Rounded pill shape */
+            backdrop-filter: blur(10px);
+            animation: bannerEntrance 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            white-space: nowrap;
+        }
+        @keyframes bannerEntrance {
+            0% { top: -100px; opacity: 0; }
+            100% { top: 20px; opacity: 1; }
         }
 
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
@@ -63,6 +72,7 @@
         .countdown-title { color: #888; font-size: 0.9em; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
         .countdown-time { font-family: var(--font-head); font-size: 1.5em; color: #fff; text-shadow: 0 0 10px var(--red); }
 
+        /* MAIN SLIDER */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .main-slide { position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible; }
@@ -85,30 +95,48 @@
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
-        /* SLAY (ADDITIONAL) */
+        /* SLAY (ADDITIONAL NOMINATIONS - NEW ANIMATION) */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
-        .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; }
-        .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
-        .slay-item { position: absolute; width: 220px; height: 320px; transition: transform 0.6s, opacity 0.6s; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
-        .slay-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transition: 0.3s; transform: scale(1.25); }
-        .slay-item.active .slay-img { transform: scale(1.35); filter: drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
+        .slay-wrapper { position: relative; height: 450px; perspective: 1000px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         
-        .slay-title { position: absolute; bottom: -50px; width: 140%; text-align: center; font-family: var(--font-head); font-size: 1em; color: #fff; text-transform: uppercase; opacity: 0; transition: 0.3s; }
-        .slay-item.active { z-index: 100; }
-        .slay-item.active .slay-title { opacity: 1; color: var(--red); }
+        .slay-item { 
+            position: absolute; width: 240px; height: 340px; 
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; 
+        }
+        
+        .slay-item:hover { transform: scale(1.1) !important; z-index: 200 !important; } /* Zoom on hover */
+        
+        .slay-img { 
+            width: 100%; height: 100%; object-fit: contain; 
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transition: 0.3s; 
+        }
+        
+        .slay-title { 
+            position: absolute; bottom: -40px; width: 160%; text-align: center; 
+            font-family: var(--font-head); font-size: 1.1em; color: #fff; 
+            text-transform: uppercase; opacity: 0; transition: 0.3s; font-weight: 900; letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--red);
+        }
+        
+        .slay-item.active { z-index: 100; opacity: 1; }
+        .slay-item.active .slay-title { opacity: 1; color: #fff; }
+        
         .slay-nav { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; align-items: center; z-index: 50; }
         .slay-btn { background: none; border: none; color: var(--red); font-size: 2em; cursor: pointer; }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
 
-        /* SUGGESTIONS WITH CHAINS */
+        /* SUGGESTIONS WITH CHAINS (ALWAYS LOCKED NOW) */
         .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; border: 1px solid #333; background: #080808; border-radius: 15px; box-shadow: 0 0 30px rgba(0,0,0,0.8); position: relative; overflow: hidden; }
         
-        .suggest-section.chained::before {
+        /* Force chains */
+        .suggest-section::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7) url('https://img.icons8.com/ios-filled/100/ff0033/lock.png') no-repeat center;
             background-size: 100px; z-index: 10; backdrop-filter: grayscale(1) blur(2px);
         }
-        .suggest-section.chained::after {
+        .suggest-section::after {
             content: 'ПРЕДЛОЖЕНИЯ ЗАКРЫТЫ'; position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%);
             color: var(--red); font-family: var(--font-head); font-size: 1.5em; text-shadow: 0 0 10px #000; z-index: 11; width: 100%; text-align: center;
         }
@@ -324,24 +352,27 @@
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "zz / КПZZ", "ТЦК", "AUGUST"]}
         ];
         
-        // НОВЫЕ ДОП НОМИНАЦИИ (С КАНДИДАТАМИ)
+        // НОВЫЙ ПОРЯДОК: Сначала СТАРЫЕ (imgId 0-4), потом НОВЫЕ (imgId 5-7)
+        // ВАЖНО: imgId указывает на то, какой файл брать (sub_0.png, sub_5.png и т.д.)
         const subNomsList = [
-            {title: "Афк года", isPerson: true, cands: ["Yanantess", "MetOssinka", "Chumachecha", "Illyuha", "Safov"]},
-            {title: "Фармила года", isPerson: true, cands: ["Sdas_garula", "Homiki0", "BaBdjoN", "SStamin", "fifa2012022", "wwawkkk", "vital3000", "k4agune"]},
-            {title: "Стример года", isPerson: true, cands: ["Foltt1k", "BaBdjoN", "Manshikage (Пельмень)", "EnterUp (Торф)", "pehaold"]},
-            {title: "Лучший строитель", isPerson: true, cands: []}, // locked
-            {title: "Лучший ПВП", isPerson: true, cands: []},
-            {title: "Скин года", isPerson: true, cands: []},
-            {title: "Пара/Шип года", isPerson: false, cands: []},
-            {title: "Пиздабол года", isPerson: true, cands: []}
+            {title: "Лучший строитель", isPerson: true, cands: [], imgId: 0}, 
+            {title: "Лучший ПВП", isPerson: true, cands: [], imgId: 1},
+            {title: "Скин года", isPerson: true, cands: [], imgId: 2},
+            {title: "Пара/Шип года", isPerson: false, cands: [], imgId: 3},
+            {title: "Пиздабол года", isPerson: true, cands: [], imgId: 4},
+            // НОВЫЕ
+            {title: "Афк года", isPerson: true, cands: ["Yanantess", "MetOssinka", "Chumachecha", "Illyuha", "Safov"], imgId: 5},
+            {title: "Фармила года", isPerson: true, cands: ["Sdas_garula", "Homiki0", "BaBdjoN", "SStamin", "fifa2012022", "wwawkkk", "vital3000", "k4agune"], imgId: 6},
+            {title: "Стример года", isPerson: true, cands: ["Foltt1k", "BaBdjoN", "Manshikage (Пельмень)", "EnterUp (Торф)", "pehaold"], imgId: 7}
         ];
-        const totalNoms = mainNoms.length + 3; // +3 новых активных
+        const totalNoms = mainNoms.length + 3; 
         
         let myVotes = {}, myChanges = {}, mySugs = []; 
         let editModeId = null; 
         let sugEditsCount = 0;
         let serverTimeOffset = 0;
-        let deadlineSug = 0;
+        // ФЕЙКОВЫЙ ДЕДЛАЙН В ПРОШЛОМ, ЧТОБЫ ЗАКРЫТЬ ПРЕДЛОЖЕНИЯ
+        let deadlineSug = 1000; 
 
         let mainIdx = 0;
         function initMain() {
@@ -374,23 +405,38 @@
             subNomsList.forEach((n, i) => {
                 let d = document.createElement('div'); d.className = 'slay-item'; d.id = `sl-${i}`;
                 let isLocked = n.cands.length === 0;
+                // ИСПОЛЬЗУЕМ n.imgId ЧТОБЫ КАРТИНКИ НЕ ПУТАЛИСЬ
                 d.innerHTML = `
                     <div class="locked-overlay" style="display:${isLocked?'flex':'none'}"><i class="fas fa-lock locked-icon"></i></div>
-                    <img src="${API_URL}/static/sub_${i}.png" class="slay-img" onerror="this.style.display='none'">
+                    <img src="${API_URL}/static/sub_${n.imgId}.png" class="slay-img" onerror="this.style.display='none'">
                     <div class="slay-title">${n.title}</div>`;
                 if(!isLocked) d.onclick = () => openVoteList(1, i);
                 tr.appendChild(d);
             });
             updateSlay();
         }
+        
+        // НОВАЯ АНИМАЦИЯ: "КОЛОДА КАРТ"
         function updateSlay() {
             for(let i=0; i<subNomsList.length; i++) {
                 let el = document.getElementById(`sl-${i}`);
                 let diff = i - slayIdx;
-                let tf='', z=10, op=1;
-                if(diff===0) { tf='translateX(0) scale(1.1) translateZ(50px)'; z=100; el.classList.add('active'); }
-                else { tf=`translateX(${diff*240}px) scale(${1-Math.abs(diff)*0.2}) rotateY(${-Math.sign(diff)*15}deg) translateZ(${-Math.abs(diff)*50}px)`; op=Math.abs(diff)>2?0:1-Math.abs(diff)*0.3; z=50-Math.abs(diff); el.classList.remove('active'); }
-                el.style.transform=tf; el.style.zIndex=z; el.style.opacity=op;
+                let scale = 0.8, op = 0.5, z = 10, x = 0;
+                
+                if (diff === 0) {
+                    scale = 1.3; op = 1; z = 100; x = 0;
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                    scale = 0.85; 
+                    op = Math.abs(diff) > 2 ? 0 : 0.6;
+                    z = 50 - Math.abs(diff);
+                    x = diff * 220; // Расстояние между картами
+                }
+                
+                el.style.transform = `translateX(${x}px) scale(${scale})`;
+                el.style.zIndex = z;
+                el.style.opacity = op;
             }
             document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNomsList.length}`;
         }
@@ -407,6 +453,13 @@
             if(id === 'voteModal' || id === 'profileModal') document.getElementById('floatBanner').style.display = 'block';
             if(id === 'previewModal') document.getElementById('previewMediaContainer').innerHTML = ''; 
         }
+        
+        // AUTO LOCK SUGGESTIONS
+        document.getElementById('sugSection').classList.add('chained');
+        
+        function startEdit(id, nom, desc) { toast("Редактирование закрыто!"); }
+        function cancelEdit() {}
+        async function sendSuggestion() { toast("Предложения закрыты!"); }
         
         let currGroup, currIdx;
         function openVoteList(group, idx) {
@@ -506,6 +559,21 @@
         }
 
         async function confirmVote() { closeModal('previewModal'); sendVote(currentCand); }
+        async function submitCustomVote() {
+            const val = document.getElementById('customCandName').value;
+            if(!val) { toast("Введите имя!"); return; }
+            sendVote(val);
+        }
+
+        async function sendVote(cand) {
+            let nomTitle = currGroup===0 ? mainNoms[currIdx].title : subNomsList[currIdx].title;
+            try {
+                let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nomTitle, candidate:cand})});
+                let d = await res.json();
+                if(d.success) { toast("ПРИНЯТО!"); check(false); }
+                else toast(d.message);
+            } catch(e) { toast("Ошибка сети"); }
+        }
 
         let myToken = localStorage.getItem('tk');
         let tmr;
@@ -558,7 +626,6 @@
 
                 document.getElementById('statVoted').innerText = d.vote_count || 0;
                 document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
-                document.getElementById('statSug').innerText = d.sug_count || 0;
                 
                 myVotes = d.my_votes || {}; 
                 myChanges = d.changes || {}; 
@@ -567,15 +634,10 @@
                 serverTimeOffset = d.server_time - (Date.now()/1000);
                 deadlineSug = d.deadline_sug;
                 
-                // HIDE SUG BOX IF EXPIRED
+                // SKRYT' IDEI ESLI VREMYA VYSHLO
                 let now = Date.now() / 1000 + serverTimeOffset;
-                if(now > deadlineSug) {
-                    document.getElementById('statSugBox').style.display = 'none';
-                    document.getElementById('sugSection').classList.add('chained');
-                } else {
-                    document.getElementById('statSugBox').style.display = 'block';
-                    document.getElementById('sugSection').classList.remove('chained');
-                }
+                // Всегда скрываем, т.к. "предложения закрыты навсегда"
+                document.getElementById('statSugBox').style.display = 'none';
 
                 updateMain(); updateSlay();
 
@@ -593,7 +655,6 @@
                     auth.style.display = 'block'; startTimer(d.time_left);
                     if(manual) { btn.innerText = "ЖДЕМ..."; btn.style.background = "#fa0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"}, 2000); }
                 }
-                updateSlots(d.sug_count, d.suggestions || []);
             } catch(e) { console.error(e); toast("Ошибка сервера"); if(manual) btn.innerText = "ОШИБКА"; }
         }
 
@@ -606,52 +667,6 @@
                 if(l<=0) { clearInterval(tmr); display.innerText = "00:00"; return; }
                 l--; display.innerText = `${Math.floor(l/60)}:${(l%60)<10?'0'+(l%60):l%60}`;
             }, 1000);
-        }
-
-        async function submitVote() { closeModal('previewModal'); sendVote(currentCand); }
-        async function submitCustomVote() {
-            const val = document.getElementById('customCandName').value;
-            if(!val) { toast("Введите имя!"); return; }
-            sendVote(val);
-        }
-
-        async function sendVote(cand) {
-            let nomTitle = currGroup===0 ? mainNoms[currIdx].title : subNomsList[currIdx].title;
-            try {
-                let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nomTitle, candidate:cand})});
-                let d = await res.json();
-                if(d.success) { toast("ПРИНЯТО!"); check(false); }
-                else toast(d.message);
-            } catch(e) { toast("Ошибка сети"); }
-        }
-
-        function updateSlots(cnt, list) {
-            const cont = document.getElementById('slotsCont'); cont.innerHTML='';
-            const hist = document.getElementById('sugList'); hist.innerHTML='';
-            const histBox = document.getElementById('sugHistory');
-            document.getElementById('sugCounterText').innerText = `${cnt}/5`;
-            document.getElementById('sugEditCounter').innerText = `${5-sugEditsCount}`;
-            if(cnt >= 5 && !editModeId) { document.getElementById('sugForm').style.display = 'none'; document.getElementById('sugLimitMsg').style.display = 'block'; }
-            else { document.getElementById('sugForm').style.display = 'block'; document.getElementById('sugLimitMsg').style.display = 'none'; }
-            for(let i=0; i<5; i++) { let div = document.createElement('div'); div.className = i < cnt ? 'slot filled' : 'slot empty'; cont.appendChild(div); }
-            if(list && list.length > 0) {
-                histBox.style.display = 'block';
-                list.forEach(item => { 
-                    let div = document.createElement('div'); div.className = 'sug-item'; 
-                    div.innerHTML = `<div><b>${item.nom}</b><br>${item.desc}</div><button class="edit-sug-btn" onclick="startEdit(${item.id}, '${item.nom}', '${item.desc}')"><i class="fas fa-pencil-alt"></i></button>`; 
-                    hist.appendChild(div); 
-                });
-            } else { histBox.style.display = 'none'; }
-        }
-
-        function toast(msg) { let t = document.getElementById('toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
-        
-        const pc = document.getElementById('particles');
-        for(let i=0;i<40;i++) {
-            let p=document.createElement('div'); p.className='particle';
-            p.style.left=Math.random()*100+'%'; p.style.width=p.style.height=(Math.random()*5+2)+'px';
-            p.style.animationDuration=(Math.random()*5+5)+'s'; p.style.animationDelay=Math.random()*5+'s';
-            pc.appendChild(p);
         }
         
         window.addEventListener('scroll', ()=>{
