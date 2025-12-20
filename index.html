@@ -18,7 +18,6 @@
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
-        /* MAINTENANCE SCREEN */
         #maintenanceScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: none;
@@ -37,7 +36,6 @@
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
-        /* BUTTONS (High Z-Index to fix click issues) */
         .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; z-index: 10001; pointer-events: auto; }
         .header-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.8em; }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
@@ -51,20 +49,27 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
-        /* WINGS (CLOSER & ANIMATED) */
+        /* WINGS SYSTEM (FIXED) */
         .wing { 
-            position: absolute; top: 50%; transform: translateY(-50%); 
+            position: absolute; top: 50%; 
             font-size: 3.5em; color: var(--red); 
-            opacity: 0; /* Hidden by default */
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease; 
+            opacity: 0; transition: opacity 0.4s ease-in-out; 
             z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); 
             pointer-events: none; 
         }
-        /* Closer distance */
-        .wing-left { left: -45px; } 
-        .wing-right { right: -45px; }
         
-        /* Show wings ONLY when item is ACTIVE and VOTED */
+        /* FIX MIRRORING: Left wing flipped, Right wing normal */
+        .wing-left { transform: translateY(-50%) scaleX(-1); } 
+        .wing-right { transform: translateY(-50%); }
+
+        /* MAIN SLIDER WINGS (Original Distance) */
+        .main-slide .wing-left { left: -80px; }
+        .main-slide .wing-right { right: -80px; }
+        
+        /* SLAY ITEM WINGS (Closer) */
+        .slay-item .wing-left { left: -30px; }
+        .slay-item .wing-right { right: -30px; }
+
         .main-slide.active.voted .wing, 
         .slay-item.active.voted .wing { opacity: 1; }
 
@@ -87,66 +92,35 @@
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
-        /* --- SLAY (ADDITIONAL NOMINATIONS) --- */
+        /* SLAY */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
         .slay-wrapper { position: relative; height: 450px; display: flex; justify-content: center; align-items: center; overflow: visible; perspective: 1200px; }
-        
-        .slay-track { 
-            position: relative; width: 100%; height: 100%; 
-            display: flex; justify-content: center; align-items: center; 
-            transform-style: preserve-3d;
-        }
+        .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
         
         .slay-item { 
-            position: absolute; 
-            top: 50%; left: 50%; 
-            width: 260px; height: 360px; 
+            position: absolute; top: 50%; left: 50%; width: 260px; height: 360px; 
             transform: translate(-50%, -50%); 
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s, z-index 0s;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; 
         }
         
-        .slay-img { 
-            width: 100%; height: 100%; object-fit: contain; 
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); 
-            transition: transform 0.3s ease-out, filter 0.3s; 
-            z-index: 2; /* Above wings */
-        }
-        
-        .slay-item:hover .slay-img { 
-            transform: scale(1.1) translateY(-10px); 
-            filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); 
-        }
+        .slay-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.3s ease-out, filter 0.3s; z-index: 2; }
+        .slay-item:hover .slay-img { transform: scale(1.1) translateY(-10px); filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); }
         
         .slay-title { 
-            position: absolute; bottom: 10px;
-            width: 140%; text-align: center; 
+            position: absolute; bottom: 10px; width: 140%; text-align: center; 
             font-family: var(--font-head); font-size: 1.4em; color: #fff; 
             text-transform: uppercase; font-weight: 900; letter-spacing: 2px;
             text-shadow: 0 2px 10px #000;
-            transition: all 0.3s ease; pointer-events: none;
-            opacity: 0.7; transform: scale(0.9); z-index: 3;
+            transition: all 0.3s ease; pointer-events: none; opacity: 0.7; transform: scale(0.9); z-index: 3;
         }
-        
         .slay-item.active .slay-title { opacity: 1; transform: scale(1); text-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
-        .slay-item:hover .slay-title { 
-            color: var(--red); transform: scale(1.1) translateY(-5px); 
-            text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3);
-        }
+        .slay-item:hover .slay-title { color: var(--red); transform: scale(1.1) translateY(-5px); text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3); }
         
-        /* WINGS FOR SLAY ITEMS (ADJUSTED) */
-        .slay-item .wing { font-size: 3em; z-index: 1; }
-        .slay-item .wing-left { left: -40px; }
-        .slay-item .wing-right { right: -40px; }
-
-        /* RED GLOW BEHIND ACTIVE */
         .slay-item::before {
             content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-            width: 130%; height: 130%; 
-            background: radial-gradient(circle, rgba(255,0,51,0.3) 0%, transparent 70%);
-            z-index: -1; pointer-events: none;
-            filter: blur(20px); 
-            opacity: 0; transition: opacity 0.5s ease 0.3s;
+            width: 130%; height: 130%; background: radial-gradient(circle, rgba(255,0,51,0.3) 0%, transparent 70%);
+            z-index: -1; pointer-events: none; filter: blur(20px); opacity: 0; transition: opacity 0.5s ease 0.3s;
         }
         .slay-item.active::before { opacity: 1; }
 
@@ -155,34 +129,13 @@
         .slay-btn:active { transform: scale(0.9); }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
 
-        /* SUGGESTIONS BLURRED & LOCKED */
-        .suggest-section { 
-            max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; 
-            background: transparent; border: none;
-            position: relative; overflow: hidden; 
-        }
+        /* SUGGESTIONS BLURRED */
+        .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; background: transparent; border: none; position: relative; overflow: hidden; }
+        .suggest-section.chained .suggest-form, .suggest-section.chained .slots-container, .suggest-section.chained .suggest-desc, .suggest-section.chained .sug-counter-box { opacity: 0.4; pointer-events: none; filter: blur(8px); }
+        .suggest-section.chained .lock-icon-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex !important; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
+        .lock-icon-overlay i { font-size: 5em; color: var(--red); text-shadow: 0 0 20px #000; margin-bottom: 15px; }
+        .lock-text { color: var(--red); font-family: var(--font-head); font-size: 1.5em; text-shadow: 0 0 10px #000; text-transform: uppercase; font-weight: 900; }
         
-        .suggest-section.chained .suggest-form, 
-        .suggest-section.chained .slots-container,
-        .suggest-section.chained .suggest-desc,
-        .suggest-section.chained .sug-counter-box { 
-            opacity: 0.4; pointer-events: none; filter: blur(8px);
-        }
-
-        .suggest-section.chained .lock-icon-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex !important; flex-direction: column; 
-            align-items: center; justify-content: center;
-            z-index: 20; 
-        }
-        .lock-icon-overlay i {
-            font-size: 5em; color: var(--red); text-shadow: 0 0 20px #000; margin-bottom: 15px;
-        }
-        .lock-text {
-            color: var(--red); font-family: var(--font-head); font-size: 1.5em; 
-            text-shadow: 0 0 10px #000; text-transform: uppercase; font-weight: 900;
-        }
-
         .suggest-header { text-align: center; color: var(--red); font-family: var(--font-head); margin-bottom: 5px; font-size: 1.5em; }
         .suggest-desc { text-align: center; color: #888; font-size: 0.9em; margin-bottom: 20px; line-height: 1.5; }
         .sug-counter-box { text-align: center; margin-bottom: 15px; font-family: var(--font-head); color: #fff; }
@@ -352,6 +305,7 @@
                 <div id="authSection">
                     <p style="font-size:0.9em; color:#ccc;">Отправьте код боту <a href="https://t.me/CatLay_bot" target="_blank" style="color:var(--red);">@CatLay_bot</a></p>
                     <input type="text" value="---" readonly class="token-box" id="tokenDisplay">
+                    <div id="timer" style="color:#666; font-family:monospace; margin:10px 0;">--:--</div>
                     <button id="checkBtn" class="check-btn" onclick="check(true)">ОБНОВИТЬ</button>
                     <div><button class="reset-btn" onclick="hardReset()">СБРОСИТЬ КОД (ЕСЛИ ИСТЕК)</button></div>
                 </div>
@@ -396,7 +350,6 @@
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "zz / КПZZ", "ТЦК", "AUGUST"]}
         ];
         
-        // ORDER: OLD (0-4), NEW (5-7).
         const subNomsList = [
             {title: "Лучший строитель", isPerson: true, cands: ["BaBdjoN", "MetOssinka", "Foltt1k", "k4agune", "kkkkkeeeefff", "l0lpiks", "flakePok", "Machinae"], imgId: 0}, 
             {title: "Лучший ПВП", isPerson: true, cands: ["Foltt1k", "fifa20120022", "mirik2025", "Homiki0", "SStamin", "NarkoBobr1k", "OduVaNchIIk", "KToYuO_O", "Sdas_garula"], imgId: 1},
@@ -620,6 +573,10 @@
         }
 
         let myToken = localStorage.getItem('tk');
+        
+        // AUTO REFRESH LOGIC (2 MINS)
+        let tokenTimer;
+        let lastCheckTime = 0;
 
         async function openProfile() {
             openModal('profileModal');
@@ -644,7 +601,15 @@
 
         async function check(manual) {
             const btn = document.getElementById('checkBtn');
-            if(manual) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.style.background = "#555"; }
+            
+            // COOLDOWN LOGIC (5 SEC)
+            if(manual) {
+                if(Date.now() - lastCheckTime < 5000) { toast("Подождите..."); return; }
+                lastCheckTime = Date.now();
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+                btn.style.background = "#555";
+                btn.disabled = true;
+            }
 
             try {
                 let res = await fetch(API_URL + '/api/check_status', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
@@ -653,19 +618,29 @@
                 if(d.maintenance) { document.getElementById('maintenanceScreen').style.display = 'flex'; return; }
                 else document.getElementById('maintenanceScreen').style.display = 'none';
 
+                // AUTO REFRESH IF EXPIRED AND PROFILE OPEN
                 if (d.expired) { 
+                    if(document.getElementById('profileModal').classList.contains('active')) {
+                        refreshToken(); // Get new one immediately
+                        return;
+                    }
                     document.getElementById('statusText').innerText = "КОД ИСТЕК";
                     document.getElementById('statusText').style.color = "red";
                     document.getElementById('loading').style.display='none';
                     document.getElementById('profileContent').style.display='block';
-                    if(manual) { btn.innerText = "ИСТЕК"; btn.style.background = "red"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"}, 2000); }
+                    if(manual) { 
+                        btn.innerText = "ИСТЕК"; btn.style.background = "red"; 
+                        setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"; btn.disabled=false;}, 2000); 
+                    }
                     return; 
                 }
 
                 document.getElementById('loading').style.display='none';
                 document.getElementById('profileContent').style.display='block';
                 const tokenInput = document.getElementById('tokenDisplay');
-                tokenInput.value = myToken; tokenInput.removeAttribute('readonly'); 
+                tokenInput.value = myToken; 
+                // READONLY IS ALREADY IN HTML, BUT FORCE IT HERE TOO
+                tokenInput.readOnly = true;
 
                 document.getElementById('statVoted').innerText = d.vote_count || 0;
                 document.getElementById('statLeft').innerText = totalNoms - (d.vote_count || 0);
@@ -678,26 +653,46 @@
                 updateMain(); updateSlay();
 
                 const st = document.getElementById('statusText');
+                const auth = document.getElementById('authSection');
+                
                 if(d.status==='approved') {
                     st.innerText = d.is_admin ? "ADMIN ACCESS" : "ЗАРЕГИСТРИРОВАН"; 
                     st.style.color = "#0f0";
-                    if(manual) { btn.innerText = "УСПЕХ"; btn.style.background = "#0f0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"}, 2000); }
+                    document.getElementById('timer').style.display='none';
+                    if(manual) { btn.innerText = "УСПЕХ"; btn.style.background = "#0f0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"; btn.disabled=false;}, 2000); }
                 } else {
                     st.innerText = d.status==='review'?"НА ПРОВЕРКЕ":"НЕ ЗАРЕГИСТРИРОВАН";
                     st.style.color = d.status==='review'?"#fa0":"#555";
-                    if(manual) { btn.innerText = "ЖДЕМ..."; btn.style.background = "#fa0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"}, 2000); }
+                    auth.style.display = 'block'; 
+                    // START CLIENT SIDE TIMER
+                    startTimer(d.code_life);
+                    if(manual) { btn.innerText = "ЖДЕМ..."; btn.style.background = "#fa0"; setTimeout(()=>{btn.innerText="ОБНОВИТЬ"; btn.style.background="var(--red)"; btn.disabled=false;}, 2000); }
                 }
-            } catch(e) { console.error(e); toast("Ошибка сервера"); if(manual) btn.innerText = "ОШИБКА"; }
+            } catch(e) { 
+                console.error(e); toast("Ошибка сервера"); 
+                if(manual) { btn.innerText = "ОШИБКА"; btn.disabled=false; }
+            }
         }
 
-        function toast(msg) { let t = document.getElementById('toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
-        
-        const pc = document.getElementById('particles');
-        for(let i=0;i<40;i++) {
-            let p=document.createElement('div'); p.className='particle';
-            p.style.left=Math.random()*100+'%'; p.style.width=p.style.height=(Math.random()*5+2)+'px';
-            p.style.animationDuration=(Math.random()*5+5)+'s'; p.style.animationDelay=Math.random()*5+'s';
-            pc.appendChild(p);
+        function startTimer(s) {
+            clearInterval(tokenTimer); 
+            let l = Math.floor(s);
+            const display = document.getElementById('timer');
+            display.style.display = 'block';
+            
+            tokenTimer = setInterval(() => {
+                if(l <= 0) { 
+                    clearInterval(tokenTimer); 
+                    display.innerText = "Обновление..."; 
+                    // AUTO REFRESH IF OPEN
+                    if(document.getElementById('profileModal').classList.contains('active')) refreshToken();
+                    return; 
+                }
+                l--; 
+                let m = Math.floor(l / 60);
+                let sc = l % 60;
+                display.innerText = `${m}:${sc<10?'0'+sc:sc}`;
+            }, 1000);
         }
         
         window.addEventListener('scroll', ()=>{
