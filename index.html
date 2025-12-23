@@ -29,19 +29,21 @@
         #maintenanceScreen p { font-size: 1.2em; color: #888; max-width: 80%; }
 
         /* GLOBAL COUNTDOWN PILL */
+        /* Z-INDEX INCREASED TO 10005 TO BE ABOVE BUTTONS */
         .timer-pill {
             position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
             background: rgba(10, 0, 0, 0.7); border: 1px solid #444;
             color: #ccc; text-align: center;
             padding: 8px 20px; font-family: var(--font-head); font-weight: 700;
-            z-index: 9500; border-radius: 30px;
+            z-index: 10005; border-radius: 30px;
             backdrop-filter: blur(5px); cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-size: 0.9em; display: flex; flex-direction: column; align-items: center;
             overflow: hidden; max-height: 40px;
         }
         
-        .timer-pill.expanded {
+        /* HOVER EFFECT FOR PC + EXPANDED CLASS FOR MOBILE */
+        .timer-pill:hover, .timer-pill.expanded {
             background: rgba(20, 0, 5, 0.95); border-color: var(--red);
             box-shadow: 0 5px 25px rgba(255,0,51,0.4);
             padding: 15px 30px; max-height: 150px; color: #fff;
@@ -51,8 +53,12 @@
         .pill-date { display: none; font-size: 0.6em; color: #888; margin-top: 5px; font-family: var(--font-body); text-transform: uppercase; }
         .pill-time { font-size: 1.1em; letter-spacing: 2px; }
 
+        .timer-pill:hover .pill-label, .timer-pill:hover .pill-date,
         .timer-pill.expanded .pill-label, .timer-pill.expanded .pill-date { display: block; }
-        .timer-pill.expanded .pill-time { font-size: 1.3em; color: var(--red); text-shadow: 0 0 10px var(--red); }
+        
+        .timer-pill:hover .pill-time, .timer-pill.expanded .pill-time { 
+            font-size: 1.3em; color: var(--red); text-shadow: 0 0 10px var(--red); 
+        }
 
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
@@ -63,6 +69,7 @@
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
+        /* BUTTONS */
         .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; z-index: 10001; pointer-events: auto; }
         .header-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.8em; }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
@@ -76,7 +83,7 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
-        /* WINGS */
+        /* WINGS SYSTEM (FIXED SCALE AND MIRROR) */
         .wing { 
             position: absolute; top: 50%; 
             font-size: 3.5em; color: var(--red); 
@@ -84,13 +91,26 @@
             z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); 
             pointer-events: none; 
         }
+        
+        /* Base positions */
         .wing-left { transform: translateY(-50%) scaleX(-1); } 
         .wing-right { transform: translateY(-50%); }
 
+        /* Main Slider Distance */
         .main-slide .wing-left { left: -80px; }
         .main-slide .wing-right { right: -80px; }
-        .slay-item .wing-left { left: -30px; }
-        .slay-item .wing-right { right: -30px; }
+        
+        /* Main Slider Hover Scaling */
+        .main-slide:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
+        .main-slide:hover .wing-right { transform: translateY(-50%) scale(1.1); }
+        
+        /* Slay Item Wings (Closer) */
+        .slay-item .wing-left { left: -10px; } /* VERY CLOSE */
+        .slay-item .wing-right { right: -10px; }
+
+        /* Slay Item Hover Scaling */
+        .slay-item:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
+        .slay-item:hover .wing-right { transform: translateY(-50%) scale(1.1); }
 
         .main-slide.active.voted .wing, 
         .slay-item.active.voted .wing { opacity: 1; }
@@ -142,7 +162,6 @@
         /* SCALE WINGS AND IMG ON HOVER */
         .slay-item:hover { z-index: 101 !important; }
         .slay-item:hover .slay-img { transform: scale(1.1) translateY(-10px); filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); }
-        .slay-item:hover .wing { transform: scale(1.1) translateY(-50%); } 
         
         .slay-title { 
             position: absolute; bottom: 10px; width: 140%; text-align: center; 
