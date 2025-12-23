@@ -14,7 +14,7 @@
         body, .modal-content { -ms-overflow-style: none; scrollbar-width: none; }
 
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 40px; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 60px; }
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
@@ -28,6 +28,32 @@
         #maintenanceScreen h1 { font-size: 3em; color: var(--red); margin-bottom: 20px; animation: pulse 2s infinite; }
         #maintenanceScreen p { font-size: 1.2em; color: #888; max-width: 80%; }
 
+        /* GLOBAL COUNTDOWN PILL */
+        .timer-pill {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+            background: rgba(10, 0, 0, 0.7); border: 1px solid #444;
+            color: #ccc; text-align: center;
+            padding: 8px 20px; font-family: var(--font-head); font-weight: 700;
+            z-index: 9500; border-radius: 30px;
+            backdrop-filter: blur(5px); cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 0.9em; display: flex; flex-direction: column; align-items: center;
+            overflow: hidden; max-height: 40px;
+        }
+        
+        .timer-pill.expanded {
+            background: rgba(20, 0, 5, 0.95); border-color: var(--red);
+            box-shadow: 0 5px 25px rgba(255,0,51,0.4);
+            padding: 15px 30px; max-height: 150px; color: #fff;
+        }
+
+        .pill-label { display: none; font-size: 0.7em; color: var(--red); margin-bottom: 5px; white-space: nowrap; letter-spacing: 1px; }
+        .pill-date { display: none; font-size: 0.6em; color: #888; margin-top: 5px; font-family: var(--font-body); text-transform: uppercase; }
+        .pill-time { font-size: 1.1em; letter-spacing: 2px; }
+
+        .timer-pill.expanded .pill-label, .timer-pill.expanded .pill-date { display: block; }
+        .timer-pill.expanded .pill-time { font-size: 1.3em; color: var(--red); text-shadow: 0 0 10px var(--red); }
+
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .particle { position: absolute; background: var(--red); border-radius: 50%; animation: rise 5s infinite; opacity: 0; }
@@ -37,7 +63,6 @@
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
-        /* BUTTONS */
         .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; z-index: 10001; pointer-events: auto; }
         .header-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.8em; }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
@@ -55,18 +80,15 @@
         .wing { 
             position: absolute; top: 50%; 
             font-size: 3.5em; color: var(--red); 
-            opacity: 0; transition: opacity 0.4s ease-in-out; 
+            opacity: 0; transition: opacity 0.4s ease-in-out, transform 0.4s ease; 
             z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); 
             pointer-events: none; 
         }
         .wing-left { transform: translateY(-50%) scaleX(-1); } 
         .wing-right { transform: translateY(-50%); }
 
-        /* MAIN SLIDER WINGS */
         .main-slide .wing-left { left: -80px; }
         .main-slide .wing-right { right: -80px; }
-        
-        /* SLAY ITEM WINGS (Closer) */
         .slay-item .wing-left { left: -30px; }
         .slay-item .wing-right { right: -30px; }
 
@@ -77,17 +99,29 @@
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .main-slide { position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible; }
-        .main-slide.active:hover { transform: scale(1.25) !important; z-index: 20; }
-        .main-slide img { width: 100%; height: 100%; object-fit: contain; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transform: scale(1.25); }
-        .main-slide.active:hover img { transform: scale(1.35); filter: brightness(1.2) drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
-        .ph-wrap { width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 1; display: flex; align-items: center; justify-content: center; background: transparent; }
-        .text-ph { font-family: var(--font-head); font-size: 6em; color: #333; text-transform: uppercase; }
-        .main-slide h3 { font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 150%; text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; transition: 0.3s; pointer-events: none; }
-        .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); transform: scale(0.8); }
+        
+        /* MAIN GLOW */
+        .main-slide::before {
+            content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+            width: 90%; height: 90%; background: radial-gradient(circle, rgba(255,0,51,0.2) 0%, transparent 70%);
+            z-index: -1; pointer-events: none; filter: blur(30px); opacity: 0; transition: opacity 0.5s;
+        }
+        .main-slide.active::before { opacity: 1; }
+        .main-slide:hover::before { opacity: 1; filter: blur(40px); background: radial-gradient(circle, rgba(255,0,51,0.4) 0%, transparent 70%); }
+
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; }
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
+        
+        .main-slide img { width: 100%; height: 100%; object-fit: contain; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transform: scale(1.25); }
+        .main-slide.active:hover img { transform: scale(1.35); filter: brightness(1.2) drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
+        
+        .ph-wrap { width: 100%; height: 100%; position: absolute; top:0; left:0; z-index: 1; display: flex; align-items: center; justify-content: center; background: transparent; }
+        .text-ph { font-family: var(--font-head); font-size: 6em; color: #333; text-transform: uppercase; }
+        .main-slide h3 { font-family: var(--font-head); color: #fff; margin: 0; position: absolute; bottom: 0; width: 150%; text-transform: uppercase; font-size: 1.3em; text-align: center; text-shadow: 0 0 10px #000; transition: 0.3s; pointer-events: none; }
+        .main-slide.active:hover h3 { color: var(--red); text-shadow: 0 0 20px var(--red); transform: scale(0.8); }
+
         .arrow { position: absolute; top: 50%; transform: translateY(-50%); font-size: 3em; color: var(--red); cursor: pointer; z-index: 20; background: rgba(0,0,0,0.5); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
@@ -105,7 +139,10 @@
         }
         
         .slay-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.3s ease-out, filter 0.3s; z-index: 2; }
+        /* SCALE WINGS AND IMG ON HOVER */
+        .slay-item:hover { z-index: 101 !important; }
         .slay-item:hover .slay-img { transform: scale(1.1) translateY(-10px); filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); }
+        .slay-item:hover .wing { transform: scale(1.1) translateY(-50%); } 
         
         .slay-title { 
             position: absolute; bottom: 10px; width: 140%; text-align: center; 
@@ -117,7 +154,7 @@
         .slay-item.active .slay-title { opacity: 1; transform: scale(1); text-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
         .slay-item:hover .slay-title { color: var(--red); transform: scale(1.1) translateY(-5px); text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3); }
         
-        .slay-item .wing { font-size: 3em; z-index: 1; } /* Wings z-index inside item */
+        .slay-item .wing { font-size: 3em; z-index: 1; } 
 
         .slay-item::before {
             content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
@@ -169,8 +206,10 @@
         .custom-btn { width: 100%; background: #333; color: #ccc; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         .custom-btn:hover { background: #444; color: #fff; }
         
-        .change-panel { background: #2a0000; border: 1px solid var(--red); border-radius: 8px; padding: 15px; margin-top: 20px; text-align: center; }
-        .change-btn { background: var(--red); color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .change-panel { background: #2a0000; border: 1px solid var(--red); border-radius: 8px; padding: 15px; margin-top: 20px; text-align: center; position: relative; }
+        .change-btn { background: var(--red); color: #fff; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .change-btn:disabled { background: #555; cursor: not-allowed; opacity: 0.7; }
+        .change-timer { font-size: 0.8em; color: #fa0; margin-top: 5px; display: block; font-family: monospace; }
 
         .preview-btn { width: 100%; padding: 15px; background: var(--red); color: #fff; border: none; font-weight: 900; text-transform: uppercase; font-size: 1.2em; cursor: pointer; border-radius: 6px; margin-top: 20px; box-shadow: 0 0 20px rgba(255,0,51,0.3); animation: btnPulse 2s infinite; }
         .preview-btn:hover { background: #fff; color: var(--red); animation: none; }
@@ -206,6 +245,17 @@
         }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+        /* GLOBAL CLOSED STATE STYLES */
+        body.vote-closed .main-slide, body.vote-closed .slay-item { filter: grayscale(1); opacity: 0.7; pointer-events: none; }
+        body.vote-closed .arrow, body.vote-closed .slay-btn { display: none; }
+        body.vote-closed .main-slide::after, body.vote-closed .slay-item::after {
+            content: '\f023'; font-family: "Font Awesome 5 Free"; font-weight: 900;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            font-size: 4em; color: #fff; text-shadow: 0 0 20px #000; z-index: 200;
+        }
+        #closedMessage { display: none; color: var(--red); text-align: center; margin-top: 20px; font-weight: bold; }
+        body.vote-closed #closedMessage { display: block; }
+
         footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.5em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
@@ -213,6 +263,12 @@
     <div id="maintenanceScreen">
         <h1>🛠 ТЕХ. РАБОТЫ</h1>
         <p>Сайт временно закрыт на обновление.<br>Зайдите позже.</p>
+    </div>
+
+    <div class="timer-pill" id="globalTimer" onclick="this.classList.toggle('expanded')">
+        <div class="pill-label">ЗАКРЫТИЕ ВСЕХ ГОЛОСОВАНИЙ ЧЕРЕЗ</div>
+        <div class="pill-time" id="pillTime">--:--:--</div>
+        <div class="pill-date">24 ДЕКАБРЯ 20:00 МСК</div>
     </div>
 
     <div class="ambient-bg"></div>
@@ -232,6 +288,11 @@
         <div style="font-family: var(--font-head); color: #666; letter-spacing: 3px; margin-top: 10px;">2025 AWARDS</div>
         <p class="intro">Твой голос решает судьбу сервера</p>
     </header>
+
+    <div id="closedMessage">
+        <h2>ГОЛОСОВАНИЕ ЗАКРЫТО</h2>
+        <p style="color:#ccc;">Премия начинается 27 декабря.</p>
+    </div>
 
     <h2 class="section-title">ОСНОВНЫЕ НОМИНАЦИИ</h2>
 
@@ -286,6 +347,7 @@
                     <p style="color:#ccc;">Выбор: <b id="votedName" style="color:var(--red);"></b></p>
                     <p style="font-size:0.9em; color:#888;">Изменений: <span id="changesLeft">3</span>/3</p>
                     <button id="changeBtn" class="change-btn" onclick="unlockVote()">ИЗМЕНИТЬ ГОЛОС</button>
+                    <span id="changeTimer" class="change-timer"></span>
                 </div>
             </div>
             <div class="cand-grid" id="candGrid"></div>
@@ -361,7 +423,6 @@
             {title: "Клан/Команда", isPerson: false, cands: ["SSquadra", "ВОСХОД", "zz / КПZZ", "ТЦК", "AUGUST"]}
         ];
         
-        // ORDER: OLD (0-4), NEW (5-7).
         const subNomsList = [
             {title: "Лучший строитель", isPerson: true, cands: ["BaBdjoN", "MetOssinka", "Foltt1k", "k4agune", "kkkkkeeeefff", "l0lpiks", "flakePok", "Machinae"], imgId: 0}, 
             {title: "Лучший ПВП", isPerson: true, cands: ["Foltt1k", "fifa20120022", "mirik2025", "Homiki0", "SStamin", "NarkoBobr1k", "OduVaNchIIk", "KToYuO_O", "Sdas_garula"], imgId: 1},
@@ -379,6 +440,10 @@
         let sugEditsCount = 0;
         let serverTimeOffset = 0;
         
+        // DATES (2025)
+        const DEADLINE_CHANGE_VOTE = new Date('2025-12-23T20:00:00+03:00').getTime();
+        const DEADLINE_GLOBAL = new Date('2025-12-24T20:00:00+03:00').getTime();
+
         let mainIdx = 0;
         function initMain() {
             const cont = document.getElementById('mainContainer'); cont.innerHTML = '';
@@ -387,7 +452,7 @@
                 let ph = `<div class="ph-wrap text-ph">${n.title.charAt(0)}</div>`;
                 let wings = `<div class="wing wing-left"><i class="fas fa-feather-alt"></i></div><div class="wing wing-right"><i class="fas fa-feather-alt"></i></div>`;
                 d.innerHTML = `${wings}${ph}<img src="${API_URL}/static/main_${i}.png" onload="this.style.opacity=1" onerror="this.style.opacity=0"><h3>${n.title}</h3>`;
-                d.onclick = () => { if(i===mainIdx) openVoteList(0, i); else { mainIdx=i; updateMain(); }};
+                d.onclick = () => { if(document.body.classList.contains('vote-closed')) return; if(i===mainIdx) openVoteList(0, i); else { mainIdx=i; updateMain(); }};
                 cont.appendChild(d);
             });
             updateMain();
@@ -402,7 +467,7 @@
                 else if(i===(mainIdx+1)%mainNoms.length) el.className='main-slide next';
             }
         }
-        function moveMain(d) { mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
+        function moveMain(d) { if(document.body.classList.contains('vote-closed')) return; mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
 
         let slayIdx = 0;
         function initSlay() {
@@ -413,7 +478,7 @@
                     <div class="wing wing-left"><i class="fas fa-feather-alt"></i></div><div class="wing wing-right"><i class="fas fa-feather-alt"></i></div>
                     <img src="${API_URL}/static/sub_${n.imgId}.png" class="slay-img" onerror="this.style.display='none'">
                     <div class="slay-title">${n.title}</div>`;
-                d.onclick = () => openVoteList(1, i);
+                d.onclick = () => { if(document.body.classList.contains('vote-closed')) return; openVoteList(1, i); };
                 tr.appendChild(d);
             });
             updateSlay();
@@ -424,7 +489,6 @@
                 let el = document.getElementById(`sl-${i}`);
                 let diff = i - slayIdx;
                 
-                // FORCE WINGS UPDATE BASED ON VOTES
                 if(myVotes[subNomsList[i].title]) el.classList.add('voted'); else el.classList.remove('voted');
 
                 if (diff === 0) {
@@ -448,15 +512,17 @@
             }
             document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNomsList.length}`;
         }
-        function moveSlay(d) { slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNomsList.length) slayIdx=subNomsList.length-1; updateSlay(); }
+        function moveSlay(d) { if(document.body.classList.contains('vote-closed')) return; slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNomsList.length) slayIdx=subNomsList.length-1; updateSlay(); }
 
         initMain(); initSlay();
 
         function openModal(id){ 
+            if(id === 'voteModal' || id === 'profileModal') document.getElementById('globalTimer').style.display = 'none';
             document.getElementById(id).classList.add('active'); 
         }
         function closeModal(id){ 
             document.getElementById(id).classList.remove('active');
+            if(id === 'voteModal' || id === 'profileModal') document.getElementById('globalTimer').style.display = 'flex';
             if(id === 'previewModal') {
                 const v = document.querySelector('#previewMediaContainer video');
                 if(v) v.pause();
@@ -471,6 +537,10 @@
         
         let currGroup, currIdx;
         function openVoteList(group, idx) {
+            // Check Global Deadline
+            let now = Date.now() + (serverTimeOffset * 1000);
+            if(now > DEADLINE_GLOBAL) { toast("Голосование закрыто!"); return; }
+
             currGroup = group; currIdx = idx;
             let nom = group===0 ? mainNoms[idx] : subNomsList[idx];
             
@@ -480,13 +550,15 @@
             let votedFor = myVotes[nom.title];
             let changesDone = myChanges[nom.title] || 0;
             
+            // CHECK CHANGE VOTE DEADLINE
+            checkChangeVoteValidity();
+
             let isLocked = votedFor !== undefined;
             if(isLocked) {
                 document.getElementById('lockedMessage').style.display = 'block';
                 document.getElementById('votedName').innerText = votedFor;
                 document.getElementById('changesLeft').innerText = (3 - changesDone);
                 g.classList.add('locked');
-                document.getElementById('changeBtn').style.display = (changesDone >= 3) ? 'none' : 'inline-block';
             } else {
                 document.getElementById('lockedMessage').style.display = 'none';
                 g.classList.remove('locked');
@@ -530,7 +602,28 @@
             openModal('voteModal');
         }
 
+        function checkChangeVoteValidity() {
+            let now = Date.now() + (serverTimeOffset * 1000);
+            let btn = document.getElementById('changeBtn');
+            let timerSpan = document.getElementById('changeTimer');
+            
+            if(now > DEADLINE_CHANGE_VOTE) {
+                btn.disabled = true;
+                btn.innerText = "ВРЕМЯ ВЫШЛО";
+                timerSpan.innerText = "Изменить голос больше нельзя";
+            } else {
+                let diff = Math.floor((DEADLINE_CHANGE_VOTE - now) / 1000);
+                let h = Math.floor(diff/3600);
+                let m = Math.floor((diff%3600)/60);
+                btn.disabled = false;
+                btn.innerText = "ИЗМЕНИТЬ ГОЛОС";
+                timerSpan.innerText = `Осталось: ${h}ч ${m}м`;
+            }
+        }
+
         function unlockVote() {
+            let now = Date.now() + (serverTimeOffset * 1000);
+            if(now > DEADLINE_CHANGE_VOTE) { toast("Изменение закрыто!"); return; }
             document.getElementById('candGrid').classList.remove('locked');
             document.getElementById('lockedMessage').style.display = 'none';
         }
@@ -577,7 +670,7 @@
         async function sendVote(cand) {
             let nomTitle = currGroup===0 ? mainNoms[currIdx].title : subNomsList[currIdx].title;
             
-            // OPTIMISTIC UPDATE: SHOW WINGS INSTANTLY
+            // OPTIMISTIC UPDATE
             myVotes[nomTitle] = cand; 
             updateSlay(); updateMain();
 
@@ -590,7 +683,6 @@
                 }
                 else { 
                     toast(d.message);
-                    // REVERT IF FAILED
                     if(d.message !== "ПРИНЯТО!") {
                         delete myVotes[nomTitle];
                         updateSlay(); updateMain();
@@ -666,6 +758,8 @@
                 myChanges = d.changes || {}; 
                 sugEditsCount = d.sug_edits || 0;
                 document.getElementById('statSugBox').style.display = 'none';
+                
+                serverTimeOffset = d.server_time - (Date.now()/1000);
 
                 updateMain(); updateSlay();
 
@@ -711,6 +805,34 @@
             t.classList.add('show'); 
             setTimeout(() => t.classList.remove('show'), 3000); 
         }
+        
+        // COUNTDOWN UPDATER
+        setInterval(() => {
+            let now = Date.now() + (serverTimeOffset * 1000);
+            
+            // 1. GLOBAL TIMER
+            let diff = Math.floor((DEADLINE_GLOBAL - now) / 1000);
+            if(diff <= 0) {
+                document.getElementById('pillTime').innerText = "00:00:00";
+                document.body.classList.add('vote-closed');
+                if(document.getElementById('voteModal').classList.contains('active')) closeModal('voteModal');
+            } else {
+                let h = Math.floor(diff / 3600); 
+                let m = Math.floor((diff % 3600) / 60);
+                let s = diff % 60;
+                let hStr = h < 10 ? '0' + h : h; // Show total hours
+                let mStr = m < 10 ? '0' + m : m;
+                let sStr = s < 10 ? '0' + s : s;
+                document.getElementById('pillTime').innerText = `${hStr}:${mStr}:${sStr}`;
+                document.body.classList.remove('vote-closed');
+            }
+
+            // 2. CHANGE VOTE TIMER (IF MODAL OPEN)
+            if(document.getElementById('voteModal').classList.contains('active')) {
+                checkChangeVoteValidity();
+            }
+
+        }, 1000);
         
         const pc = document.getElementById('particles');
         for(let i=0;i<40;i++) {
