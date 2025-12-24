@@ -13,12 +13,11 @@
         body::-webkit-scrollbar, .modal-content::-webkit-scrollbar { display: none; }
         body, .modal-content { -ms-overflow-style: none; scrollbar-width: none; }
 
-        :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
+        :root { --red: #ff0033; --orange: #ffaa00; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
         body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 60px; }
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
-        /* MAINTENANCE SCREEN */
         #maintenanceScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: none;
@@ -77,87 +76,118 @@
         .ticket-section {
             display: none; /* JS toggles this */
             max-width: 600px; margin: 30px auto; padding: 0 10px;
+            perspective: 1000px; /* For tilt */
         }
         
         .real-ticket {
-            background: #0f0f0f;
-            border: 2px solid #333;
-            border-radius: 12px;
+            background: #0a0a0a; /* Darker base */
+            border: 3px solid #222;
+            border-radius: 16px;
             position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9), inset 0 0 60px rgba(0,0,0,0.8);
             overflow: hidden;
             display: flex; flex-direction: column;
+            /* Metallic texture and tilt transition */
+            background-image: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.1) 100%), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxwYXRoIGZpbGw9IiMzMzMiIGQ9Ik0xIDNoMXYxHDFWMyIgb3BhY2l0eT0iLjIiLz48L3N2Zz4=');
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            transform-style: preserve-3d;
+        }
+        
+        /* TILT HOVER EFFECT */
+        .real-ticket:hover {
+            transform: rotateX(4deg) rotateY(-3deg) scale(1.02);
+            box-shadow: 0 25px 60px rgba(255,0,51,0.2), inset 0 0 30px rgba(255,0,51,0.1);
+            border-color: #331111;
         }
         
         /* Notches (Holes) */
         .real-ticket::before, .real-ticket::after {
             content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-            width: 30px; height: 30px; background: #000; /* Match body bg */
+            width: 34px; height: 34px; background: #000;
             border-radius: 50%; z-index: 10;
-            box-shadow: inset 0 0 10px #000;
+            box-shadow: inset 0 0 15px #000; border: 2px solid #222;
         }
-        .real-ticket::before { left: -15px; border-right: 2px solid #333; }
-        .real-ticket::after { right: -15px; border-left: 2px solid #333; }
+        .real-ticket::before { left: -17px; border-right: none; }
+        .real-ticket::after { right: -17px; border-left: none; }
 
         .ticket-header-area {
-            background: linear-gradient(90deg, #200, #500, #200);
+            background: linear-gradient(90deg, #150000, #300000, #150000);
             padding: 15px; text-align: center;
-            border-bottom: 2px dashed #444;
+            border-bottom: 3px dashed #331111;
+            text-shadow: 0 2px 5px #000;
         }
         .ticket-name {
-            font-family: var(--font-head); color: #fff; font-size: 1.5em; letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--red);
+            font-family: var(--font-head); color: #ccc; font-size: 1.3em; letter-spacing: 3px;
+            text-transform: uppercase; color: var(--red); font-weight: 900;
         }
         
         .ticket-body {
-            padding: 20px 40px; 
-            background: repeating-linear-gradient(45deg, #111 0, #111 10px, #151515 10px, #151515 20px);
+            padding: 25px 40px; 
+            background: rgba(20, 5, 5, 0.8);
             display: flex; flex-direction: column; align-items: center;
         }
 
         .scratch-strip {
-            display: flex; gap: 0; /* Connected */
-            background: #222; border: 2px solid #555;
-            border-radius: 8px; overflow: hidden;
-            box-shadow: inset 0 0 20px #000;
-            margin-bottom: 10px;
+            display: flex; gap: 0;
+            background: #1a0a0a; border: 3px solid #331111;
+            border-radius: 10px; overflow: hidden;
+            box-shadow: inset 0 0 30px #000;
+            margin-bottom: 15px;
         }
 
         .segment-wrap {
-            position: relative; width: 80px; height: 100px;
-            border-right: 1px dashed #555;
+            position: relative; width: 85px; height: 110px;
+            border-right: 2px dashed #331111;
         }
         .segment-wrap:last-child { border-right: none; }
 
         .code-reveal {
             width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
-            font-family: monospace; font-size: 1.8em; color: #fff;
-            background: #111; user-select: none;
+            font-family: 'Courier New', monospace; font-weight: bold; font-size: 2em; color: #fff;
+            background: #0a0a0a; user-select: none;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
         
-        /* RED RARITY BACKGROUND */
+        /* RED RARITY */
         .code-reveal.rarity-red {
-            background: linear-gradient(135deg, #500, #900);
-            color: #fff; text-shadow: 0 0 10px #fff;
-            animation: redPulse 2s infinite;
+            background: linear-gradient(135deg, #400, #700);
+            color: #fff; text-shadow: 0 0 15px #f00; animation: redPulse 3s infinite;
         }
-        @keyframes redPulse { 0% { box-shadow: inset 0 0 10px #f00; } 50% { box-shadow: inset 0 0 30px #f00; } 100% { box-shadow: inset 0 0 10px #f00; } }
+        @keyframes redPulse { 0% { box-shadow: inset 0 0 20px #400; } 50% { box-shadow: inset 0 0 50px #f00; } 100% { box-shadow: inset 0 0 20px #400; } }
+
+        /* ORANGE RARITY */
+        .code-reveal.rarity-orange {
+            background: linear-gradient(135deg, #630, #b60);
+            color: #fff; text-shadow: 0 0 15px var(--orange); animation: orangePulse 3s infinite;
+        }
+        @keyframes orangePulse { 0% { box-shadow: inset 0 0 20px #630; } 50% { box-shadow: inset 0 0 50px var(--orange); } 100% { box-shadow: inset 0 0 20px #630; } }
 
         canvas.scratch-canvas {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
-            cursor: url('https://img.icons8.com/ios-filled/24/ffffff/coins.png'), auto;
-            touch-action: none;
+            cursor: crosshair;
+            touch-action: none; transition: opacity 0.5s;
         }
         
-        .seat-reward {
-            width: 100%; text-align: center; margin-top: 10px;
-            color: var(--red); font-weight: bold; cursor: pointer;
-            animation: pulse 2s infinite; display: none; font-size: 0.9em;
-            text-transform: uppercase; letter-spacing: 1px;
+        .ticket-footer-text {
+            text-align: center; font-family: var(--font-body); font-size: 0.75em;
+            color: #888; margin-top: 5px; letter-spacing: 1px; text-transform: uppercase;
+            font-weight: 700; border-top: 2px dashed #331111; padding-top: 15px; width: 100%;
         }
-        .seat-reward:hover { text-decoration: underline; text-shadow: 0 0 10px var(--red); }
+        
+        .ticket-reward-list {
+            display: flex; flex-direction: column; gap: 5px; margin-top: 15px; width: 100%;
+        }
+        .reward-item {
+            text-align: center; font-weight: bold; cursor: pointer;
+            font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px;
+            padding: 8px; border: 1px solid; border-radius: 8px;
+            animation: pulse 2s infinite; transition: 0.3s;
+        }
+        .reward-item:hover { transform: scale(1.05); }
+        .reward-red { color: var(--red); border-color: var(--red); background: rgba(255,0,51,0.1); }
+        .reward-orange { color: var(--orange); border-color: var(--orange); background: rgba(255,170,0,0.1); }
 
         /* WINGS */
         .wing { 
@@ -347,10 +377,11 @@
         #closedMessage { display: none; color: var(--red); text-align: center; margin-top: 20px; font-weight: bold; }
         body.vote-closed #closedMessage { display: block; }
 
-        /* SEAT MODAL */
-        #seatModal { text-align: center; }
-        #seatModal p { font-size: 1.2em; line-height: 1.5; color: #ccc; }
-        #seatModal a { color: var(--red); text-decoration: none; font-weight: bold; }
+        /* REWARD MODAL */
+        #rewardModal { text-align: center; }
+        #rewardModal h2 { margin-bottom: 20px; }
+        #rewardModal p { font-size: 1.1em; line-height: 1.6; color: #ccc; }
+        #rewardModal a { color: var(--red); text-decoration: none; font-weight: bold; border-bottom: 1px dotted var(--red); }
 
         footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.5em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
@@ -391,16 +422,18 @@
     </div>
 
     <div class="ticket-section" id="ticketSection">
-        <div class="golden-ticket">
+        <div class="real-ticket" onmousemove="ticketTilt(event)" onmouseleave="ticketResetTilt(event)">
             <div class="ticket-header-area">
-                <div class="ticket-name">GOLDEN TICKET</div>
+                <div class="ticket-name">Ваш CatLay билет-пропуск</div>
             </div>
             <div class="ticket-body">
                 <div class="scratch-strip" id="ticketSegments">
                     </div>
-                <div class="seat-reward" id="seatReward" onclick="openModal('seatModal')">
-                    🎟 ВЫБОР ЛЮБОГО МЕСТА СИДЕНИЯ
+                <div class="ticket-footer-text">
+                    Код с билета вам нужно будет сообщить на премии, чтобы вас пропустили в зал.
                 </div>
+                <div class="ticket-reward-list" id="rewardList">
+                    </div>
             </div>
         </div>
     </div>
@@ -505,15 +538,11 @@
         </div>
     </div>
 
-    <div id="seatModal" class="modal">
+    <div id="rewardModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('seatModal')">&times;</span>
-            <h2 style="font-family: var(--font-head); color: var(--red);">ВЫБОР МЕСТА</h2>
-            <p>
-                Поздравляем! Вам выпала редкая часть билета.<br><br>
-                Напишите в Telegram <a href="https://t.me/stam1n">@stam1n</a>.<br>
-                Мы отправим вам карту зала, и вы сможете забронировать любое место ещё до начала Премии.
-            </p>
+            <span class="close" onclick="closeModal('rewardModal')">&times;</span>
+            <h2 id="rewardTitle" style="font-family: var(--font-head);"></h2>
+            <div id="rewardBody"></div>
         </div>
     </div>
 
@@ -570,14 +599,14 @@
         let TICKET_UNLOCKS = [];
         let ticketData = {};
 
-        // === SCRATCH CARD CLASS ===
+        // === SCRATCH CARD CLASS (REALISTIC 90% CHECK) ===
         class ScratchCard {
             constructor(canvas, index) {
                 this.canvas = canvas;
-                this.ctx = canvas.getContext('2d');
+                this.ctx = canvas.getContext('2d', { willReadFrequently: true });
                 this.index = index;
                 this.isDrawing = false;
-                this.scratchedPercent = 0;
+                this.revealed = false;
                 this.width = canvas.offsetWidth;
                 this.height = canvas.offsetHeight;
                 
@@ -591,32 +620,28 @@
             }
 
             initCover() {
-                this.ctx.fillStyle = '#444'; // Cover color
+                this.ctx.fillStyle = '#2a1a1a'; // Darker cover
                 this.ctx.fillRect(0, 0, this.width, this.height);
                 
-                // Add texture/text
-                this.ctx.font = 'bold 12px monospace';
-                this.ctx.fillStyle = '#888';
+                // Texture
+                for(let i=0; i<500; i++) {
+                    this.ctx.fillStyle = Math.random() > 0.5 ? '#332222' : '#221111';
+                    this.ctx.fillRect(Math.random()*this.width, Math.random()*this.height, 2, 2);
+                }
+
+                this.ctx.font = 'bold 14px "Montserrat", sans-serif';
+                this.ctx.fillStyle = '#775555';
                 this.ctx.textAlign = 'center';
                 this.ctx.textBaseline = 'middle';
-                this.ctx.fillText("СТЕРЕТЬ", this.width/2, this.height/2 - 10);
-                this.ctx.fillText(`ЧАСТЬ ${this.index+1}`, this.width/2, this.height/2 + 10);
+                this.ctx.fillText("СТЕРЕТЬ", this.width/2, this.height/2 - 12);
+                this.ctx.font = '12px monospace';
+                this.ctx.fillText(`СЕГМЕНТ ${this.index+1}`, this.width/2, this.height/2 + 12);
             }
 
             bindEvents() {
-                const start = (e) => {
-                    this.isDrawing = true;
-                    this.scratch(e);
-                };
-                const move = (e) => {
-                    if(this.isDrawing) this.scratch(e);
-                };
-                const end = () => {
-                    if(this.isDrawing) {
-                        this.isDrawing = false;
-                        this.checkPercent();
-                    }
-                };
+                const start = (e) => { this.isDrawing = true; this.scratch(e); };
+                const move = (e) => { if(this.isDrawing) this.scratch(e); };
+                const end = () => { if(this.isDrawing) { this.isDrawing = false; this.checkPercent(); } };
 
                 this.canvas.addEventListener('mousedown', start);
                 this.canvas.addEventListener('mousemove', move);
@@ -629,27 +654,30 @@
             }
 
             scratch(e) {
+                if(this.revealed) return;
                 const rect = this.canvas.getBoundingClientRect();
                 const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
                 const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
 
                 this.ctx.globalCompositeOperation = 'destination-out';
                 this.ctx.beginPath();
-                this.ctx.arc(x, y, 15, 0, Math.PI * 2); // Brush size
+                this.ctx.arc(x, y, 18, 0, Math.PI * 2); // Larger brush
                 this.ctx.fill();
             }
 
             checkPercent() {
-                // Optimization: Check only every few strokes or using a grid
-                // Here we simplify: if user scratches enough, trigger API
-                // For performance, we can just trigger API on first significant scratch or use getImageData
-                
-                // Simplified: Fetch API immediately on first scratch interaction end to allow server logic
-                // The visual scratch is just for effect. 
-                
-                // Let's rely on visual feedback + API call.
-                // We'll call API. If API says "too early", we reset canvas. If "ok", we remove canvas.
-                scratchTicket(this.index, this);
+                if(this.revealed) return;
+                const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                const pixels = imageData.data;
+                let transparent = 0;
+                for (let i = 3; i < pixels.length; i += 4) {
+                    if (pixels[i] === 0) transparent++;
+                }
+                const percent = (transparent / (pixels.length / 4)) * 100;
+                if (percent > 90) {
+                     this.revealed = true;
+                     scratchTicket(this.index, this);
+                }
             }
             
             clear() {
@@ -658,10 +686,27 @@
             }
             
             reset() {
+                this.revealed = false;
                 this.ctx.globalCompositeOperation = 'source-over';
                 this.initCover();
             }
         }
+        
+        function ticketTilt(e) {
+            const ticket = e.currentTarget;
+            const rect = ticket.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -5;
+            const rotateY = ((x - centerX) / centerX) * 5;
+            ticket.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        }
+        function ticketResetTilt(e) {
+             e.currentTarget.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        }
+
 
         let mainIdx = 0;
         function initMain() {
@@ -736,12 +781,12 @@
         initMain(); initSlay();
 
         function openModal(id){ 
-            if(id === 'voteModal' || id === 'profileModal') document.getElementById('globalTimer').style.display = 'none';
+            if(id === 'voteModal' || id === 'profileModal' || id === 'rewardModal') document.getElementById('globalTimer').style.display = 'none';
             document.getElementById(id).classList.add('active'); 
         }
         function closeModal(id){ 
             document.getElementById(id).classList.remove('active');
-            if(id === 'voteModal' || id === 'profileModal') document.getElementById('globalTimer').style.display = 'flex';
+            if(id === 'voteModal' || id === 'profileModal' || id === 'rewardModal') document.getElementById('globalTimer').style.display = 'flex';
             if(id === 'previewModal') {
                 const v = document.querySelector('#previewMediaContainer video');
                 if(v) { v.pause(); v.currentTime=0; }
@@ -906,35 +951,30 @@
         // --- TICKET SYSTEM ---
         function initTicketSystem() {
             const container = document.getElementById('ticketSegments');
-            container.innerHTML = '';
+            const rewardList = document.getElementById('rewardList');
+            container.innerHTML = ''; rewardList.innerHTML = '';
             
-            let hasRed = false;
+            let hasRed = false; let hasOrange = false;
             
             for(let i=0; i<4; i++) {
                 let wrap = document.createElement('div');
                 wrap.className = 'segment-wrap';
                 
-                // Reveal Layer (Code)
                 let reveal = document.createElement('div');
                 reveal.className = 'code-reveal';
                 reveal.id = `reveal-${i}`;
                 
-                // Canvas Layer
                 let canvas = document.createElement('canvas');
                 canvas.className = 'scratch-canvas';
                 canvas.id = `canvas-${i}`;
                 
                 if (ticketData[i]) {
                     reveal.innerText = ticketData[i].code;
-                    if(ticketData[i].rarity === 'red') {
-                        reveal.classList.add('rarity-red');
-                        hasRed = true;
-                    }
-                    // No canvas if opened
+                    if(ticketData[i].rarity === 'red') { reveal.classList.add('rarity-red'); hasRed = true; }
+                    if(ticketData[i].rarity === 'orange') { reveal.classList.add('rarity-orange'); hasOrange = true; }
                 } else {
-                    reveal.innerText = "??"; // Placeholder until scratched
+                    reveal.innerText = "??";
                     wrap.appendChild(canvas);
-                    // Init Scratch Logic
                     setTimeout(() => new ScratchCard(canvas, i), 100);
                 }
                 
@@ -942,7 +982,8 @@
                 container.appendChild(wrap);
             }
             
-            document.getElementById('seatReward').style.display = hasRed ? 'block' : 'none';
+            if(hasRed) rewardList.innerHTML += `<div class="reward-item reward-red" onclick="openReward('red')">🎟 ВЫБОР МЕСТА</div>`;
+            if(hasOrange) rewardList.innerHTML += `<div class="reward-item reward-orange" onclick="openReward('orange')">⭐ +1 ГОЛОС</div>`;
         }
 
         async function scratchTicket(idx, scratchObj) {
@@ -963,19 +1004,26 @@
                 let d = await res.json();
                 if(d.success) {
                     ticketData[idx] = d.data;
-                    // Update reveal text
-                    let reveal = document.getElementById(`reveal-${idx}`);
-                    reveal.innerText = d.data.code;
-                    if(d.data.rarity === 'red') {
-                        reveal.classList.add('rarity-red');
-                        document.getElementById('seatReward').style.display = 'block';
-                    }
-                    scratchObj.clear(); // Fade out canvas
+                    initTicketSystem(); // Redraw
+                    scratchObj.clear();
                 } else {
                     toast(d.message || "Ошибка");
                     scratchObj.reset();
                 }
             } catch(e) { toast("Ошибка"); scratchObj.reset(); }
+        }
+
+        function openReward(type) {
+            const title = document.getElementById('rewardTitle');
+            const body = document.getElementById('rewardBody');
+            if(type === 'red') {
+                title.innerText = "ВЫБОР МЕСТА"; title.style.color = "var(--red)";
+                body.innerHTML = `<p>Поздравляем! Вам выпала редкая часть билета.<br><br>Напишите в Telegram <a href="https://t.me/stam1n">@stam1n</a>.<br>Мы отправим вам карту зала, и вы сможете забронировать любое место ещё до начала Премии.</p>`;
+            } else {
+                title.innerText = "+1 ГОЛОС"; title.style.color = "var(--orange)";
+                body.innerHTML = `<p>Поздравляем! Вам выпала редкая часть билета.<br><br>Напишите в Telegram <a href="https://t.me/stam1n">@stam1n</a>.<br>Напишите название номинации и номинанта, которому нужно добавить +1 голос.</p>`;
+            }
+            openModal('rewardModal');
         }
 
         async function toggleTestMode() {
