@@ -18,7 +18,6 @@
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
-        /* MAINTENANCE SCREEN */
         #maintenanceScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: none;
@@ -28,37 +27,21 @@
         #maintenanceScreen h1 { font-size: 3em; color: var(--red); margin-bottom: 20px; animation: pulse 2s infinite; }
         #maintenanceScreen p { font-size: 1.2em; color: #888; max-width: 80%; }
 
-        /* GLOBAL COUNTDOWN PILL */
-        /* Z-INDEX INCREASED TO 10005 TO BE ABOVE BUTTONS */
-        .timer-pill {
-            position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-            background: rgba(10, 0, 0, 0.7); border: 1px solid #444;
-            color: #ccc; text-align: center;
-            padding: 8px 20px; font-family: var(--font-head); font-weight: 700;
-            z-index: 10005; border-radius: 30px;
-            backdrop-filter: blur(5px); cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 0.9em; display: flex; flex-direction: column; align-items: center;
-            overflow: hidden; max-height: 40px;
+        /* BANNER */
+        .floating-banner {
+            position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(90deg, rgba(20,0,0,0.9), rgba(50,0,10,0.9));
+            border: 1px solid var(--red);
+            color: #fff; text-align: center;
+            padding: 12px 30px; font-family: var(--font-head); font-weight: 900;
+            z-index: 9000; box-shadow: 0 0 20px rgba(255,0,51,0.3);
+            font-size: 0.8em; letter-spacing: 2px; text-transform: uppercase;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            animation: slideDown 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            white-space: nowrap;
         }
-        
-        /* HOVER EFFECT FOR PC + EXPANDED CLASS FOR MOBILE */
-        .timer-pill:hover, .timer-pill.expanded {
-            background: rgba(20, 0, 5, 0.95); border-color: var(--red);
-            box-shadow: 0 5px 25px rgba(255,0,51,0.4);
-            padding: 15px 30px; max-height: 150px; color: #fff;
-        }
-
-        .pill-label { display: none; font-size: 0.7em; color: var(--red); margin-bottom: 5px; white-space: nowrap; letter-spacing: 1px; }
-        .pill-date { display: none; font-size: 0.6em; color: #888; margin-top: 5px; font-family: var(--font-body); text-transform: uppercase; }
-        .pill-time { font-size: 1.1em; letter-spacing: 2px; }
-
-        .timer-pill:hover .pill-label, .timer-pill:hover .pill-date,
-        .timer-pill.expanded .pill-label, .timer-pill.expanded .pill-date { display: block; }
-        
-        .timer-pill:hover .pill-time, .timer-pill.expanded .pill-time { 
-            font-size: 1.3em; color: var(--red); text-shadow: 0 0 10px var(--red); 
-        }
+        @keyframes slideDown { from { top: -60px; opacity:0; } to { top: 25px; opacity:1; } }
 
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
@@ -69,7 +52,67 @@
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 15px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
-        /* BUTTONS */
+        /* TICKET SECTION */
+        .ticket-section {
+            display: none; /* HIDDEN UNTIL DEADLINE */
+            max-width: 700px; margin: 40px auto; padding: 0 20px;
+            perspective: 1000px;
+        }
+        
+        .golden-ticket {
+            background: linear-gradient(135deg, #1a1a1a 0%, #332200 50%, #1a1a1a 100%);
+            border: 2px solid #a88d32; border-radius: 15px;
+            box-shadow: 0 0 30px rgba(168, 141, 50, 0.2);
+            padding: 20px; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center;
+            transition: 0.3s;
+        }
+        .golden-ticket::before {
+            content:''; position: absolute; top:-50%; left:-50%; width:200%; height:200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,215,0,0.1) 50%, transparent 60%);
+            animation: shine 4s infinite linear; pointer-events: none;
+        }
+        @keyframes shine { 0% {transform:translate(-50%,-50%) rotate(0deg);} 100% {transform:translate(0%,0%) rotate(360deg);} }
+
+        .ticket-title { 
+            font-family: var(--font-head); color: #ffcc00; font-size: 1.5em; 
+            text-transform: uppercase; margin-bottom: 20px; text-shadow: 0 0 10px #ffcc00;
+        }
+
+        .ticket-segments { 
+            display: flex; justify-content: center; gap: 15px; width: 100%; flex-wrap: wrap; 
+        }
+
+        .t-segment {
+            width: 80px; height: 100px; position: relative;
+            background: #111; border: 1px solid #444; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: monospace; font-size: 1.5em; color: #fff;
+            overflow: hidden; cursor: pointer; transition: 0.3s;
+        }
+        
+        /* RED RARITY STYLE */
+        .t-segment.rarity-red {
+            background: linear-gradient(135deg, #300 0%, #600 100%);
+            border-color: var(--red); box-shadow: 0 0 15px var(--red);
+        }
+        
+        .t-cover {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #555 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><circle cx="5" cy="5" r="1" fill="%23333"/></svg>');
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.5em; color: #aaa; text-align: center; padding: 5px;
+            transition: opacity 0.5s ease; z-index: 5;
+        }
+        .t-segment.scratched .t-cover { opacity: 0; pointer-events: none; }
+        
+        .seat-reward {
+            width: 100%; text-align: center; margin-top: 15px;
+            color: var(--red); font-weight: bold; cursor: pointer;
+            animation: pulse 2s infinite; display: none;
+        }
+        .seat-reward:hover { text-decoration: underline; }
+
         .header-btns-container { position: absolute; top: 30px; width: 100%; left: 0; padding: 0 40px; display: none; justify-content: space-between; z-index: 10001; pointer-events: auto; }
         .header-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); padding: 10px 25px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.8em; }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
@@ -83,7 +126,7 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
-        /* WINGS SYSTEM (FIXED SCALE AND MIRROR) */
+        /* WINGS */
         .wing { 
             position: absolute; top: 50%; 
             font-size: 3.5em; color: var(--red); 
@@ -91,43 +134,36 @@
             z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); 
             pointer-events: none; 
         }
-        
-        /* Base positions */
         .wing-left { transform: translateY(-50%) scaleX(-1); } 
         .wing-right { transform: translateY(-50%); }
 
-        /* Main Slider Distance */
         .main-slide .wing-left { left: -80px; }
         .main-slide .wing-right { right: -80px; }
-        
-        /* Main Slider Hover Scaling */
         .main-slide:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
         .main-slide:hover .wing-right { transform: translateY(-50%) scale(1.1); }
         
-        /* Slay Item Wings (Closer) */
-        .slay-item .wing-left { left: -10px; } /* VERY CLOSE */
+        .slay-item .wing-left { left: -10px; }
         .slay-item .wing-right { right: -10px; }
-
-        /* Slay Item Hover Scaling */
         .slay-item:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
         .slay-item:hover .wing-right { transform: translateY(-50%) scale(1.1); }
 
-        .main-slide.active.voted .wing, 
-        .slay-item.active.voted .wing { opacity: 1; }
+        .main-slide.active.voted .wing, .slay-item.active.voted .wing { opacity: 1; }
 
         /* MAIN SLIDER */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .main-slide { position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible; }
         
-        /* MAIN GLOW */
+        /* INCREASED MAIN GLOW */
         .main-slide::before {
             content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-            width: 90%; height: 90%; background: radial-gradient(circle, rgba(255,0,51,0.2) 0%, transparent 70%);
-            z-index: -1; pointer-events: none; filter: blur(30px); opacity: 0; transition: opacity 0.5s;
+            width: 100%; height: 100%; /* Bigger */
+            background: radial-gradient(circle, rgba(255,0,51,0.4) 0%, transparent 70%); /* Stronger opacity */
+            z-index: -1; pointer-events: none; filter: blur(35px); opacity: 0.5; /* Always visible */
+            transition: opacity 0.5s, filter 0.5s;
         }
-        .main-slide.active::before { opacity: 1; }
-        .main-slide:hover::before { opacity: 1; filter: blur(40px); background: radial-gradient(circle, rgba(255,0,51,0.4) 0%, transparent 70%); }
+        .main-slide.active::before { opacity: 1; filter: blur(40px); }
+        .main-slide:hover::before { opacity: 1; filter: blur(50px); background: radial-gradient(circle, rgba(255,0,51,0.6) 0%, transparent 75%); }
 
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; }
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
@@ -157,9 +193,7 @@
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s, z-index 0s;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; 
         }
-        
         .slay-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.3s ease-out, filter 0.3s; z-index: 2; }
-        /* SCALE WINGS AND IMG ON HOVER */
         .slay-item:hover { z-index: 101 !important; }
         .slay-item:hover .slay-img { transform: scale(1.1) translateY(-10px); filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); }
         
@@ -172,7 +206,6 @@
         }
         .slay-item.active .slay-title { opacity: 1; transform: scale(1); text-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
         .slay-item:hover .slay-title { color: var(--red); transform: scale(1.1) translateY(-5px); text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3); }
-        
         .slay-item .wing { font-size: 3em; z-index: 1; } 
 
         .slay-item::before {
@@ -275,6 +308,11 @@
         #closedMessage { display: none; color: var(--red); text-align: center; margin-top: 20px; font-weight: bold; }
         body.vote-closed #closedMessage { display: block; }
 
+        /* SEAT MODAL */
+        #seatModal { text-align: center; }
+        #seatModal p { font-size: 1.2em; line-height: 1.5; color: #ccc; }
+        #seatModal a { color: var(--red); text-decoration: none; font-weight: bold; }
+
         footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.5em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
@@ -311,6 +349,16 @@
     <div id="closedMessage">
         <h2>ГОЛОСОВАНИЕ ЗАКРЫТО</h2>
         <p style="color:#ccc;">Премия начинается 27 декабря.</p>
+    </div>
+
+    <div class="ticket-section" id="ticketSection">
+        <div class="golden-ticket">
+            <div class="ticket-title">ВАШ БИЛЕТ</div>
+            <div class="ticket-segments" id="ticketSegments"></div>
+            <div class="seat-reward" id="seatReward" onclick="openModal('seatModal')">
+                🎟 ВЫБОР ЛЮБОГО МЕСТА СИДЕНИЯ НА ПРЕМИИ
+            </div>
+        </div>
     </div>
 
     <h2 class="section-title">ОСНОВНЫЕ НОМИНАЦИИ</h2>
@@ -399,14 +447,29 @@
                     <input type="text" value="---" readonly class="token-box" id="tokenDisplay">
                     <div id="timer" style="color:#666; font-family:monospace; margin:10px 0;">--:--</div>
                     <button id="checkBtn" class="check-btn" onclick="check(true)">ОБНОВИТЬ</button>
-                    <div><button class="reset-btn" onclick="hardReset()">ТЫ ЕБЛАН (ИДИ НАХУЙ)</button></div>
+                    <div><button class="reset-btn" onclick="hardReset()">СБРОСИТЬ КОД (ЕСЛИ ИСТЕК)</button></div>
                 </div>
                 <div style="display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px;">
                     <div><h3 id="statVoted" style="color:var(--red);">0</h3><p>Голосов</p></div>
                     <div><h3 id="statLeft">15</h3><p>Осталось</p></div>
                     <div id="statSugBox"><h3 id="statSug" style="color:#888;">0</h3><p>Идей</p></div>
                 </div>
+                <div id="adminPanel" style="display:none; margin-top:20px; border-top:1px solid #333; padding-top:10px;">
+                    <button class="header-btn" onclick="toast('TEST OK')">TEST</button>
+                </div>
             </div>
+        </div>
+    </div>
+
+    <div id="seatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('seatModal')">&times;</span>
+            <h2 style="font-family: var(--font-head); color: var(--red);">ВЫБОР МЕСТА</h2>
+            <p>
+                Поздравляем! Вам выпала редкая часть билета.<br><br>
+                Напишите в Telegram <a href="https://t.me/stam1n">@stam1n</a>.<br>
+                Мы отправим вам карту зала, и вы сможете забронировать любое место ещё до начала Премии.
+            </p>
         </div>
     </div>
 
@@ -459,9 +522,11 @@
         let sugEditsCount = 0;
         let serverTimeOffset = 0;
         
-        // DATES (2025)
-        const DEADLINE_CHANGE_VOTE = new Date('2025-12-23T20:00:00+03:00').getTime();
-        const DEADLINE_GLOBAL = new Date('2025-12-24T20:00:00+03:00').getTime();
+        // SERVER DATES
+        let DEADLINE_CHANGE_VOTE = 0;
+        let DEADLINE_GLOBAL = 0;
+        let TICKET_UNLOCKS = [];
+        let ticketData = {};
 
         let mainIdx = 0;
         function initMain() {
@@ -556,8 +621,7 @@
         
         let currGroup, currIdx;
         function openVoteList(group, idx) {
-            // Check Global Deadline
-            let now = Date.now() + (serverTimeOffset * 1000);
+            let now = Date.now() / 1000 + serverTimeOffset;
             if(now > DEADLINE_GLOBAL) { toast("Голосование закрыто!"); return; }
 
             currGroup = group; currIdx = idx;
@@ -569,7 +633,6 @@
             let votedFor = myVotes[nom.title];
             let changesDone = myChanges[nom.title] || 0;
             
-            // CHECK CHANGE VOTE DEADLINE
             checkChangeVoteValidity();
 
             let isLocked = votedFor !== undefined;
@@ -622,7 +685,7 @@
         }
 
         function checkChangeVoteValidity() {
-            let now = Date.now() + (serverTimeOffset * 1000);
+            let now = Date.now() / 1000 + serverTimeOffset;
             let btn = document.getElementById('changeBtn');
             let timerSpan = document.getElementById('changeTimer');
             
@@ -631,7 +694,7 @@
                 btn.innerText = "ВРЕМЯ ВЫШЛО";
                 timerSpan.innerText = "Изменить голос больше нельзя";
             } else {
-                let diff = Math.floor((DEADLINE_CHANGE_VOTE - now) / 1000);
+                let diff = Math.floor(DEADLINE_CHANGE_VOTE - now);
                 let h = Math.floor(diff/3600);
                 let m = Math.floor((diff%3600)/60);
                 btn.disabled = false;
@@ -641,7 +704,7 @@
         }
 
         function unlockVote() {
-            let now = Date.now() + (serverTimeOffset * 1000);
+            let now = Date.now() / 1000 + serverTimeOffset;
             if(now > DEADLINE_CHANGE_VOTE) { toast("Изменение закрыто!"); return; }
             document.getElementById('candGrid').classList.remove('locked');
             document.getElementById('lockedMessage').style.display = 'none';
@@ -664,7 +727,6 @@
             
             let video = document.createElement('video');
             video.src = vidUrl; video.controls = true; video.autoplay = true; video.muted = false; video.loop = true;
-            
             video.onloadedmetadata = () => { container.innerHTML = '<div style="color:#0f0">Видео найдено, подождите...</div>'; };
             video.oncanplay = () => { container.innerHTML = ''; container.appendChild(video); };
             
@@ -688,26 +750,75 @@
 
         async function sendVote(cand) {
             let nomTitle = currGroup===0 ? mainNoms[currIdx].title : subNomsList[currIdx].title;
-            
-            // OPTIMISTIC UPDATE
             myVotes[nomTitle] = cand; 
             updateSlay(); updateMain();
 
             try {
                 let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nomTitle, candidate:cand})});
                 let d = await res.json();
-                if(d.success) { 
-                    toast("ПРИНЯТО!"); 
-                    check(false); 
-                }
+                if(d.success) { toast("ПРИНЯТО!"); check(false); }
                 else { 
                     toast(d.message);
-                    if(d.message !== "ПРИНЯТО!") {
-                        delete myVotes[nomTitle];
-                        updateSlay(); updateMain();
-                    }
+                    if(d.message !== "ПРИНЯТО!") { delete myVotes[nomTitle]; updateSlay(); updateMain(); }
                 }
             } catch(e) { toast("Ошибка сети"); }
+        }
+
+        // TICKET LOGIC
+        function initTicketSystem() {
+            const container = document.getElementById('ticketSegments');
+            container.innerHTML = '';
+            
+            let hasRed = false;
+            
+            for(let i=0; i<4; i++) {
+                let seg = document.createElement('div');
+                seg.className = 't-segment';
+                let cover = `<div class="t-cover">СТЕРЕТЬ<br>СЕГМЕНТ ${i+1}</div>`;
+                
+                // IF OPENED
+                if (ticketData[i]) {
+                    seg.classList.add('scratched');
+                    seg.innerText = ticketData[i].code;
+                    if(ticketData[i].rarity === 'red') {
+                        seg.classList.add('rarity-red');
+                        hasRed = true;
+                    }
+                } else {
+                    seg.innerHTML = cover;
+                    seg.onclick = () => scratchTicket(i);
+                }
+                container.appendChild(seg);
+            }
+            
+            if(hasRed) document.getElementById('seatReward').style.display = 'block';
+        }
+
+        async function scratchTicket(idx) {
+            // CHECK VOTE REQUIREMENT
+            if(Object.keys(myVotes).length === 0) { toast("Сначала проголосуйте!"); return; }
+            
+            // CHECK TIME
+            let now = Date.now() / 1000 + serverTimeOffset;
+            if (now < TICKET_UNLOCKS[idx]) {
+                let date = new Date(TICKET_UNLOCKS[idx] * 1000);
+                toast(`Доступно с ${date.getDate()} дек 12:00`);
+                return;
+            }
+
+            try {
+                let res = await fetch(API_URL + '/api/scratch_ticket', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, segment:idx})});
+                let d = await res.json();
+                if(d.success) {
+                    ticketData[idx] = d.data;
+                    initTicketSystem(); // Redraw
+                    // ANIMATION
+                    let segs = document.querySelectorAll('.t-segment');
+                    segs[idx].classList.add('scratched');
+                } else {
+                    toast(d.message || "Ошибка");
+                }
+            } catch(e) { toast("Ошибка"); }
         }
 
         let myToken = localStorage.getItem('tk');
@@ -776,9 +887,25 @@
                 myVotes = d.my_votes || {}; 
                 myChanges = d.changes || {}; 
                 sugEditsCount = d.sug_edits || 0;
-                document.getElementById('statSugBox').style.display = 'none';
+                ticketData = d.ticket_data || {};
                 
                 serverTimeOffset = d.server_time - (Date.now()/1000);
+                
+                DEADLINE_SUGGEST = d.deadlines.sug;
+                DEADLINE_CHANGE_VOTE = d.deadlines.change;
+                DEADLINE_GLOBAL = d.deadlines.global;
+                TICKET_UNLOCKS = d.deadlines.ticket;
+
+                // SHOW TICKET IF TIME
+                let now = Date.now() / 1000 + serverTimeOffset;
+                if(now > DEADLINE_GLOBAL) {
+                    document.getElementById('ticketSection').style.display = 'block';
+                    initTicketSystem();
+                } else {
+                    document.getElementById('ticketSection').style.display = 'none';
+                }
+
+                if(d.is_admin) document.getElementById('adminPanel').style.display = 'block';
 
                 updateMain(); updateSlay();
 
@@ -825,12 +952,9 @@
             setTimeout(() => t.classList.remove('show'), 3000); 
         }
         
-        // COUNTDOWN UPDATER
         setInterval(() => {
-            let now = Date.now() + (serverTimeOffset * 1000);
-            
-            // 1. GLOBAL TIMER
-            let diff = Math.floor((DEADLINE_GLOBAL - now) / 1000);
+            let now = Date.now() / 1000 + serverTimeOffset;
+            let diff = Math.floor(DEADLINE_GLOBAL - now);
             if(diff <= 0) {
                 document.getElementById('pillTime').innerText = "00:00:00";
                 document.body.classList.add('vote-closed');
@@ -839,18 +963,10 @@
                 let h = Math.floor(diff / 3600); 
                 let m = Math.floor((diff % 3600) / 60);
                 let s = diff % 60;
-                let hStr = h < 10 ? '0' + h : h; // Show total hours
-                let mStr = m < 10 ? '0' + m : m;
-                let sStr = s < 10 ? '0' + s : s;
-                document.getElementById('pillTime').innerText = `${hStr}:${mStr}:${sStr}`;
+                document.getElementById('pillTime').innerText = `${h<10?'0'+h:h}:${m<10?'0'+m:m}:${s<10?'0'+s:s}`;
                 document.body.classList.remove('vote-closed');
             }
-
-            // 2. CHANGE VOTE TIMER (IF MODAL OPEN)
-            if(document.getElementById('voteModal').classList.contains('active')) {
-                checkChangeVoteValidity();
-            }
-
+            if(document.getElementById('voteModal').classList.contains('active')) checkChangeVoteValidity();
         }, 1000);
         
         const pc = document.getElementById('particles');
