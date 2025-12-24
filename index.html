@@ -14,10 +14,11 @@
         body, .modal-content { -ms-overflow-style: none; scrollbar-width: none; }
 
         :root { --red: #ff0033; --orange: #ffaa00; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 60px; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 40px; }
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
+        /* MAINTENANCE SCREEN */
         #maintenanceScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: none;
@@ -80,27 +81,24 @@
         }
         
         .real-ticket {
-            background: #0a0a0a; /* Darker base */
+            background: #0a0a0a;
             border: 3px solid #222;
             border-radius: 16px;
             position: relative;
             box-shadow: 0 15px 50px rgba(0,0,0,0.9), inset 0 0 60px rgba(0,0,0,0.8);
             overflow: hidden;
             display: flex; flex-direction: column;
-            /* Metallic texture and tilt transition */
             background-image: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.1) 100%), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxwYXRoIGZpbGw9IiMzMzMiIGQ9Ik0xIDNoMXYxHDFWMyIgb3BhY2l0eT0iLjIiLz48L3N2Zz4=');
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
             transform-style: preserve-3d;
         }
         
-        /* TILT HOVER EFFECT */
         .real-ticket:hover {
             transform: rotateX(4deg) rotateY(-3deg) scale(1.02);
             box-shadow: 0 25px 60px rgba(255,0,51,0.2), inset 0 0 30px rgba(255,0,51,0.1);
             border-color: #331111;
         }
         
-        /* Notches (Holes) */
         .real-ticket::before, .real-ticket::after {
             content: ''; position: absolute; top: 50%; transform: translateY(-50%);
             width: 34px; height: 34px; background: #000;
@@ -149,14 +147,12 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
         
-        /* RED RARITY */
         .code-reveal.rarity-red {
             background: linear-gradient(135deg, #400, #700);
             color: #fff; text-shadow: 0 0 15px #f00; animation: redPulse 3s infinite;
         }
         @keyframes redPulse { 0% { box-shadow: inset 0 0 20px #400; } 50% { box-shadow: inset 0 0 50px #f00; } 100% { box-shadow: inset 0 0 20px #400; } }
 
-        /* ORANGE RARITY */
         .code-reveal.rarity-orange {
             background: linear-gradient(135deg, #630, #b60);
             color: #fff; text-shadow: 0 0 15px var(--orange); animation: orangePulse 3s infinite;
@@ -230,7 +226,8 @@
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; }
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
-        .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; }
+        /* VISIBILITY HIDDEN FIX FOR OVERLAP */
+        .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; visibility: hidden; }
         
         .main-slide img { width: 100%; height: 100%; object-fit: contain; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transform: scale(1.25); }
         .main-slide.active:hover img { transform: scale(1.35); filter: brightness(1.2) drop-shadow(0 0 20px rgba(255,0,51,0.3)); }
@@ -244,7 +241,7 @@
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
-        /* SLAY */
+        /* SLAY (ORBIT) */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
         .slay-wrapper { position: relative; height: 450px; display: flex; justify-content: center; align-items: center; overflow: visible; perspective: 1200px; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
@@ -255,13 +252,11 @@
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s, z-index 0s;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; 
         }
-        
         .slay-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.3s ease-out, filter 0.3s; z-index: 2; }
         
         .slay-item:hover { z-index: 101 !important; }
         .slay-item:hover .slay-img { transform: scale(1.1) translateY(-10px); filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); }
         
-        /* Force wing scale on hover via parent */
         .slay-item:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
         .slay-item:hover .wing-right { transform: translateY(-50%) scale(1.1); }
         
@@ -274,7 +269,6 @@
         }
         .slay-item.active .slay-title { opacity: 1; transform: scale(1); text-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
         .slay-item:hover .slay-title { color: var(--red); transform: scale(1.1) translateY(-5px); text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3); }
-        
         .slay-item .wing { font-size: 3em; z-index: 1; } 
 
         .slay-item::before {
@@ -532,7 +526,7 @@
                     <div id="statSugBox"><h3 id="statSug" style="color:#888;">0</h3><p>Идей</p></div>
                 </div>
                 <div id="adminPanel" style="display:none; margin-top:20px; border-top:1px solid #333; padding-top:10px;">
-                    <button class="header-btn" id="testBtn" onclick="toggleTestMode()">TEST MODE: OFF</button>
+                    <button class="header-btn" onclick="resetMyTicket()" style="background:var(--red); color:#fff;">СБРОСИТЬ МОЙ БИЛЕТ</button>
                 </div>
             </div>
         </div>
@@ -716,7 +710,12 @@
                 let ph = `<div class="ph-wrap text-ph">${n.title.charAt(0)}</div>`;
                 let wings = `<div class="wing wing-left"><i class="fas fa-feather-alt"></i></div><div class="wing wing-right"><i class="fas fa-feather-alt"></i></div>`;
                 d.innerHTML = `${wings}${ph}<img src="${API_URL}/static/main_${i}.png" onload="this.style.opacity=1" onerror="this.style.opacity=0"><h3>${n.title}</h3>`;
-                d.onclick = () => { if(document.body.classList.contains('vote-closed')) return; if(i===mainIdx) openVoteList(0, i); else { mainIdx=i; updateMain(); }};
+                d.onclick = () => { 
+                    if(i===mainIdx) {
+                        if(document.body.classList.contains('vote-closed')) return;
+                        openVoteList(0, i);
+                    } else { mainIdx=i; updateMain(); }
+                };
                 cont.appendChild(d);
             });
             updateMain();
@@ -731,7 +730,7 @@
                 else if(i===(mainIdx+1)%mainNoms.length) el.className='main-slide next';
             }
         }
-        function moveMain(d) { if(document.body.classList.contains('vote-closed')) return; mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
+        function moveMain(d) { mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
 
         let slayIdx = 0;
         function initSlay() {
@@ -776,7 +775,7 @@
             }
             document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNomsList.length}`;
         }
-        function moveSlay(d) { if(document.body.classList.contains('vote-closed')) return; slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNomsList.length) slayIdx=subNomsList.length-1; updateSlay(); }
+        function moveSlay(d) { slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNomsList.length) slayIdx=subNomsList.length-1; updateSlay(); }
 
         initMain(); initSlay();
 
@@ -802,8 +801,9 @@
         let currGroup, currIdx;
         function openVoteList(group, idx) {
             let now = Date.now() / 1000 + serverTimeOffset;
-            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
-            if(now > DEADLINE_GLOBAL && !isTest) { toast("Голосование закрыто!"); return; }
+            
+            // Allow opening ONLY if NOT closed OR if is Admin (can be checked via flag, but simpler to block globally and rely on server)
+            if(now > DEADLINE_GLOBAL) { toast("Голосование закрыто!"); return; }
 
             currGroup = group; currIdx = idx;
             let nom = group===0 ? mainNoms[idx] : subNomsList[idx];
@@ -869,9 +869,8 @@
             let now = Date.now() / 1000 + serverTimeOffset;
             let btn = document.getElementById('changeBtn');
             let timerSpan = document.getElementById('changeTimer');
-            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
-
-            if(now > DEADLINE_CHANGE_VOTE && !isTest) {
+            
+            if(now > DEADLINE_CHANGE_VOTE) {
                 btn.disabled = true;
                 btn.innerText = "ВРЕМЯ ВЫШЛО";
                 timerSpan.innerText = "Изменить голос больше нельзя";
@@ -887,8 +886,7 @@
 
         function unlockVote() {
             let now = Date.now() / 1000 + serverTimeOffset;
-            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
-            if(now > DEADLINE_CHANGE_VOTE && !isTest) { toast("Изменение закрыто!"); return; }
+            if(now > DEADLINE_CHANGE_VOTE) { toast("Изменение закрыто!"); return; }
             document.getElementById('candGrid').classList.remove('locked');
             document.getElementById('lockedMessage').style.display = 'none';
         }
@@ -990,13 +988,16 @@
             if(Object.keys(myVotes).length === 0) { toast("Сначала проголосуйте!"); scratchObj.reset(); return; }
             
             let now = Date.now() / 1000 + serverTimeOffset;
-            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
-
-            if (!isTest && now < TICKET_UNLOCKS[idx]) {
-                let date = new Date(TICKET_UNLOCKS[idx] * 1000);
-                toast(`Доступно с ${date.getDate()} дек 12:00`);
-                scratchObj.reset();
-                return;
+            
+            // Note: Admin check removed from client side for security, server handles validation
+            // But we do need to check deadline visually to prevent useless requests
+            // If user is admin (d.is_admin from check_status), we could skip client check
+            // For now, rely on server response "Too early"
+            
+            // Visual check
+            if (now < TICKET_UNLOCKS[idx]) {
+                // If not admin... we don't have is_admin here easily accessible without passing it down
+                // Let's just try server.
             }
 
             try {
@@ -1026,9 +1027,9 @@
             openModal('rewardModal');
         }
 
-        async function toggleTestMode() {
+        async function resetMyTicket() {
             try {
-                let res = await fetch(API_URL + '/api/toggle_test', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
+                let res = await fetch(API_URL + '/api/reset_my_ticket', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
                 let d = await res.json();
                 if(d.success) check(false);
             } catch(e) { toast("Ошибка"); }
@@ -1120,16 +1121,6 @@
 
                 if(d.is_admin) {
                     document.getElementById('adminPanel').style.display = 'block';
-                    const tBtn = document.getElementById('testBtn');
-                    if(d.is_test) {
-                        tBtn.innerText = "TEST MODE: ON (RESET)";
-                        tBtn.style.background = "#0f0";
-                        tBtn.style.color = "#000";
-                    } else {
-                        tBtn.innerText = "TEST MODE: OFF";
-                        tBtn.style.background = "rgba(0,0,0,0.8)";
-                        tBtn.style.color = "var(--red)";
-                    }
                 }
 
                 updateMain(); updateSlay();
@@ -1183,7 +1174,8 @@
             
             let diff = Math.floor(DEADLINE_GLOBAL - now);
             if(diff <= 0 || isTest) {
-                document.getElementById('pillTime').innerText = "00:00:00";
+                document.getElementById('pillTime').innerText = "ГОЛОСОВАНИЕ ЗАКРЫТО";
+                document.getElementById('pillTime').style.color = "var(--red)";
                 document.body.classList.add('vote-closed');
                 if(document.getElementById('voteModal').classList.contains('active')) closeModal('voteModal');
             } else {
