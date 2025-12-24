@@ -14,7 +14,7 @@
         body, .modal-content { -ms-overflow-style: none; scrollbar-width: none; }
 
         :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
-        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 40px; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 60px; }
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
@@ -28,7 +28,7 @@
         #maintenanceScreen h1 { font-size: 3em; color: var(--red); margin-bottom: 20px; animation: pulse 2s infinite; }
         #maintenanceScreen p { font-size: 1.2em; color: #888; max-width: 80%; }
 
-        /* TIMER PILL (FIXED LAYOUT) */
+        /* TIMER PILL */
         .timer-pill {
             position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
             background: rgba(10, 0, 0, 0.8); border: 1px solid #444;
@@ -40,23 +40,16 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             width: auto; min-width: 120px; max-height: 40px; overflow: hidden;
         }
-        
         .timer-pill:hover, .timer-pill.expanded {
             background: rgba(20, 0, 5, 0.95); border-color: var(--red);
             box-shadow: 0 5px 25px rgba(255,0,51,0.4);
             padding: 15px 30px; max-height: 150px; color: #fff;
         }
-
         .pill-label { display: none; font-size: 0.6em; color: var(--red); margin-bottom: 5px; white-space: nowrap; letter-spacing: 1px; }
         .pill-date { display: none; font-size: 0.6em; color: #888; margin-top: 5px; font-family: var(--font-body); text-transform: uppercase; white-space: nowrap;}
         .pill-time { font-size: 1.1em; letter-spacing: 2px; line-height: 1; }
-
-        .timer-pill:hover .pill-label, .timer-pill:hover .pill-date,
-        .timer-pill.expanded .pill-label, .timer-pill.expanded .pill-date { display: block; }
-        
-        .timer-pill:hover .pill-time, .timer-pill.expanded .pill-time { 
-            font-size: 1.4em; color: var(--red); text-shadow: 0 0 10px var(--red); margin: 5px 0;
-        }
+        .timer-pill:hover .pill-label, .timer-pill:hover .pill-date, .timer-pill.expanded .pill-label, .timer-pill.expanded .pill-date { display: block; }
+        .timer-pill:hover .pill-time, .timer-pill.expanded .pill-time { font-size: 1.4em; color: var(--red); text-shadow: 0 0 10px var(--red); margin: 5px 0; }
 
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: radial-gradient(circle at 50% 50%, #150005 0%, #000 90%); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
@@ -67,7 +60,6 @@
         h1 { font-family: var(--font-head); font-size: 3.5em; color: var(--red); margin: 0; text-transform: uppercase; letter-spacing: 5px; text-shadow: 0 0 30px var(--red); line-height: 1; }
         .intro { max-width: 600px; margin: 10px auto; color: #888; font-weight: 700; text-transform: uppercase; font-size: 0.9em; }
 
-        /* BUTTONS (MOVED DOWN TO AVOID OVERLAP) */
         .header-btns-container { position: absolute; top: 60px; width: 100%; left: 0; padding: 0 20px; display: none; justify-content: space-between; z-index: 10001; pointer-events: auto; }
         .header-btn { background: rgba(0,0,0,0.8); border: 1px solid var(--red); color: var(--red); padding: 8px 20px; border-radius: 30px; cursor: pointer; font-family: var(--font-body); font-weight: 900; text-transform: uppercase; transition: 0.3s; font-size: 0.75em; }
         .header-btn:hover { background: var(--red); color: #000; box-shadow: 0 0 20px var(--red); }
@@ -81,66 +73,86 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
-        /* TICKET */
+        /* --- REALISTIC TICKET (SCRATCH) --- */
         .ticket-section {
-            display: none; /* JS will toggle */
-            max-width: 700px; margin: 20px auto 50px; padding: 0 10px;
-            perspective: 1000px;
+            display: none; /* JS toggles this */
+            max-width: 600px; margin: 30px auto; padding: 0 10px;
         }
         
-        .golden-ticket {
-            background: linear-gradient(135deg, #1a1a1a 0%, #443300 50%, #1a1a1a 100%);
-            border: 2px solid #a88d32; border-radius: 15px;
-            box-shadow: 0 0 40px rgba(168, 141, 50, 0.3);
-            padding: 25px; position: relative; overflow: hidden;
+        .real-ticket {
+            background: #0f0f0f;
+            border: 2px solid #333;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+        
+        /* Notches (Holes) */
+        .real-ticket::before, .real-ticket::after {
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+            width: 30px; height: 30px; background: #000; /* Match body bg */
+            border-radius: 50%; z-index: 10;
+            box-shadow: inset 0 0 10px #000;
+        }
+        .real-ticket::before { left: -15px; border-right: 2px solid #333; }
+        .real-ticket::after { right: -15px; border-left: 2px solid #333; }
+
+        .ticket-header-area {
+            background: linear-gradient(90deg, #200, #500, #200);
+            padding: 15px; text-align: center;
+            border-bottom: 2px dashed #444;
+        }
+        .ticket-name {
+            font-family: var(--font-head); color: #fff; font-size: 1.5em; letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--red);
+        }
+        
+        .ticket-body {
+            padding: 20px 40px; 
+            background: repeating-linear-gradient(45deg, #111 0, #111 10px, #151515 10px, #151515 20px);
             display: flex; flex-direction: column; align-items: center;
-            transition: 0.3s;
-        }
-        .golden-ticket::before {
-            content:''; position: absolute; top:-50%; left:-50%; width:200%; height:200%;
-            background: linear-gradient(45deg, transparent 40%, rgba(255,215,0,0.1) 50%, transparent 60%);
-            animation: shine 4s infinite linear; pointer-events: none;
-        }
-        @keyframes shine { 0% {transform:translate(-50%,-50%) rotate(0deg);} 100% {transform:translate(0%,0%) rotate(360deg);} }
-
-        .ticket-title { 
-            font-family: var(--font-head); color: #ffcc00; font-size: 1.5em; 
-            text-transform: uppercase; margin-bottom: 20px; text-shadow: 0 0 15px #ffcc00;
-            letter-spacing: 2px;
         }
 
-        .ticket-segments { 
-            display: flex; justify-content: center; gap: 10px; width: 100%; flex-wrap: wrap; 
+        .scratch-strip {
+            display: flex; gap: 0; /* Connected */
+            background: #222; border: 2px solid #555;
+            border-radius: 8px; overflow: hidden;
+            box-shadow: inset 0 0 20px #000;
+            margin-bottom: 10px;
         }
 
-        .t-segment {
-            width: 70px; height: 90px; position: relative;
-            background: #111; border: 1px solid #444; border-radius: 8px;
+        .segment-wrap {
+            position: relative; width: 80px; height: 100px;
+            border-right: 1px dashed #555;
+        }
+        .segment-wrap:last-child { border-right: none; }
+
+        .code-reveal {
+            width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
-            font-family: monospace; font-size: 1.4em; color: #fff;
-            overflow: hidden; cursor: pointer; transition: 0.3s;
+            font-family: monospace; font-size: 1.8em; color: #fff;
+            background: #111; user-select: none;
         }
         
-        /* RED RARITY STYLE */
-        .t-segment.rarity-red {
-            background: linear-gradient(135deg, #300 0%, #600 100%);
-            border-color: var(--red); box-shadow: 0 0 20px var(--red);
-            animation: pulseRed 2s infinite;
+        /* RED RARITY BACKGROUND */
+        .code-reveal.rarity-red {
+            background: linear-gradient(135deg, #500, #900);
+            color: #fff; text-shadow: 0 0 10px #fff;
+            animation: redPulse 2s infinite;
         }
-        @keyframes pulseRed { 0% {box-shadow:0 0 10px var(--red);} 50% {box-shadow:0 0 25px var(--red);} 100% {box-shadow:0 0 10px var(--red);} }
-        
-        .t-cover {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #444;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 0.6em; color: #aaa; text-align: center; padding: 2px;
-            transition: opacity 0.8s ease; z-index: 5;
-            border: 1px dashed #666;
+        @keyframes redPulse { 0% { box-shadow: inset 0 0 10px #f00; } 50% { box-shadow: inset 0 0 30px #f00; } 100% { box-shadow: inset 0 0 10px #f00; } }
+
+        canvas.scratch-canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            cursor: url('https://img.icons8.com/ios-filled/24/ffffff/coins.png'), auto;
+            touch-action: none;
         }
-        .t-segment.scratched .t-cover { opacity: 0; pointer-events: none; }
         
         .seat-reward {
-            width: 100%; text-align: center; margin-top: 15px;
+            width: 100%; text-align: center; margin-top: 10px;
             color: var(--red); font-weight: bold; cursor: pointer;
             animation: pulse 2s infinite; display: none; font-size: 0.9em;
             text-transform: uppercase; letter-spacing: 1px;
@@ -163,8 +175,8 @@
         .main-slide:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
         .main-slide:hover .wing-right { transform: translateY(-50%) scale(1.1); }
         
-        .slay-item .wing-left { left: -30px; }
-        .slay-item .wing-right { right: -30px; }
+        .slay-item .wing-left { left: -10px; }
+        .slay-item .wing-right { right: -10px; }
         .slay-item:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
         .slay-item:hover .wing-right { transform: translateY(-50%) scale(1.1); }
 
@@ -175,11 +187,10 @@
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .main-slide { position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible; }
         
-        /* SUPER BRIGHT MAIN GLOW */
         .main-slide::before {
             content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
             width: 110%; height: 110%; 
-            background: radial-gradient(circle, rgba(255,0,51,0.6) 0%, transparent 70%); /* Stronger */
+            background: radial-gradient(circle, rgba(255,0,51,0.6) 0%, transparent 70%); 
             z-index: -1; pointer-events: none; filter: blur(40px); opacity: 0.8; 
             transition: opacity 0.5s, filter 0.5s;
         }
@@ -203,7 +214,7 @@
         .arrow:hover { background: var(--red); color: #fff; box-shadow: 0 0 20px var(--red); }
         @media (max-width: 768px) { .main-slide { width: 240px; height: 360px; } .main-slide.prev { transform: translateX(-150px) scale(0.8) rotateY(10deg); opacity: 0.3; } .main-slide.next { transform: translateX(150px) scale(0.8) rotateY(-10deg); opacity: 0.3; } }
 
-        /* SLAY (ORBIT) */
+        /* SLAY */
         .slay-section { margin-top: 30px; position: relative; padding-bottom: 80px; }
         .slay-wrapper { position: relative; height: 450px; display: flex; justify-content: center; align-items: center; overflow: visible; perspective: 1200px; }
         .slay-track { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; transform-style: preserve-3d; }
@@ -214,9 +225,9 @@
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s, z-index 0s;
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; 
         }
+        
         .slay-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.3s ease-out, filter 0.3s; z-index: 2; }
         
-        /* HOVER SCALE WINGS AND IMG */
         .slay-item:hover { z-index: 101 !important; }
         .slay-item:hover .slay-img { transform: scale(1.1) translateY(-10px); filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); }
         
@@ -233,6 +244,7 @@
         }
         .slay-item.active .slay-title { opacity: 1; transform: scale(1); text-shadow: 0 0 15px var(--red), 0 0 30px var(--red); }
         .slay-item:hover .slay-title { color: var(--red); transform: scale(1.1) translateY(-5px); text-shadow: 0 0 20px var(--red), 0 0 10px rgba(255,255,255,0.3); }
+        
         .slay-item .wing { font-size: 3em; z-index: 1; } 
 
         .slay-item::before {
@@ -247,9 +259,9 @@
         .slay-btn:active { transform: scale(0.9); }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
 
-        /* SUGGESTIONS BLURRED NO BORDER */
+        /* SUGGESTIONS BLURRED */
         .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; background: transparent; border: none; position: relative; overflow: hidden; }
-        .suggest-section.chained .suggest-form, .suggest-section.chained .slots-container, .suggest-section.chained .suggest-desc, .suggest-section.chained .sug-counter-box { opacity: 0.2; pointer-events: none; filter: blur(5px); }
+        .suggest-section.chained .suggest-form, .suggest-section.chained .slots-container, .suggest-section.chained .suggest-desc, .suggest-section.chained .sug-counter-box { opacity: 0.4; pointer-events: none; filter: blur(8px); }
         .suggest-section.chained .lock-icon-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex !important; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
         .lock-icon-overlay i { font-size: 5em; color: var(--red); text-shadow: 0 0 20px #000; margin-bottom: 15px; }
         .lock-text { color: var(--red); font-family: var(--font-head); font-size: 1.5em; text-shadow: 0 0 10px #000; text-transform: uppercase; font-weight: 900; }
@@ -380,10 +392,15 @@
 
     <div class="ticket-section" id="ticketSection">
         <div class="golden-ticket">
-            <div class="ticket-title">ВАШ БИЛЕТ</div>
-            <div class="ticket-segments" id="ticketSegments"></div>
-            <div class="seat-reward" id="seatReward" onclick="openModal('seatModal')">
-                🎟 ВЫБОР ЛЮБОГО МЕСТА СИДЕНИЯ НА ПРЕМИИ
+            <div class="ticket-header-area">
+                <div class="ticket-name">GOLDEN TICKET</div>
+            </div>
+            <div class="ticket-body">
+                <div class="scratch-strip" id="ticketSegments">
+                    </div>
+                <div class="seat-reward" id="seatReward" onclick="openModal('seatModal')">
+                    🎟 ВЫБОР ЛЮБОГО МЕСТА СИДЕНИЯ
+                </div>
             </div>
         </div>
     </div>
@@ -548,12 +565,103 @@
         let editModeId = null; 
         let sugEditsCount = 0;
         let serverTimeOffset = 0;
-        
-        // SERVER DATES
         let DEADLINE_CHANGE_VOTE = 0;
         let DEADLINE_GLOBAL = 0;
         let TICKET_UNLOCKS = [];
         let ticketData = {};
+
+        // === SCRATCH CARD CLASS ===
+        class ScratchCard {
+            constructor(canvas, index) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.index = index;
+                this.isDrawing = false;
+                this.scratchedPercent = 0;
+                this.width = canvas.offsetWidth;
+                this.height = canvas.offsetHeight;
+                
+                // High DPI fix
+                this.canvas.width = this.width * 2;
+                this.canvas.height = this.height * 2;
+                this.ctx.scale(2, 2);
+                
+                this.initCover();
+                this.bindEvents();
+            }
+
+            initCover() {
+                this.ctx.fillStyle = '#444'; // Cover color
+                this.ctx.fillRect(0, 0, this.width, this.height);
+                
+                // Add texture/text
+                this.ctx.font = 'bold 12px monospace';
+                this.ctx.fillStyle = '#888';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'middle';
+                this.ctx.fillText("СТЕРЕТЬ", this.width/2, this.height/2 - 10);
+                this.ctx.fillText(`ЧАСТЬ ${this.index+1}`, this.width/2, this.height/2 + 10);
+            }
+
+            bindEvents() {
+                const start = (e) => {
+                    this.isDrawing = true;
+                    this.scratch(e);
+                };
+                const move = (e) => {
+                    if(this.isDrawing) this.scratch(e);
+                };
+                const end = () => {
+                    if(this.isDrawing) {
+                        this.isDrawing = false;
+                        this.checkPercent();
+                    }
+                };
+
+                this.canvas.addEventListener('mousedown', start);
+                this.canvas.addEventListener('mousemove', move);
+                this.canvas.addEventListener('mouseup', end);
+                this.canvas.addEventListener('mouseleave', end);
+                
+                this.canvas.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); });
+                this.canvas.addEventListener('touchmove', (e) => { e.preventDefault(); move(e); });
+                this.canvas.addEventListener('touchend', (e) => { e.preventDefault(); end(); });
+            }
+
+            scratch(e) {
+                const rect = this.canvas.getBoundingClientRect();
+                const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+
+                this.ctx.globalCompositeOperation = 'destination-out';
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, 15, 0, Math.PI * 2); // Brush size
+                this.ctx.fill();
+            }
+
+            checkPercent() {
+                // Optimization: Check only every few strokes or using a grid
+                // Here we simplify: if user scratches enough, trigger API
+                // For performance, we can just trigger API on first significant scratch or use getImageData
+                
+                // Simplified: Fetch API immediately on first scratch interaction end to allow server logic
+                // The visual scratch is just for effect. 
+                
+                // Let's rely on visual feedback + API call.
+                // We'll call API. If API says "too early", we reset canvas. If "ok", we remove canvas.
+                scratchTicket(this.index, this);
+            }
+            
+            clear() {
+                this.canvas.style.opacity = '0';
+                setTimeout(() => this.canvas.remove(), 500);
+            }
+            
+            reset() {
+                this.ctx.globalCompositeOperation = 'source-over';
+                this.initCover();
+            }
+        }
 
         let mainIdx = 0;
         function initMain() {
@@ -649,8 +757,6 @@
         let currGroup, currIdx;
         function openVoteList(group, idx) {
             let now = Date.now() / 1000 + serverTimeOffset;
-            
-            // ADMIN TEST BYPASS
             let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
             if(now > DEADLINE_GLOBAL && !isTest) { toast("Голосование закрыто!"); return; }
 
@@ -718,7 +824,6 @@
             let now = Date.now() / 1000 + serverTimeOffset;
             let btn = document.getElementById('changeBtn');
             let timerSpan = document.getElementById('changeTimer');
-            
             let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
 
             if(now > DEADLINE_CHANGE_VOTE && !isTest) {
@@ -739,7 +844,6 @@
             let now = Date.now() / 1000 + serverTimeOffset;
             let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
             if(now > DEADLINE_CHANGE_VOTE && !isTest) { toast("Изменение закрыто!"); return; }
-            
             document.getElementById('candGrid').classList.remove('locked');
             document.getElementById('lockedMessage').style.display = 'none';
         }
@@ -791,21 +895,15 @@
             try {
                 let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nomTitle, candidate:cand})});
                 let d = await res.json();
-                if(d.success) { 
-                    toast("ПРИНЯТО!"); 
-                    check(false); 
-                }
+                if(d.success) { toast("ПРИНЯТО!"); check(false); }
                 else { 
                     toast(d.message);
-                    if(d.message !== "ПРИНЯТО!") {
-                        delete myVotes[nomTitle];
-                        updateSlay(); updateMain();
-                    }
+                    if(d.message !== "ПРИНЯТО!") { delete myVotes[nomTitle]; updateSlay(); updateMain(); }
                 }
             } catch(e) { toast("Ошибка сети"); }
         }
 
-        // TICKET LOGIC
+        // --- TICKET SYSTEM ---
         function initTicketSystem() {
             const container = document.getElementById('ticketSegments');
             container.innerHTML = '';
@@ -813,31 +911,42 @@
             let hasRed = false;
             
             for(let i=0; i<4; i++) {
-                let seg = document.createElement('div');
-                seg.className = 't-segment';
-                let cover = `<div class="t-cover">СТЕРЕТЬ<br>СЕГМЕНТ ${i+1}</div>`;
+                let wrap = document.createElement('div');
+                wrap.className = 'segment-wrap';
                 
-                // IF OPENED
+                // Reveal Layer (Code)
+                let reveal = document.createElement('div');
+                reveal.className = 'code-reveal';
+                reveal.id = `reveal-${i}`;
+                
+                // Canvas Layer
+                let canvas = document.createElement('canvas');
+                canvas.className = 'scratch-canvas';
+                canvas.id = `canvas-${i}`;
+                
                 if (ticketData[i]) {
-                    seg.classList.add('scratched');
-                    seg.innerText = ticketData[i].code;
+                    reveal.innerText = ticketData[i].code;
                     if(ticketData[i].rarity === 'red') {
-                        seg.classList.add('rarity-red');
+                        reveal.classList.add('rarity-red');
                         hasRed = true;
                     }
+                    // No canvas if opened
                 } else {
-                    seg.innerHTML = cover;
-                    seg.onclick = () => scratchTicket(i);
+                    reveal.innerText = "??"; // Placeholder until scratched
+                    wrap.appendChild(canvas);
+                    // Init Scratch Logic
+                    setTimeout(() => new ScratchCard(canvas, i), 100);
                 }
-                container.appendChild(seg);
+                
+                wrap.appendChild(reveal);
+                container.appendChild(wrap);
             }
             
-            if(hasRed) document.getElementById('seatReward').style.display = 'block';
-            else document.getElementById('seatReward').style.display = 'none';
+            document.getElementById('seatReward').style.display = hasRed ? 'block' : 'none';
         }
 
-        async function scratchTicket(idx) {
-            if(Object.keys(myVotes).length === 0) { toast("Сначала проголосуйте!"); return; }
+        async function scratchTicket(idx, scratchObj) {
+            if(Object.keys(myVotes).length === 0) { toast("Сначала проголосуйте!"); scratchObj.reset(); return; }
             
             let now = Date.now() / 1000 + serverTimeOffset;
             let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
@@ -845,6 +954,7 @@
             if (!isTest && now < TICKET_UNLOCKS[idx]) {
                 let date = new Date(TICKET_UNLOCKS[idx] * 1000);
                 toast(`Доступно с ${date.getDate()} дек 12:00`);
+                scratchObj.reset();
                 return;
             }
 
@@ -853,13 +963,19 @@
                 let d = await res.json();
                 if(d.success) {
                     ticketData[idx] = d.data;
-                    initTicketSystem(); 
-                    let segs = document.querySelectorAll('.t-segment');
-                    segs[idx].classList.add('scratched');
+                    // Update reveal text
+                    let reveal = document.getElementById(`reveal-${idx}`);
+                    reveal.innerText = d.data.code;
+                    if(d.data.rarity === 'red') {
+                        reveal.classList.add('rarity-red');
+                        document.getElementById('seatReward').style.display = 'block';
+                    }
+                    scratchObj.clear(); // Fade out canvas
                 } else {
                     toast(d.message || "Ошибка");
+                    scratchObj.reset();
                 }
-            } catch(e) { toast("Ошибка"); }
+            } catch(e) { toast("Ошибка"); scratchObj.reset(); }
         }
 
         async function toggleTestMode() {
@@ -945,9 +1061,9 @@
                 DEADLINE_GLOBAL = d.deadlines.global;
                 TICKET_UNLOCKS = d.deadlines.ticket;
 
-                // SHOW TICKET IF TIME
+                // SHOW TICKET IF TIME OR TEST
                 let now = Date.now() / 1000 + serverTimeOffset;
-                if(now > DEADLINE_GLOBAL) {
+                if(now > DEADLINE_GLOBAL || d.is_test) {
                     document.getElementById('ticketSection').style.display = 'block';
                     initTicketSystem();
                 } else {
@@ -1015,8 +1131,10 @@
         
         setInterval(() => {
             let now = Date.now() / 1000 + serverTimeOffset;
+            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
+            
             let diff = Math.floor(DEADLINE_GLOBAL - now);
-            if(diff <= 0) {
+            if(diff <= 0 || isTest) {
                 document.getElementById('pillTime').innerText = "00:00:00";
                 document.body.classList.add('vote-closed');
                 if(document.getElementById('voteModal').classList.contains('active')) closeModal('voteModal');
