@@ -13,7 +13,7 @@
         body::-webkit-scrollbar, .modal-content::-webkit-scrollbar { display: none; }
         body, .modal-content { -ms-overflow-style: none; scrollbar-width: none; }
 
-        :root { --red: #ff0033; --orange: #ffaa00; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
+        :root { --red: #ff0033; --bg: #000000; --font-head: 'Orbitron', sans-serif; --font-body: 'Montserrat', sans-serif; }
         body { margin: 0; background: var(--bg); color: #fff; font-family: var(--font-body); overflow-x: hidden; min-height: 100vh; padding-bottom: 50px; padding-top: 40px; }
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
@@ -77,7 +77,7 @@
         .ticket-section {
             display: none; /* JS toggles this */
             max-width: 600px; margin: 30px auto; padding: 0 10px;
-            perspective: 1000px; /* For tilt */
+            perspective: 1000px;
         }
         
         .real-ticket {
@@ -147,17 +147,12 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
         
-        .code-reveal.rarity-red {
+        /* RED & STARS RARITY (BOTH RED STYLE) */
+        .code-reveal.rarity-red, .code-reveal.rarity-stars {
             background: linear-gradient(135deg, #400, #700);
             color: #fff; text-shadow: 0 0 15px #f00; animation: redPulse 3s infinite;
         }
         @keyframes redPulse { 0% { box-shadow: inset 0 0 20px #400; } 50% { box-shadow: inset 0 0 50px #f00; } 100% { box-shadow: inset 0 0 20px #400; } }
-
-        .code-reveal.rarity-orange {
-            background: linear-gradient(135deg, #630, #b60);
-            color: #fff; text-shadow: 0 0 15px var(--orange); animation: orangePulse 3s infinite;
-        }
-        @keyframes orangePulse { 0% { box-shadow: inset 0 0 20px #630; } 50% { box-shadow: inset 0 0 50px var(--orange); } 100% { box-shadow: inset 0 0 20px #630; } }
 
         canvas.scratch-canvas {
             position: absolute; top: 0; left: 0;
@@ -180,10 +175,9 @@
             font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px;
             padding: 8px; border: 1px solid; border-radius: 8px;
             animation: pulse 2s infinite; transition: 0.3s;
+            color: var(--red); border-color: var(--red); background: rgba(255,0,51,0.1);
         }
-        .reward-item:hover { transform: scale(1.05); }
-        .reward-red { color: var(--red); border-color: var(--red); background: rgba(255,0,51,0.1); }
-        .reward-orange { color: var(--orange); border-color: var(--orange); background: rgba(255,170,0,0.1); }
+        .reward-item:hover { transform: scale(1.05); text-shadow: 0 0 10px var(--red); }
 
         /* WINGS */
         .wing { 
@@ -226,7 +220,6 @@
         .main-slide.active { transform: translateX(0) scale(1.1); z-index: 10; opacity: 1; }
         .main-slide.prev { transform: translateX(-350px) scale(0.85) rotateY(15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
         .main-slide.next { transform: translateX(350px) scale(0.85) rotateY(-15deg); z-index: 5; opacity: 0.4; filter: blur(2px) grayscale(1); pointer-events: none; }
-        /* VISIBILITY HIDDEN FIX FOR OVERLAP */
         .main-slide.hidden { transform: scale(0.5); opacity: 0; pointer-events: none; z-index: 0; visibility: hidden; }
         
         .main-slide img { width: 100%; height: 100%; object-fit: contain; transition: 0.5s; position: absolute; top: 0; left: 0; z-index: 1; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); transform: scale(1.25); }
@@ -257,6 +250,7 @@
         .slay-item:hover { z-index: 101 !important; }
         .slay-item:hover .slay-img { transform: scale(1.1) translateY(-10px); filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); }
         
+        /* Force wing scale on hover via parent */
         .slay-item:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
         .slay-item:hover .wing-right { transform: translateY(-50%) scale(1.1); }
         
@@ -655,7 +649,7 @@
 
                 this.ctx.globalCompositeOperation = 'destination-out';
                 this.ctx.beginPath();
-                this.ctx.arc(x, y, 18, 0, Math.PI * 2); // Larger brush
+                this.ctx.arc(x, y, 18, 0, Math.PI * 2); // Brush size
                 this.ctx.fill();
             }
 
@@ -730,7 +724,7 @@
                 else if(i===(mainIdx+1)%mainNoms.length) el.className='main-slide next';
             }
         }
-        function moveMain(d) { mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
+        function moveMain(d) { if(document.body.classList.contains('vote-closed')) return; mainIdx=(mainIdx+d+mainNoms.length)%mainNoms.length; updateMain(); }
 
         let slayIdx = 0;
         function initSlay() {
@@ -775,7 +769,7 @@
             }
             document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNomsList.length}`;
         }
-        function moveSlay(d) { slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNomsList.length) slayIdx=subNomsList.length-1; updateSlay(); }
+        function moveSlay(d) { if(document.body.classList.contains('vote-closed')) return; slayIdx+=d; if(slayIdx<0) slayIdx=0; if(slayIdx>=subNomsList.length) slayIdx=subNomsList.length-1; updateSlay(); }
 
         initMain(); initSlay();
 
@@ -801,9 +795,8 @@
         let currGroup, currIdx;
         function openVoteList(group, idx) {
             let now = Date.now() / 1000 + serverTimeOffset;
-            
-            // Allow opening ONLY if NOT closed OR if is Admin (can be checked via flag, but simpler to block globally and rely on server)
-            if(now > DEADLINE_GLOBAL) { toast("Голосование закрыто!"); return; }
+            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
+            if(now > DEADLINE_GLOBAL && !isTest) { toast("Голосование закрыто!"); return; }
 
             currGroup = group; currIdx = idx;
             let nom = group===0 ? mainNoms[idx] : subNomsList[idx];
@@ -869,8 +862,9 @@
             let now = Date.now() / 1000 + serverTimeOffset;
             let btn = document.getElementById('changeBtn');
             let timerSpan = document.getElementById('changeTimer');
-            
-            if(now > DEADLINE_CHANGE_VOTE) {
+            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
+
+            if(now > DEADLINE_CHANGE_VOTE && !isTest) {
                 btn.disabled = true;
                 btn.innerText = "ВРЕМЯ ВЫШЛО";
                 timerSpan.innerText = "Изменить голос больше нельзя";
@@ -886,7 +880,8 @@
 
         function unlockVote() {
             let now = Date.now() / 1000 + serverTimeOffset;
-            if(now > DEADLINE_CHANGE_VOTE) { toast("Изменение закрыто!"); return; }
+            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
+            if(now > DEADLINE_CHANGE_VOTE && !isTest) { toast("Изменение закрыто!"); return; }
             document.getElementById('candGrid').classList.remove('locked');
             document.getElementById('lockedMessage').style.display = 'none';
         }
@@ -952,7 +947,7 @@
             const rewardList = document.getElementById('rewardList');
             container.innerHTML = ''; rewardList.innerHTML = '';
             
-            let hasRed = false; let hasOrange = false;
+            let hasRed = false; let hasStars = false;
             
             for(let i=0; i<4; i++) {
                 let wrap = document.createElement('div');
@@ -969,7 +964,7 @@
                 if (ticketData[i]) {
                     reveal.innerText = ticketData[i].code;
                     if(ticketData[i].rarity === 'red') { reveal.classList.add('rarity-red'); hasRed = true; }
-                    if(ticketData[i].rarity === 'orange') { reveal.classList.add('rarity-orange'); hasOrange = true; }
+                    if(ticketData[i].rarity === 'stars') { reveal.classList.add('rarity-stars'); hasStars = true; }
                 } else {
                     reveal.innerText = "??";
                     wrap.appendChild(canvas);
@@ -981,23 +976,26 @@
             }
             
             if(hasRed) rewardList.innerHTML += `<div class="reward-item reward-red" onclick="openReward('red')">🎟 ВЫБОР МЕСТА</div>`;
-            if(hasOrange) rewardList.innerHTML += `<div class="reward-item reward-orange" onclick="openReward('orange')">⭐ +1 ГОЛОС</div>`;
+            if(hasStars) rewardList.innerHTML += `<div class="reward-item reward-red" onclick="openReward('stars')">⭐ 25 ЗВЁЗД</div>`;
         }
 
         async function scratchTicket(idx, scratchObj) {
             if(Object.keys(myVotes).length === 0) { toast("Сначала проголосуйте!"); scratchObj.reset(); return; }
             
             let now = Date.now() / 1000 + serverTimeOffset;
-            
-            // Note: Admin check removed from client side for security, server handles validation
-            // But we do need to check deadline visually to prevent useless requests
-            // If user is admin (d.is_admin from check_status), we could skip client check
-            // For now, rely on server response "Too early"
-            
-            // Visual check
-            if (now < TICKET_UNLOCKS[idx]) {
-                // If not admin... we don't have is_admin here easily accessible without passing it down
-                // Let's just try server.
+            let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
+
+            if (!isTest && now < TICKET_UNLOCKS[idx]) {
+                // Formatting Date Local
+                let date = new Date(TICKET_UNLOCKS[idx] * 1000);
+                let day = date.getDate().toString().padStart(2, '0');
+                let month = (date.getMonth() + 1).toString().padStart(2, '0');
+                let hours = date.getHours().toString().padStart(2, '0');
+                let minutes = date.getMinutes().toString().padStart(2, '0');
+                
+                toast(`Будет доступно ${day}.${month} в ${hours}:${minutes}`);
+                scratchObj.reset();
+                return;
             }
 
             try {
@@ -1020,9 +1018,9 @@
             if(type === 'red') {
                 title.innerText = "ВЫБОР МЕСТА"; title.style.color = "var(--red)";
                 body.innerHTML = `<p>Поздравляем! Вам выпала редкая часть билета.<br><br>Напишите в Telegram <a href="https://t.me/stam1n">@stam1n</a>.<br>Мы отправим вам карту зала, и вы сможете забронировать любое место ещё до начала Премии.</p>`;
-            } else {
-                title.innerText = "+1 ГОЛОС"; title.style.color = "var(--orange)";
-                body.innerHTML = `<p>Поздравляем! Вам выпала редкая часть билета.<br><br>Напишите в Telegram <a href="https://t.me/stam1n">@stam1n</a>.<br>Напишите название номинации и номинанта, которому нужно добавить +1 голос.</p>`;
+            } else if (type === 'stars') {
+                title.innerText = "25 ЗВЁЗД"; title.style.color = "var(--red)";
+                body.innerHTML = `<p>Поздравляем! Вам выпала редкая часть билета - 25 звёзд.<br><br>Напишите в Telegram <a href="https://t.me/stam1n">@stam1n</a>, на аккаунт с которого вы напишете будет отправлено указанное количество звёзд</p>`;
             }
             openModal('rewardModal');
         }
@@ -1030,6 +1028,14 @@
         async function resetMyTicket() {
             try {
                 let res = await fetch(API_URL + '/api/reset_my_ticket', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
+                let d = await res.json();
+                if(d.success) check(false);
+            } catch(e) { toast("Ошибка"); }
+        }
+
+        async function toggleTestMode() {
+            try {
+                let res = await fetch(API_URL + '/api/toggle_test', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
                 let d = await res.json();
                 if(d.success) check(false);
             } catch(e) { toast("Ошибка"); }
@@ -1121,6 +1127,16 @@
 
                 if(d.is_admin) {
                     document.getElementById('adminPanel').style.display = 'block';
+                    const tBtn = document.getElementById('testBtn');
+                    if(d.is_test) {
+                        tBtn.innerText = "TEST MODE: ON (RESET)";
+                        tBtn.style.background = "#0f0";
+                        tBtn.style.color = "#000";
+                    } else {
+                        tBtn.innerText = "TEST MODE: OFF";
+                        tBtn.style.background = "rgba(0,0,0,0.8)";
+                        tBtn.style.color = "var(--red)";
+                    }
                 }
 
                 updateMain(); updateSlay();
