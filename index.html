@@ -147,7 +147,7 @@
             text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
         
-        /* RED & STARS RARITY (BOTH RED STYLE) */
+        /* RED & STARS RARITY (Visually Red) */
         .code-reveal.rarity-red, .code-reveal.rarity-stars {
             background: linear-gradient(135deg, #400, #700);
             color: #fff; text-shadow: 0 0 15px #f00; animation: redPulse 3s infinite;
@@ -521,6 +521,7 @@
                 </div>
                 <div id="adminPanel" style="display:none; margin-top:20px; border-top:1px solid #333; padding-top:10px;">
                     <button class="header-btn" onclick="resetMyTicket()" style="background:var(--red); color:#fff;">СБРОСИТЬ МОЙ БИЛЕТ</button>
+                    <button class="header-btn" id="testBtn" onclick="toggleTestMode()">TEST MODE: OFF</button>
                 </div>
             </div>
         </div>
@@ -980,13 +981,13 @@
         }
 
         async function scratchTicket(idx, scratchObj) {
-            if(Object.keys(myVotes).length === 0) { toast("Сначала проголосуйте!"); scratchObj.reset(); return; }
+            // Note: Removed vote check here as requested, ticket for all registered
+            // if(Object.keys(myVotes).length === 0) { ... }
             
             let now = Date.now() / 1000 + serverTimeOffset;
             let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
 
             if (!isTest && now < TICKET_UNLOCKS[idx]) {
-                // Formatting Date Local
                 let date = new Date(TICKET_UNLOCKS[idx] * 1000);
                 let day = date.getDate().toString().padStart(2, '0');
                 let month = (date.getMonth() + 1).toString().padStart(2, '0');
