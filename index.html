@@ -18,7 +18,6 @@
 
         body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; box-shadow: inset 0 0 100px rgba(255, 0, 51, 0.15); pointer-events: none; z-index: 8000; }
 
-        /* MAINTENANCE SCREEN */
         #maintenanceScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: none;
@@ -28,7 +27,6 @@
         #maintenanceScreen h1 { font-size: 3em; color: var(--red); margin-bottom: 20px; animation: pulse 2s infinite; }
         #maintenanceScreen p { font-size: 1.2em; color: #888; max-width: 80%; }
 
-        /* TIMER PILL */
         .timer-pill {
             position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
             background: rgba(10, 0, 0, 0.8); border: 1px solid #444;
@@ -73,147 +71,66 @@
 
         .section-title { text-align: center; font-family: var(--font-head); color: var(--red); font-size: 2em; text-transform: uppercase; margin: 40px 0 30px; text-shadow: 0 0 15px rgba(255,0,51,0.4); letter-spacing: 2px; }
 
-        /* --- REALISTIC TICKET (SCRATCH) --- */
-        .ticket-section {
-            display: none; /* JS toggles this */
-            max-width: 600px; margin: 30px auto; padding: 0 10px;
-            perspective: 1000px;
-        }
+        .ticket-section { display: none; max-width: 600px; margin: 30px auto; padding: 0 10px; perspective: 1000px; }
         
         .real-ticket {
-            background: #0a0a0a;
-            border: 3px solid #222;
-            border-radius: 16px;
-            position: relative;
+            background: #0a0a0a; border: 3px solid #222; border-radius: 16px; position: relative;
             box-shadow: 0 15px 50px rgba(0,0,0,0.9), inset 0 0 60px rgba(0,0,0,0.8);
-            overflow: hidden;
-            display: flex; flex-direction: column;
+            overflow: hidden; display: flex; flex-direction: column;
             background-image: linear-gradient(to bottom, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.1) 100%), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxwYXRoIGZpbGw9IiMzMzMiIGQ9Ik0xIDNoMXYxHDFWMyIgb3BhY2l0eT0iLjIiLz48L3N2Zz4=');
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-            transform-style: preserve-3d;
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; transform-style: preserve-3d;
         }
-        
-        .real-ticket:hover {
-            transform: rotateX(4deg) rotateY(-3deg) scale(1.02);
-            box-shadow: 0 25px 60px rgba(255,0,51,0.2), inset 0 0 30px rgba(255,0,51,0.1);
-            border-color: #331111;
-        }
+        .real-ticket:hover { transform: rotateX(4deg) rotateY(-3deg) scale(1.02); box-shadow: 0 25px 60px rgba(255,0,51,0.2), inset 0 0 30px rgba(255,0,51,0.1); border-color: #331111; }
         
         .real-ticket::before, .real-ticket::after {
-            content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-            width: 34px; height: 34px; background: #000;
-            border-radius: 50%; z-index: 10;
-            box-shadow: inset 0 0 15px #000; border: 2px solid #222;
+            content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; background: #000; border-radius: 50%; z-index: 10; box-shadow: inset 0 0 15px #000; border: 2px solid #222;
         }
         .real-ticket::before { left: -17px; border-right: none; }
         .real-ticket::after { right: -17px; border-left: none; }
 
-        .ticket-header-area {
-            background: linear-gradient(90deg, #150000, #300000, #150000);
-            padding: 15px; text-align: center;
-            border-bottom: 3px dashed #331111;
-            text-shadow: 0 2px 5px #000;
-        }
-        .ticket-name {
-            font-family: var(--font-head); color: #ccc; font-size: 1.3em; letter-spacing: 3px;
-            text-transform: uppercase; color: var(--red); font-weight: 900;
-        }
+        .ticket-header-area { background: linear-gradient(90deg, #150000, #300000, #150000); padding: 15px; text-align: center; border-bottom: 3px dashed #331111; text-shadow: 0 2px 5px #000; }
+        .ticket-name { font-family: var(--font-head); color: #ccc; font-size: 1.3em; letter-spacing: 3px; text-transform: uppercase; color: var(--red); font-weight: 900; }
         
-        .ticket-body {
-            padding: 25px 40px; 
-            background: rgba(20, 5, 5, 0.8);
-            display: flex; flex-direction: column; align-items: center;
-        }
+        .ticket-body { padding: 25px 40px; background: rgba(20, 5, 5, 0.8); display: flex; flex-direction: column; align-items: center; }
 
-        .scratch-strip {
-            display: flex; gap: 0;
-            background: #1a0a0a; border: 3px solid #331111;
-            border-radius: 10px; overflow: hidden;
-            box-shadow: inset 0 0 30px #000;
-            margin-bottom: 15px;
+        /* FULL CODE DISPLAY */
+        #fullTicketCode {
+            display: none; width: 100%; text-align: center; margin-bottom: 15px;
+            background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b);
+            color: #000; font-family: 'Orbitron', monospace; font-weight: 900; font-size: 1.4em;
+            padding: 8px; border-radius: 5px; cursor: pointer; letter-spacing: 2px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); animation: goldPulse 2s infinite;
         }
+        @keyframes goldPulse { 0% {transform:scale(1);} 50% {transform:scale(1.02);} 100% {transform:scale(1);} }
 
-        .segment-wrap {
-            position: relative; width: 85px; height: 110px;
-            border-right: 2px dashed #331111;
-        }
+        .scratch-strip { display: flex; gap: 0; background: #1a0a0a; border: 3px solid #331111; border-radius: 10px; overflow: hidden; box-shadow: inset 0 0 30px #000; margin-bottom: 15px; }
+        .segment-wrap { position: relative; width: 85px; height: 110px; border-right: 2px dashed #331111; }
         .segment-wrap:last-child { border-right: none; }
 
-        .code-reveal {
-            width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Courier New', monospace; font-weight: bold; font-size: 2em; color: #fff;
-            background: #0a0a0a; user-select: none;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
-        
-        /* RED & STARS RARITY (Visually Red) */
-        .code-reveal.rarity-red, .code-reveal.rarity-stars {
-            background: linear-gradient(135deg, #400, #700);
-            color: #fff; text-shadow: 0 0 15px #f00; animation: redPulse 3s infinite;
-        }
+        .code-reveal { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', monospace; font-weight: bold; font-size: 2em; color: #fff; background: #0a0a0a; user-select: none; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .code-reveal.rarity-red, .code-reveal.rarity-stars { background: linear-gradient(135deg, #400, #700); color: #fff; text-shadow: 0 0 15px #f00; animation: redPulse 3s infinite; }
         @keyframes redPulse { 0% { box-shadow: inset 0 0 20px #400; } 50% { box-shadow: inset 0 0 50px #f00; } 100% { box-shadow: inset 0 0 20px #400; } }
 
-        canvas.scratch-canvas {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            cursor: crosshair;
-            touch-action: none; transition: opacity 0.5s;
-        }
+        canvas.scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; touch-action: none; transition: opacity 0.5s; }
         
-        .ticket-footer-text {
-            text-align: center; font-family: var(--font-body); font-size: 0.75em;
-            color: #888; margin-top: 5px; letter-spacing: 1px; text-transform: uppercase;
-            font-weight: 700; border-top: 2px dashed #331111; padding-top: 15px; width: 100%;
-        }
-        
-        .ticket-reward-list {
-            display: flex; flex-direction: column; gap: 5px; margin-top: 15px; width: 100%;
-        }
-        .reward-item {
-            text-align: center; font-weight: bold; cursor: pointer;
-            font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px;
-            padding: 8px; border: 1px solid; border-radius: 8px;
-            animation: pulse 2s infinite; transition: 0.3s;
-            color: var(--red); border-color: var(--red); background: rgba(255,0,51,0.1);
-        }
+        .ticket-footer-text { text-align: center; font-family: var(--font-body); font-size: 0.75em; color: #888; margin-top: 5px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; border-top: 2px dashed #331111; padding-top: 15px; width: 100%; }
+        .ticket-reward-list { display: flex; flex-direction: column; gap: 5px; margin-top: 15px; width: 100%; }
+        .reward-item { text-align: center; font-weight: bold; cursor: pointer; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; padding: 8px; border: 1px solid; border-radius: 8px; animation: pulse 2s infinite; transition: 0.3s; color: var(--red); border-color: var(--red); background: rgba(255,0,51,0.1); }
         .reward-item:hover { transform: scale(1.05); text-shadow: 0 0 10px var(--red); }
 
-        /* WINGS */
-        .wing { 
-            position: absolute; top: 50%; 
-            font-size: 3.5em; color: var(--red); 
-            opacity: 0; transition: opacity 0.4s ease-in-out, transform 0.4s ease; 
-            z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); 
-            pointer-events: none; 
-        }
-        .wing-left { transform: translateY(-50%) scaleX(-1); } 
-        .wing-right { transform: translateY(-50%); }
-
-        .main-slide .wing-left { left: -80px; }
-        .main-slide .wing-right { right: -80px; }
-        .main-slide:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
-        .main-slide:hover .wing-right { transform: translateY(-50%) scale(1.1); }
-        
-        .slay-item .wing-left { left: -10px; }
-        .slay-item .wing-right { right: -10px; }
-        .slay-item:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
-        .slay-item:hover .wing-right { transform: translateY(-50%) scale(1.1); }
-
+        .wing { position: absolute; top: 50%; font-size: 3.5em; color: var(--red); opacity: 0; transition: opacity 0.4s ease-in-out, transform 0.4s ease; z-index: 0; filter: drop-shadow(0 0 10px rgba(255,0,51,0.5)); pointer-events: none; }
+        .wing-left { transform: translateY(-50%) scaleX(-1); } .wing-right { transform: translateY(-50%); }
+        .main-slide .wing-left { left: -80px; } .main-slide .wing-right { right: -80px; }
+        .main-slide:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); } .main-slide:hover .wing-right { transform: translateY(-50%) scale(1.1); }
+        .slay-item .wing-left { left: -10px; } .slay-item .wing-right { right: -10px; }
+        .slay-item:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); } .slay-item:hover .wing-right { transform: translateY(-50%) scale(1.1); }
         .main-slide.active.voted .wing, .slay-item.active.voted .wing { opacity: 1; }
 
-        /* MAIN SLIDER */
         .main-section { position: relative; height: 550px; display: flex; align-items: center; justify-content: center; perspective: 1000px; margin-bottom: 50px; overflow: hidden; }
         .main-container { position: relative; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; }
         .main-slide { position: absolute; width: 300px; height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); background: transparent; border: none; cursor: pointer; overflow: visible; }
         
-        .main-slide::before {
-            content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-            width: 110%; height: 110%; 
-            background: radial-gradient(circle, rgba(255,0,51,0.6) 0%, transparent 70%); 
-            z-index: -1; pointer-events: none; filter: blur(40px); opacity: 0.8; 
-            transition: opacity 0.5s, filter 0.5s;
-        }
+        .main-slide::before { content:''; position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); width: 110%; height: 110%; background: radial-gradient(circle, rgba(255,0,51,0.6) 0%, transparent 70%); z-index: -1; pointer-events: none; filter: blur(40px); opacity: 0.8; transition: opacity 0.5s, filter 0.5s; }
         .main-slide.active::before { opacity: 1; filter: blur(50px); }
         .main-slide:hover::before { opacity: 1; filter: blur(60px); background: radial-gradient(circle, rgba(255,0,51,0.8) 0%, transparent 80%); }
 
@@ -246,11 +163,8 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; 
         }
         .slay-img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.3s ease-out, filter 0.3s; z-index: 2; }
-        
         .slay-item:hover { z-index: 101 !important; }
         .slay-item:hover .slay-img { transform: scale(1.1) translateY(-10px); filter: drop-shadow(0 20px 30px rgba(255,0,51,0.4)); }
-        
-        /* Force wing scale on hover via parent */
         .slay-item:hover .wing-left { transform: translateY(-50%) scaleX(-1) scale(1.1); }
         .slay-item:hover .wing-right { transform: translateY(-50%) scale(1.1); }
         
@@ -277,7 +191,6 @@
         .slay-btn:active { transform: scale(0.9); }
         .slay-cnt { font-family: var(--font-head); font-size: 1.2em; color: var(--red); }
 
-        /* SUGGESTIONS BLURRED */
         .suggest-section { max-width: 90%; width: 600px; margin: 50px auto; padding: 25px; background: transparent; border: none; position: relative; overflow: hidden; }
         .suggest-section.chained .suggest-form, .suggest-section.chained .slots-container, .suggest-section.chained .suggest-desc, .suggest-section.chained .sug-counter-box { opacity: 0.4; pointer-events: none; filter: blur(8px); }
         .suggest-section.chained .lock-icon-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex !important; flex-direction: column; align-items: center; justify-content: center; z-index: 20; }
@@ -370,6 +283,11 @@
         #rewardModal h2 { margin-bottom: 20px; }
         #rewardModal p { font-size: 1.1em; line-height: 1.6; color: #ccc; }
         #rewardModal a { color: var(--red); text-decoration: none; font-weight: bold; border-bottom: 1px dotted var(--red); }
+        
+        /* ADMIN LIST */
+        #adminCodesList { margin-top: 15px; text-align: left; max-height: 200px; overflow-y: auto; background: #111; padding: 10px; border: 1px solid #333; font-family: monospace; font-size: 0.9em; }
+        #adminCodesList div { padding: 5px; border-bottom: 1px solid #222; color: #888; }
+        #adminCodesList div:last-child { border-bottom: none; }
 
         footer { text-align: center; padding: 40px 20px; color: #444; font-family: var(--font-head); font-size: 1.5em; border-top: 1px solid #222; margin-top: 50px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
@@ -415,6 +333,7 @@
                 <div class="ticket-name">Ваш CatLay билет-пропуск</div>
             </div>
             <div class="ticket-body">
+                <div id="fullTicketCode" onclick="copyFullCode(this)"></div>
                 <div class="scratch-strip" id="ticketSegments">
                     </div>
                 <div class="ticket-footer-text">
@@ -520,8 +439,10 @@
                     <div id="statSugBox"><h3 id="statSug" style="color:#888;">0</h3><p>Идей</p></div>
                 </div>
                 <div id="adminPanel" style="display:none; margin-top:20px; border-top:1px solid #333; padding-top:10px;">
-                    <button class="header-btn" onclick="resetMyTicket()" style="background:var(--red); color:#fff;">СБРОСИТЬ МОЙ БИЛЕТ</button>
-                    <button class="header-btn" id="testBtn" onclick="toggleTestMode()">TEST MODE: OFF</button>
+                    <button class="header-btn" onclick="resetMyTicket()" style="background:var(--red); color:#fff; width:100%; margin-bottom:10px;">СБРОСИТЬ МОЙ БИЛЕТ</button>
+                    <button class="header-btn" id="testBtn" onclick="toggleTestMode()" style="width:100%; margin-bottom:10px;">TEST MODE: OFF</button>
+                    <button class="header-btn" onclick="createInvite()" style="background:#555; width:100%;">СОЗДАТЬ ИНВАЙТ</button>
+                    <div id="adminCodesList"></div>
                 </div>
             </div>
         </div>
@@ -588,7 +509,7 @@
         let TICKET_UNLOCKS = [];
         let ticketData = {};
 
-        // === SCRATCH CARD CLASS (REALISTIC 90% CHECK) ===
+        // === SCRATCH CARD CLASS ===
         class ScratchCard {
             constructor(canvas, index) {
                 this.canvas = canvas;
@@ -598,32 +519,15 @@
                 this.revealed = false;
                 this.width = canvas.offsetWidth;
                 this.height = canvas.offsetHeight;
-                
-                // High DPI fix
-                this.canvas.width = this.width * 2;
-                this.canvas.height = this.height * 2;
-                this.ctx.scale(2, 2);
-                
-                this.initCover();
-                this.bindEvents();
+                this.canvas.width = this.width * 2; this.canvas.height = this.height * 2; this.ctx.scale(2, 2);
+                this.initCover(); this.bindEvents();
             }
 
             initCover() {
-                this.ctx.fillStyle = '#2a1a1a'; // Darker cover
-                this.ctx.fillRect(0, 0, this.width, this.height);
-                
-                // Texture
-                for(let i=0; i<500; i++) {
-                    this.ctx.fillStyle = Math.random() > 0.5 ? '#332222' : '#221111';
-                    this.ctx.fillRect(Math.random()*this.width, Math.random()*this.height, 2, 2);
-                }
-
-                this.ctx.font = 'bold 14px "Montserrat", sans-serif';
-                this.ctx.fillStyle = '#775555';
-                this.ctx.textAlign = 'center';
-                this.ctx.textBaseline = 'middle';
-                this.ctx.fillText("СТЕРЕТЬ", this.width/2, this.height/2 - 12);
-                this.ctx.font = '12px monospace';
+                this.ctx.fillStyle = '#2a1a1a'; this.ctx.fillRect(0, 0, this.width, this.height);
+                for(let i=0; i<500; i++) { this.ctx.fillStyle = Math.random() > 0.5 ? '#332222' : '#221111'; this.ctx.fillRect(Math.random()*this.width, Math.random()*this.height, 2, 2); }
+                this.ctx.font = 'bold 14px "Montserrat", sans-serif'; this.ctx.fillStyle = '#775555'; this.ctx.textAlign = 'center'; this.ctx.textBaseline = 'middle';
+                this.ctx.fillText("СТЕРЕТЬ", this.width/2, this.height/2 - 12); this.ctx.font = '12px monospace';
                 this.ctx.fillText(`СЕГМЕНТ ${this.index+1}`, this.width/2, this.height/2 + 12);
             }
 
@@ -631,12 +535,8 @@
                 const start = (e) => { this.isDrawing = true; this.scratch(e); };
                 const move = (e) => { if(this.isDrawing) this.scratch(e); };
                 const end = () => { if(this.isDrawing) { this.isDrawing = false; this.checkPercent(); } };
-
-                this.canvas.addEventListener('mousedown', start);
-                this.canvas.addEventListener('mousemove', move);
-                this.canvas.addEventListener('mouseup', end);
-                this.canvas.addEventListener('mouseleave', end);
-                
+                this.canvas.addEventListener('mousedown', start); this.canvas.addEventListener('mousemove', move);
+                this.canvas.addEventListener('mouseup', end); this.canvas.addEventListener('mouseleave', end);
                 this.canvas.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); });
                 this.canvas.addEventListener('touchmove', (e) => { e.preventDefault(); move(e); });
                 this.canvas.addEventListener('touchend', (e) => { e.preventDefault(); end(); });
@@ -647,55 +547,30 @@
                 const rect = this.canvas.getBoundingClientRect();
                 const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
                 const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-
-                this.ctx.globalCompositeOperation = 'destination-out';
-                this.ctx.beginPath();
-                this.ctx.arc(x, y, 18, 0, Math.PI * 2); // Brush size
-                this.ctx.fill();
+                this.ctx.globalCompositeOperation = 'destination-out'; this.ctx.beginPath(); this.ctx.arc(x, y, 18, 0, Math.PI * 2); this.ctx.fill();
             }
 
             checkPercent() {
                 if(this.revealed) return;
                 const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-                const pixels = imageData.data;
-                let transparent = 0;
-                for (let i = 3; i < pixels.length; i += 4) {
-                    if (pixels[i] === 0) transparent++;
-                }
+                const pixels = imageData.data; let transparent = 0;
+                for (let i = 3; i < pixels.length; i += 4) { if (pixels[i] === 0) transparent++; }
                 const percent = (transparent / (pixels.length / 4)) * 100;
-                if (percent > 90) {
-                     this.revealed = true;
-                     scratchTicket(this.index, this);
-                }
+                if (percent > 90) { this.revealed = true; scratchTicket(this.index, this); }
             }
             
-            clear() {
-                this.canvas.style.opacity = '0';
-                setTimeout(() => this.canvas.remove(), 500);
-            }
-            
-            reset() {
-                this.revealed = false;
-                this.ctx.globalCompositeOperation = 'source-over';
-                this.initCover();
-            }
+            clear() { this.canvas.style.opacity = '0'; setTimeout(() => this.canvas.remove(), 500); }
+            reset() { this.revealed = false; this.ctx.globalCompositeOperation = 'source-over'; this.initCover(); }
         }
         
         function ticketTilt(e) {
-            const ticket = e.currentTarget;
-            const rect = ticket.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -5;
-            const rotateY = ((x - centerX) / centerX) * 5;
+            const ticket = e.currentTarget; const rect = ticket.getBoundingClientRect();
+            const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+            const centerX = rect.width / 2; const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -5; const rotateY = ((x - centerX) / centerX) * 5;
             ticket.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
         }
-        function ticketResetTilt(e) {
-             e.currentTarget.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-        }
-
+        function ticketResetTilt(e) { e.currentTarget.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)'; }
 
         let mainIdx = 0;
         function initMain() {
@@ -706,10 +581,8 @@
                 let wings = `<div class="wing wing-left"><i class="fas fa-feather-alt"></i></div><div class="wing wing-right"><i class="fas fa-feather-alt"></i></div>`;
                 d.innerHTML = `${wings}${ph}<img src="${API_URL}/static/main_${i}.png" onload="this.style.opacity=1" onerror="this.style.opacity=0"><h3>${n.title}</h3>`;
                 d.onclick = () => { 
-                    if(i===mainIdx) {
-                        if(document.body.classList.contains('vote-closed')) return;
-                        openVoteList(0, i);
-                    } else { mainIdx=i; updateMain(); }
+                    if(i===mainIdx) { if(document.body.classList.contains('vote-closed')) return; openVoteList(0, i); } 
+                    else { mainIdx=i; updateMain(); }
                 };
                 cont.appendChild(d);
             });
@@ -741,31 +614,18 @@
             });
             updateSlay();
         }
-        
         function updateSlay() {
             for(let i=0; i<subNomsList.length; i++) {
                 let el = document.getElementById(`sl-${i}`);
                 let diff = i - slayIdx;
-                
                 if(myVotes[subNomsList[i].title]) el.classList.add('voted'); else el.classList.remove('voted');
-
-                if (diff === 0) {
-                    el.style.transform = `translate(-50%, -50%) translateZ(200px)`; 
-                    el.style.zIndex = 100;
-                    el.style.opacity = 1;
-                    el.classList.add('active');
-                } 
+                if (diff === 0) { el.style.transform = `translate(-50%, -50%) translateZ(200px)`; el.style.zIndex = 100; el.style.opacity = 1; el.classList.add('active'); } 
                 else {
                     el.classList.remove('active');
                     let safeDiff = Math.max(-2, Math.min(2, diff)); 
-                    let xOffset = safeDiff * 260; 
-                    let zOffset = 100 - Math.abs(safeDiff) * 100; 
-                    let rotateY = -safeDiff * 25; 
-                    let opacity = Math.abs(diff) > 2 ? 0 : 0.6; 
-
+                    let xOffset = safeDiff * 260; let zOffset = 100 - Math.abs(safeDiff) * 100; let rotateY = -safeDiff * 25; let opacity = Math.abs(diff) > 2 ? 0 : 0.6; 
                     el.style.transform = `translate(-50%, -50%) translate3d(${xOffset}px, 0, ${zOffset}px) rotateY(${rotateY}deg)`;
-                    el.style.zIndex = 50 - Math.abs(diff);
-                    el.style.opacity = opacity;
+                    el.style.zIndex = 50 - Math.abs(diff); el.style.opacity = opacity;
                 }
             }
             document.getElementById('slayCount').innerText = `${slayIdx+1} / ${subNomsList.length}`;
@@ -801,13 +661,11 @@
 
             currGroup = group; currIdx = idx;
             let nom = group===0 ? mainNoms[idx] : subNomsList[idx];
-            
             document.getElementById('voteTitle').innerText = nom.title;
             const g = document.getElementById('candGrid'); g.innerHTML='';
             
             let votedFor = myVotes[nom.title];
             let changesDone = myChanges[nom.title] || 0;
-            
             checkChangeVoteValidity();
 
             let isLocked = votedFor !== undefined;
@@ -816,46 +674,23 @@
                 document.getElementById('votedName').innerText = votedFor;
                 document.getElementById('changesLeft').innerText = (3 - changesDone);
                 g.classList.add('locked');
-            } else {
-                document.getElementById('lockedMessage').style.display = 'none';
-                g.classList.remove('locked');
-            }
+            } else { document.getElementById('lockedMessage').style.display = 'none'; g.classList.remove('locked'); }
 
             nom.cands.forEach(c => {
                 let d = document.createElement('div'); d.className = 'cand-card';
                 if(votedFor === c) d.classList.add('selected');
-
-                let safeNom = nom.title.replace(/[\s\/]/g, '_');
-                let safeCand = c.replace(/[\s\/]/g, '_');
-                let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
-                let imgJpg = `${API_URL}/static/cand_${safeNom}_${safeCand}.jpg`;
-                
+                let safeNom = nom.title.replace(/[\s\/]/g, '_'); let safeCand = c.replace(/[\s\/]/g, '_');
+                let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`; let imgJpg = `${API_URL}/static/cand_${safeNom}_${safeCand}.jpg`;
                 let vidUrl = `${API_URL}/static/cand_${safeNom}_${safeCand}.mp4`;
                 let vidBadge = `<div id="vid-${safeCand}" class="video-badge" style="display:none"><i class="fas fa-video"></i></div>`;
                 let vtest = document.createElement('video'); vtest.src = vidUrl;
                 vtest.onloadedmetadata = () => { document.getElementById(`vid-${safeCand}`).style.display = 'flex'; };
-
                 let phIcon = nom.isPerson ? '<i class="fas fa-user"></i>' : c.charAt(0);
-                
-                d.innerHTML = `
-                    <div class="cand-avatar">
-                        ${vidBadge}
-                        <img src="${imgPng}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;display:none;" 
-                             onload="this.style.display='block'; this.nextElementSibling.style.display='none'"
-                             onerror="this.onerror=null; this.src='${imgJpg}'">
-                        <span>${phIcon}</span>
-                    </div>
-                    <div class="cand-name">${c}</div>`;
-                
+                d.innerHTML = `<div class="cand-avatar">${vidBadge}<img src="${imgPng}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;display:none;" onload="this.style.display='block'; this.nextElementSibling.style.display='none'" onerror="this.onerror=null; this.src='${imgJpg}'"><span>${phIcon}</span></div><div class="cand-name">${c}</div>`;
                 d.onclick=()=>{ if(!g.classList.contains('locked')) openPreview(c); };
                 g.appendChild(d);
             });
-            
-            if(votedFor && !nom.cands.includes(votedFor)) {
-               document.getElementById('customCandName').value = votedFor;
-            } else {
-               document.getElementById('customCandName').value = ''; 
-            }
+            if(votedFor && !nom.cands.includes(votedFor)) document.getElementById('customCandName').value = votedFor; else document.getElementById('customCandName').value = '';
             openModal('voteModal');
         }
 
@@ -864,56 +699,33 @@
             let btn = document.getElementById('changeBtn');
             let timerSpan = document.getElementById('changeTimer');
             let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
-
-            if(now > DEADLINE_CHANGE_VOTE && !isTest) {
-                btn.disabled = true;
-                btn.innerText = "ВРЕМЯ ВЫШЛО";
-                timerSpan.innerText = "Изменить голос больше нельзя";
-            } else {
+            if(now > DEADLINE_CHANGE_VOTE && !isTest) { btn.disabled = true; btn.innerText = "ВРЕМЯ ВЫШЛО"; timerSpan.innerText = "Изменить голос больше нельзя"; } 
+            else { 
                 let diff = Math.floor(DEADLINE_CHANGE_VOTE - now);
-                let h = Math.floor(diff/3600);
-                let m = Math.floor((diff%3600)/60);
-                btn.disabled = false;
-                btn.innerText = "ИЗМЕНИТЬ ГОЛОС";
-                timerSpan.innerText = `Осталось: ${h}ч ${m}м`;
+                let h = Math.floor(diff/3600); let m = Math.floor((diff%3600)/60);
+                btn.disabled = false; btn.innerText = "ИЗМЕНИТЬ ГОЛОС"; timerSpan.innerText = `Осталось: ${h}ч ${m}м`;
             }
         }
-
         function unlockVote() {
             let now = Date.now() / 1000 + serverTimeOffset;
             let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
             if(now > DEADLINE_CHANGE_VOTE && !isTest) { toast("Изменение закрыто!"); return; }
-            document.getElementById('candGrid').classList.remove('locked');
-            document.getElementById('lockedMessage').style.display = 'none';
+            document.getElementById('candGrid').classList.remove('locked'); document.getElementById('lockedMessage').style.display = 'none';
         }
 
         function openPreview(candName) {
-            currentCand = candName;
-            closeModal('voteModal');
-            openModal('previewModal');
-            document.getElementById('previewTitle').innerText = candName;
-            const container = document.getElementById('previewMediaContainer');
-            container.innerHTML = '<div style="color:#666">Поиск медиа...</div>';
-            
+            currentCand = candName; closeModal('voteModal'); openModal('previewModal'); document.getElementById('previewTitle').innerText = candName;
+            const container = document.getElementById('previewMediaContainer'); container.innerHTML = '<div style="color:#666">Поиск медиа...</div>';
             let nom = currGroup===0 ? mainNoms[currIdx] : subNomsList[currIdx];
-            let safeNom = nom.title.replace(/[\s\/]/g, '_');
-            let safeCand = candName.replace(/[\s\/]/g, '_');
-            let vidUrl = `${API_URL}/static/cand_${safeNom}_${safeCand}.mp4`;
-            let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`;
-            let imgJpg = `${API_URL}/static/cand_${safeNom}_${safeCand}.jpg`;
-            
-            let video = document.createElement('video');
-            video.src = vidUrl; video.controls = true; video.autoplay = true; video.muted = false; video.loop = true;
-            
+            let safeNom = nom.title.replace(/[\s\/]/g, '_'); let safeCand = candName.replace(/[\s\/]/g, '_');
+            let vidUrl = `${API_URL}/static/cand_${safeNom}_${safeCand}.mp4`; let imgPng = `${API_URL}/static/cand_${safeNom}_${safeCand}.png`; let imgJpg = `${API_URL}/static/cand_${safeNom}_${safeCand}.jpg`;
+            let video = document.createElement('video'); video.src = vidUrl; video.controls = true; video.autoplay = true; video.muted = false; video.loop = true;
             video.onloadedmetadata = () => { container.innerHTML = '<div style="color:#0f0">Видео найдено, подождите...</div>'; };
             video.oncanplay = () => { container.innerHTML = ''; container.appendChild(video); };
-            
             video.onerror = () => {
-                let img = new Image(); img.src = imgPng;
-                img.onload = () => { container.innerHTML = ''; container.appendChild(img); };
+                let img = new Image(); img.src = imgPng; img.onload = () => { container.innerHTML = ''; container.appendChild(img); };
                 img.onerror = () => {
-                    let img2 = new Image(); img2.src = imgJpg;
-                    img2.onload = () => { container.innerHTML = ''; container.appendChild(img2); };
+                    let img2 = new Image(); img2.src = imgJpg; img2.onload = () => { container.innerHTML = ''; container.appendChild(img2); };
                     img2.onerror = () => { container.innerHTML = '<div style="font-size:8em;color:var(--red);padding:40px;"><i class="fas fa-user"></i></div>'; }
                 }
             };
@@ -928,17 +740,11 @@
 
         async function sendVote(cand) {
             let nomTitle = currGroup===0 ? mainNoms[currIdx].title : subNomsList[currIdx].title;
-            myVotes[nomTitle] = cand; 
-            updateSlay(); updateMain();
-
+            myVotes[nomTitle] = cand; updateSlay(); updateMain();
             try {
                 let res = await fetch(API_URL + '/api/vote', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, nomination:nomTitle, candidate:cand})});
                 let d = await res.json();
-                if(d.success) { toast("ПРИНЯТО!"); check(false); }
-                else { 
-                    toast(d.message);
-                    if(d.message !== "ПРИНЯТО!") { delete myVotes[nomTitle]; updateSlay(); updateMain(); }
-                }
+                if(d.success) { toast("ПРИНЯТО!"); check(false); } else { toast(d.message); if(d.message !== "ПРИНЯТО!") { delete myVotes[nomTitle]; updateSlay(); updateMain(); } }
             } catch(e) { toast("Ошибка сети"); }
         }
 
@@ -946,23 +752,24 @@
         function initTicketSystem() {
             const container = document.getElementById('ticketSegments');
             const rewardList = document.getElementById('rewardList');
+            const fullCodeDiv = document.getElementById('fullTicketCode');
             container.innerHTML = ''; rewardList.innerHTML = '';
             
-            let hasRed = false; let hasStars = false;
+            let hasRed = false; let hasStars = false; let fullCode = ""; let openedCount = 0;
             
             for(let i=0; i<4; i++) {
                 let wrap = document.createElement('div');
                 wrap.className = 'segment-wrap';
-                
                 let reveal = document.createElement('div');
                 reveal.className = 'code-reveal';
                 reveal.id = `reveal-${i}`;
-                
                 let canvas = document.createElement('canvas');
                 canvas.className = 'scratch-canvas';
                 canvas.id = `canvas-${i}`;
                 
                 if (ticketData[i]) {
+                    openedCount++;
+                    fullCode += ticketData[i].code;
                     reveal.innerText = ticketData[i].code;
                     if(ticketData[i].rarity === 'red') { reveal.classList.add('rarity-red'); hasRed = true; }
                     if(ticketData[i].rarity === 'stars') { reveal.classList.add('rarity-stars'); hasStars = true; }
@@ -971,33 +778,31 @@
                     wrap.appendChild(canvas);
                     setTimeout(() => new ScratchCard(canvas, i), 100);
                 }
-                
                 wrap.appendChild(reveal);
                 container.appendChild(wrap);
             }
             
+            // SHOW FULL CODE IF ALL OPENED
+            if(openedCount === 4) {
+                fullCodeDiv.style.display = 'block';
+                fullCodeDiv.innerText = "КОД: " + fullCode;
+                fullCodeDiv.setAttribute('data-code', fullCode);
+            } else {
+                fullCodeDiv.style.display = 'none';
+            }
+
             if(hasRed) rewardList.innerHTML += `<div class="reward-item reward-red" onclick="openReward('red')">🎟 ВЫБОР МЕСТА</div>`;
             if(hasStars) rewardList.innerHTML += `<div class="reward-item reward-red" onclick="openReward('stars')">⭐ 25 ЗВЁЗД</div>`;
         }
+        
+        function copyFullCode(el) {
+            const code = el.getAttribute('data-code');
+            navigator.clipboard.writeText(code).then(() => toast("КОД СКОПИРОВАН!"), () => toast("ОШИБКА КОПИРОВАНИЯ"));
+        }
 
         async function scratchTicket(idx, scratchObj) {
-            // Note: Removed vote check here as requested, ticket for all registered
-            // if(Object.keys(myVotes).length === 0) { ... }
-            
             let now = Date.now() / 1000 + serverTimeOffset;
             let isTest = document.getElementById('testBtn') && document.getElementById('testBtn').innerText.includes("ON");
-
-            if (!isTest && now < TICKET_UNLOCKS[idx]) {
-                let date = new Date(TICKET_UNLOCKS[idx] * 1000);
-                let day = date.getDate().toString().padStart(2, '0');
-                let month = (date.getMonth() + 1).toString().padStart(2, '0');
-                let hours = date.getHours().toString().padStart(2, '0');
-                let minutes = date.getMinutes().toString().padStart(2, '0');
-                
-                toast(`Будет доступно ${day}.${month} в ${hours}:${minutes}`);
-                scratchObj.reset();
-                return;
-            }
 
             try {
                 let res = await fetch(API_URL + '/api/scratch_ticket', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken, segment:idx})});
@@ -1031,6 +836,14 @@
                 let res = await fetch(API_URL + '/api/reset_my_ticket', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
                 let d = await res.json();
                 if(d.success) check(false);
+            } catch(e) { toast("Ошибка"); }
+        }
+        
+        async function createInvite() {
+            try {
+                let res = await fetch(API_URL + '/api/create_invite', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:myToken})});
+                let d = await res.json();
+                if(d.success) { toast("ИНВАЙТ СОЗДАН!"); check(false); }
             } catch(e) { toast("Ошибка"); }
         }
 
@@ -1138,6 +951,11 @@
                         tBtn.style.background = "rgba(0,0,0,0.8)";
                         tBtn.style.color = "var(--red)";
                     }
+                    // RENDER ADMIN CODES
+                    const list = document.getElementById('adminCodesList');
+                    list.innerHTML = d.admin_codes && d.admin_codes.length > 0 
+                        ? d.admin_codes.map(c => `<div>${c}</div>`).join('') 
+                        : '<div>Нет активных инвайтов</div>';
                 }
 
                 updateMain(); updateSlay();
